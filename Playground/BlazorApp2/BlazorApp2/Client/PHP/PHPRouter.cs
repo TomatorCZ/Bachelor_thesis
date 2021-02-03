@@ -22,14 +22,7 @@ namespace BlazorApp2.Client.PHP
 
 		protected override void BuildRenderTree(RenderTreeBuilder __builder)
 		{
-			__builder.AddMarkupContent(0, "<h1>PHP Router</h1>\r\n\r\n");
-			__builder.OpenElement(1, "p");
-			__builder.AddContent(2, $"Scipt {Script} is being evaluated.");
-			__builder.CloseElement();
-
-			__builder.OpenElement(3, "p");
 			EvalScript(__builder);
-			__builder.CloseElement();
 		}
 
 		private void EvalScript(RenderTreeBuilder __builder)
@@ -43,12 +36,12 @@ namespace BlazorApp2.Client.PHP
 			buffer.Position = 0;
 
 			using StreamReader reader = new StreamReader(buffer, System.Text.Encoding.UTF8);
-			__builder.AddContent(4, reader.ReadToEnd());
+			__builder.AddMarkupContent(4, reader.ReadToEnd());
 		}
 
-		protected override void OnInitialized()
+		protected override void OnParametersSet()
 		{
-			Console.WriteLine("OnInitialized.");
+			Console.WriteLine("OnParametersSet.");
 			
 			Assembly phpassembly = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName == "ClassLibrary1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
 			Context.AddScriptReference(phpassembly);
