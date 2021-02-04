@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.WebUtilities;
 using Pchp.Core;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,7 @@ namespace BlazorApp2.Client.PHP
 	public class PHPRouter : ComponentBase
 	{
 		[Parameter] public string Script { get; set; }
+		[Inject] NavigationManager NavManager { get; set; }
 
 		private Context ctx { get; set; } = Context.CreateEmpty();
 		private Context.ScriptInfo ExeScript { get; set; }
@@ -39,6 +42,31 @@ namespace BlazorApp2.Client.PHP
 			__builder.AddMarkupContent(4, reader.ReadToEnd());
 		}
 
+		protected override void OnInitialized()
+		{
+			var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+
+			if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("action", out var _action))
+			{
+				ctx.Get.Add("action", _action);
+			}
+
+			NavManager.LocationChanged += HandleLocationChanged;
+		}
+
+		//https://chrissainty.com/working-with-query-strings-in-blazor/
+		void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+		{
+			var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+
+			if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("action", out var _action))
+			{
+				ctx.Get.Add("action", _action);
+			}
+
+			StateHasChanged();
+		}
+
 		protected override void OnParametersSet()
 		{
 			Console.WriteLine("OnParametersSet.");
@@ -56,6 +84,8 @@ namespace BlazorApp2.Client.PHP
 			Console.WriteLine($"Trying resolve script {Script}...");
 			ExeScript = Context.TryGetDeclaredScript(Script);
 			Console.WriteLine((ExeScript.IsValid) ? "Valid" : "Invalid");
+
+			Console.WriteLine($"Script {Script}");
 		}
 
 		private void WriteAssemblies(IReadOnlyCollection<Assembly> assemblies)
