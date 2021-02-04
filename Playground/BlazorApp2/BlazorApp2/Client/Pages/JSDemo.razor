@@ -1,0 +1,12 @@
+﻿@page "/jsdemo"
+
+<h1>JS DEMO</h1>
+<button class="btn btn-primary" onclick="DotNet.invokeMethod('BlazorApp2.Client', 'CalledFromJS');">Click me</button>
+
+@code {
+    [JSInvokable]
+    public static void CalledFromJS()
+    {
+        Console.WriteLine("Called from JS");
+    }
+}

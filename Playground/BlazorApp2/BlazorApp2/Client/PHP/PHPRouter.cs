@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.WebUtilities;
 using Pchp.Core;
+using Pchp.Core.Reflection;
 using System;
 using System.Collections.Generic;
 using System.IO;
