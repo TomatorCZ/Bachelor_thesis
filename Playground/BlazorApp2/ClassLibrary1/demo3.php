@@ -1,3 +1,21 @@
 ﻿<?php
-echo "<h1>PHP - JS - C#</h1>";
-echo "<button class=\"btn btn-primary\" onclick=\"DotNet.invokeMethod('BlazorApp2.Client', 'CalledFromJS');\">Click me</button>";
+
+if (!isset($counter))
+	$counter = 0;
+
+function render() 
+{
+	global $counter;
+	echo "<p>$counter</p>";
+	echo "<button onclick=\"window.eventManager.callEvent('HandleClick');\">Click me!</button>";
+	registerEvent("HandleClick");
+}
+
+function HandleClick()
+{
+	global $counter;
+
+	$counter = $counter + 1;
+}
+
+render();
