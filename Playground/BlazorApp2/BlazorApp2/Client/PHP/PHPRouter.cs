@@ -67,6 +67,8 @@ namespace BlazorApp2.Client.PHP
 			_timerManager = new TimerManager();
 			_ctx = CreateContext(_event);
 
+			
+
 			NavManager.LocationChanged += handleLocationChanged;
 			
 		}
@@ -74,7 +76,7 @@ namespace BlazorApp2.Client.PHP
 		private Context CreateContext(EventHelper @event)
 		{
 			var ctx = Context.CreateEmpty(); ;
-			ctx.DeclareFunction("registerEvent", new Action<string>((method) => @event.RegisterEvent(method)));
+			ctx.DeclareFunction("CallStateHasChanged", new Action(() => this.StateHasChanged()));
 
 			ctx.DeclareFunction("createTimer", new Action<string, int, string>((name, interval, method) => _timerManager.AddTimer(name,interval,() => HandleEvent((ctx=> ctx.Call(method))))));
 			ctx.DeclareFunction("startTimer", new Action<string>((name) => _timerManager.StartTimer(name)));
@@ -126,19 +128,15 @@ namespace BlazorApp2.Client.PHP
 		{
 			_runtime = runtime;
 			_php = php;
+
+			objRef = DotNetObjectReference.Create(this);
+			((IJSInProcessRuntime)_runtime).InvokeVoid("eventManager.setEventHandler", objRef);
 		}
 
 		[JSInvokable]
-		public void CallHandler(string method)
+		public void CallHandler(string method, params object[] args)
 		{
-			_php.HandleEvent((ctx) => ctx.Call(method));
-		}
-
-		public void RegisterEvent(string method)
-		{
-			objRef ??= DotNetObjectReference.Create(this);
-
-			((IJSInProcessRuntime)_runtime).InvokeVoid("eventManager.assignEvent", method, objRef);
+			_php.HandleEvent((ctx) => ctx.Call(method, args));
 		}
 
 		void IDisposable.Dispose()

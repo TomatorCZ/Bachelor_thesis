@@ -1,12 +1,10 @@
 ﻿window.eventManager = {
-    events: {},
+    eventHandler: undefined,
 
-    assignEvent: function (method, dotnetHelper) {
-        window.eventManager.events[method] = function () { dotnetHelper.invokeMethod("CallHandler",method); }
-    },
+    setEventHandler: function (dotnetHelper) { window.eventManager.eventHandler = dotnetHelper; },
 
-    callEvent: function (method) {
-        window.eventManager.events[method]();
+    callEvent: function (method, ...args) {
+        console.log(args);
+        window.eventManager.eventHandler.invokeMethod("CallHandler", method, args);
     }
 };
-

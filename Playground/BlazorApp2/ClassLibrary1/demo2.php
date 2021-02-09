@@ -1,5 +1,4 @@
 <?php
-
 interface iHtmlWritable
 {
     public function ToHTMLEntity() : string;
