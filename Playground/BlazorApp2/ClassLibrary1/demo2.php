@@ -157,9 +157,12 @@ class EntityArray implements iHTMLWritable
 }
 
 //Action handlers
-function handle_tick($time)
+function handle_tick()
 {
     global $GameState;
+
+    $time = $GameState["time"] + $GameState["sensitivity"];
+
     foreach ($GameState["movable_entities"] as $entity)
     {
         $entity->Move($time - $GameState["time"]);
@@ -194,16 +197,17 @@ function handle_fire()
 // Render
 function renderControls()
 {
-    echo "<a href=\"demo2.php?action=moveRight\">Move right</a>";
-    echo "<a href=\"demo2.php?action=fire\">Fire</a>";
-    echo "<a href=\"demo2.php?action=moveLeft\">Move left</a>";
-    echo "<a href=\"demo2.php?action=tick\">Tick</a>";
+    echo "<button onmousedown=\"window.eventManager.callEvent('handle_move_right');\" onmouseup=\"window.eventManager.callEvent('handle_stay');\">Move right</button>";
+
+    echo "<button onclick=\"window.eventManager.callEvent('handle_fire');\">Fire</button>";
+
+    echo "<button onmousedown=\"window.eventManager.callEvent('handle_move_left');\" onmouseup=\"window.eventManager.callEvent('handle_stay');\">Move left</button>";
 }
 
 function renderBoard()
 {
     global $GameState;
-    $style = ["height" => "800px", "position" => "relative"];
+    $style = ["height" => $GameState["height"] . "px", "position" => "relative"];
     
     echo CreateDiv($style, new EntityArray(array_merge($GameState["static_entities"], $GameState["movable_entities"], [$GameState["rocket"]])));
 }
@@ -214,43 +218,41 @@ function render()
     renderControls();
 }
 
-// Game state
-if (!isset($GameState))
+function initGame() : array
 {
     $GameState = [
         "time" => 0,
+        "sensitivity" => 10,
         "static_entities" => [],
         "movable_entities" => [],
         "rocket" => null,
+        // Window properties
+        "height" => 800
     ];
 
+    // Init Rocket
+    $GameState["rocket"] = Rocket::CreateDefault(["x" => 10, "y" => $GameState["height"] - 50]);
+    
+    // Init Background
     $GameState["static_entities"][] = Background::CreateDefault();
-    $GameState["rocket"] = Rocket::CreateDefault(["x" => 10, "y" => 20]);
+    
+    // Init Asteroids
+
+    // Handlers
+    registerEvent("handle_move_right");
+    registerEvent("handle_move_left");
+    registerEvent("handle_stay");
+
+	createTimer("timer2", $GameState["sensitivity"], "handle_tick");
+	startTimer("timer2");
+
+    return $GameState;
 }
 
-if (isset($_GET["action"]))
+// Game state
+if (!isset($GameState))
 {
-    if ($_GET["action"] === "tick")
-    {
-        handle_tick($GameState["time"] + 1);
-    }
-    else if ($_GET["action"] === "moveRight")
-    {
-        handle_move_right();
-        handle_tick($GameState["time"] + 1);
-        handle_stay();
-    }
-    else if ($_GET["action"] === "moveLeft")
-    {
-        handle_move_left();
-        handle_tick($GameState["time"] + 1);
-        handle_stay();
-    }
-    else if ($_GET["action"] === "fire")
-    {
-        handle_fire();
-        handle_tick($GameState["time"] + 1);
-    }
+    $GameState = initGame();
 }
 
 render();

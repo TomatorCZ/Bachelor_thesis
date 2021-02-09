@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Reflection.Metadata;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -28,6 +29,8 @@ namespace BlazorApp2.Client.PHP
 		private Context _ctx { get; set; }
 		private Context.ScriptInfo _exeScript { get; set; }
 		private EventHelper _event { get; set; }
+
+		private TimerManager _timerManager { get; set; }
 
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
@@ -57,18 +60,33 @@ namespace BlazorApp2.Client.PHP
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			_ctx = Context.CreateEmpty();
-			_event = new EventHelper(JSRuntime, this);
+			Assembly phpassembly = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName == "ClassLibrary1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
+			Context.AddScriptReference(phpassembly);
 
-			_ctx.DeclareFunction("registerEvent", new Action<string>((method) => _event.RegisterEvent(method)));
+			_event = new EventHelper(JSRuntime, this);
+			_timerManager = new TimerManager();
+			_ctx = CreateContext(_event);
 
 			NavManager.LocationChanged += handleLocationChanged;
-			assignQuerryString(_ctx);
+			
+		}
+
+		private Context CreateContext(EventHelper @event)
+		{
+			var ctx = Context.CreateEmpty(); ;
+			ctx.DeclareFunction("registerEvent", new Action<string>((method) => @event.RegisterEvent(method)));
+
+			ctx.DeclareFunction("createTimer", new Action<string, int, string>((name, interval, method) => _timerManager.AddTimer(name,interval,() => HandleEvent((ctx=> ctx.Call(method))))));
+			ctx.DeclareFunction("startTimer", new Action<string>((name) => _timerManager.StartTimer(name)));
+			ctx.DeclareFunction("stopTimer", new Action<string>((name) => _timerManager.StopTimer(name)));
+
+			return ctx;
 		}
 
 		private void handleLocationChanged(object sender, LocationChangedEventArgs e)
 		{
-			_ctx.Get.Clear();
+			_ctx = CreateContext(_event);
+
 			assignQuerryString(_ctx);
 			StateHasChanged();
 		}
@@ -85,19 +103,16 @@ namespace BlazorApp2.Client.PHP
 		{
 			base.OnParametersSet();
 
-			Assembly phpassembly = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName == "ClassLibrary1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
-			Context.AddScriptReference(phpassembly);
+			_ctx = CreateContext(_event);
+			assignQuerryString(_ctx);
 
 			_exeScript = Context.TryGetDeclaredScript(Script);
 		}
 
 		public void HandleEvent(Action<Context> action)
 		{
-			Console.WriteLine(_ctx.Globals["counter"]);
 			action(_ctx);
-			Console.WriteLine(_ctx.Globals["counter"]);
 			StateHasChanged();
-			Console.WriteLine(_ctx.Globals["counter"]);
 		}
 	}
 
@@ -130,5 +145,42 @@ namespace BlazorApp2.Client.PHP
 		{
 			objRef?.Dispose();
 		}
+	}
+
+
+	public class TimerManager
+	{
+		private Dictionary<string, System.Timers.Timer> _timers;
+
+		public TimerManager()
+		{
+			_timers = new Dictionary<string, System.Timers.Timer>();
+		}
+
+		public void AddTimer(string name, int interval, Action elapsed)
+		{
+			if (!_timers.ContainsKey(name))
+			{
+				_timers.Add(name, new System.Timers.Timer(interval));
+				_timers[name].Elapsed += (sender, e) => elapsed();
+			}
+		}
+
+		public void StartTimer(string name)
+		{
+			if (_timers.TryGetValue(name, out var timer))
+			{
+				timer.Start();
+			}
+		}
+
+		public void StopTimer(string name)
+		{
+			if (_timers.TryGetValue(name, out var timer))
+			{
+				timer.Stop();
+			}
+		}
+
 	}
 }

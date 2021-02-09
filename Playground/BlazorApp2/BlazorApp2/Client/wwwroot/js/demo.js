@@ -9,3 +9,4 @@
         window.eventManager.events[method]();
     }
 };
+
