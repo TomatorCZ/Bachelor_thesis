@@ -77,8 +77,9 @@ namespace BlazorApp2.Client.PHP
 		{
 			var ctx = Context.CreateEmpty(); ;
 			ctx.DeclareFunction("CallStateHasChanged", new Action(() => this.StateHasChanged()));
+			ctx.DeclareFunction("MyLog", new Action<string>((msg) => Console.WriteLine(msg)));
 
-			ctx.DeclareFunction("createTimer", new Action<string, int, string>((name, interval, method) => _timerManager.AddTimer(name,interval,() => HandleEvent((ctx=> ctx.Call(method))))));
+			ctx.DeclareFunction("createTimer", new Action<string, double, string>((name, interval, method) => _timerManager.AddTimer(name,interval,() => HandleEvent((ctx=> ctx.Call(method))))));
 			ctx.DeclareFunction("startTimer", new Action<string>((name) => _timerManager.StartTimer(name)));
 			ctx.DeclareFunction("stopTimer", new Action<string>((name) => _timerManager.StopTimer(name)));
 
@@ -114,7 +115,7 @@ namespace BlazorApp2.Client.PHP
 		public void HandleEvent(Action<Context> action)
 		{
 			action(_ctx);
-			StateHasChanged();
+			//StateHasChanged();
 		}
 	}
 
@@ -155,12 +156,13 @@ namespace BlazorApp2.Client.PHP
 			_timers = new Dictionary<string, System.Timers.Timer>();
 		}
 
-		public void AddTimer(string name, int interval, Action elapsed)
+		public void AddTimer(string name, double interval, Action elapsed)
 		{
 			if (!_timers.ContainsKey(name))
 			{
 				_timers.Add(name, new System.Timers.Timer(interval));
 				_timers[name].Elapsed += (sender, e) => elapsed();
+				//_timers[name].Elapsed += (sender, e) => Console.WriteLine("Tick");
 			}
 		}
 

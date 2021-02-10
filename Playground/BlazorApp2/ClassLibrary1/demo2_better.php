@@ -175,6 +175,11 @@ abstract class Entity implements iHtmlWritable
         $this->tag["attributes"]["style"]["left"] = $this->position["x"] . "px";
         $this->tag->WriteHTML();
     }
+
+    public function GetPosition() : array
+    {
+        return $this->position;
+    }
 }
 
 abstract class MovableEntity extends Entity
@@ -191,6 +196,12 @@ abstract class MovableEntity extends Entity
     {
         $this->position["x"] = $this->direction["x"] * $time + $this->position["x"]; 
         $this->position["y"] = $this->direction["y"] * $time + $this->position["y"]; 
+    }
+
+    public function Move(float $time, array $maxposition) : void
+    {
+        $this->position["x"] = max(min($this->direction["x"] * $time + $this->position["x"], $maxposition["x"]),0); 
+        $this->position["y"] = max(min($this->direction["y"] * $time + $this->position["y"], $maxposition["y"]),0); 
     }
 
     public function ChangeDirection(array $direction) : void
@@ -216,13 +227,13 @@ class Asteroid extends MovableEntity
 
     public static function CreateDefault(array $position)
     {
-        return new self($position, [0, self::DEFAULT_SPEED]);
+        return new self($position, ["x" => 0, "y" => self::DEFAULT_SPEED]);
     }
 }
 
 class Bullet extends MovableEntity
 {
-    const DEFAULT_SPEED = 1;
+    const DEFAULT_SPEED = -1;
 
     public function __construct(array $position, array $direction)
     {
@@ -237,7 +248,7 @@ class Bullet extends MovableEntity
 
     public static function CreateDefault(array $position)
     {
-        return new self($position, [0, self::DEFAULT_SPEED]);
+        return new self($position, ["x" => 0, "y" => self::DEFAULT_SPEED]);
     }
 }
 
@@ -256,19 +267,19 @@ class Rocket extends MovableEntity
         $this->tag["attributes"]["style"]["left"] = "0px";
     }
 
-    public static function CreateDefault(array $position)
+    public static function CreateDefault(array $position) : Rocket
     {
-        return new self($position, [self::DEFAULT_SPEED, self::DEFAULT_SPEED]);
+        return new self($position, ["x" => self::DEFAULT_SPEED, "y" => self::DEFAULT_SPEED]);
     }
 }
 
 class Background extends Entity
 {
-    public function __construct() 
+    public function __construct(int $height) 
     {
         parent::__construct(["x" => 0, "y" => 0]);
         $this->tag["attributes"]["style"]["background-color"] = "grey";
-        $this->tag["attributes"]["style"]["height"] = "800px";
+        $this->tag["attributes"]["style"]["height"] = $height . "px";
         $this->tag["attributes"]["style"]["width"] = "100%";
         $this->tag["attributes"]["style"]["position"] = "absolute";
         $this->tag["attributes"]["style"]["top"] = "0px";
@@ -277,17 +288,17 @@ class Background extends Entity
 
     public static function CreateDefault()
     {
-        return new self();
+        return new self(700);
     }
 }
 
 class Application implements iHTMLWritable
 {
-    private array $GameState;
+    public array $GameState;
     private array $ApplicationSettings;
     private array $Controls;
 
-    public function __construct($GameState, $ApplicationSettings) 
+    public function __construct(array $GameState, array $ApplicationSettings) 
     {
         $this->GameState = $GameState;
         $this->ApplicationSettings = $ApplicationSettings;
@@ -299,15 +310,27 @@ class Application implements iHTMLWritable
     private function setControllers()
     {
         $buttonRight= new Tag("button");
+        $buttonRight["attributes"]["style"] = new CssCollection();
+        $buttonRight["attributes"]["style"]["position"] = "absolute";
+        $buttonRight["attributes"]["style"]["top"] = "700px";
+        $buttonRight["attributes"]["style"]["left"] = "0px";
         $buttonRight->setEvent("mousedown","HandleMove",["'right'"]);
         $buttonRight->setEvent("mouseup","HandleMove",["'stay'"]);
         $buttonRight["content"][] = new Text("Move Right");
 
         $buttonFire= new Tag("button");
+        $buttonFire["attributes"]["style"] = new CssCollection();
+        $buttonFire["attributes"]["style"]["position"] = "absolute";
+        $buttonFire["attributes"]["style"]["top"] = "700px";
+        $buttonFire["attributes"]["style"]["left"] = "100px";
         $buttonFire->setEvent("click","HandleFire",[]);
         $buttonFire["content"][] = new Text("Fire");
 
         $buttonLeft= new Tag("button");
+        $buttonLeft["attributes"]["style"] = new CssCollection();
+        $buttonLeft["attributes"]["style"]["position"] = "absolute";
+        $buttonLeft["attributes"]["style"]["top"] = "700px";
+        $buttonLeft["attributes"]["style"]["left"] = "200px";
         $buttonLeft->setEvent("mousedown","HandleMove",["'left'"]);
         $buttonLeft->setEvent("mouseup","HandleMove",["'stay'"]);
         $buttonLeft["content"][] = new Text("Move Left");
@@ -320,6 +343,11 @@ class Application implements iHTMLWritable
     public function WriteHTML() : void 
     {
         $tag = new Tag("div");
+
+        $tag["attributes"]["style"] = new CssCollection();
+        $tag["attributes"]["style"]["position"] = "relative";
+        $tag["attributes"]["style"]["height"] = $this->ApplicationSettings["height"] . "px";
+        $tag["attributes"]["style"]["width"] = $this->ApplicationSettings["width"] . "px";
         
         foreach($this->GameState["static_entities"] as $entity)
         {
@@ -343,9 +371,47 @@ class Application implements iHTMLWritable
 }
 
 // ---Handlers section---
-function HandleTick() {}
-function HandleMove(string $action) {}
-function HandleFire() {}
+function HandleTick() 
+{
+    global $app;
+    $currentTime = time(); 
+    $delta = 10;//$currentTime - $app->GameState["time"];
+    $app->GameState["time"] = $currentTime;
+
+    foreach($app->GameState["movable_entities"] as $entity)
+    {
+        $entity->Move($delta,  ["x" => 650, "y" => 650]);
+    }
+
+    $app->GameState["rocket"]->Move($delta, ["x" => 650, "y" => 650]);
+
+    CallStateHasChanged();
+}
+
+function HandleMove(string $action) 
+{
+    global $app;
+
+    if ($action === "right")
+    {
+        $app->GameState["rocket"]->ChangeDirection(["x" => 1,"y" => 0]);
+    }
+    else if ($action === "left")
+    {
+        $app->GameState["rocket"]->ChangeDirection(["x" => -1,"y" => 0]);
+    }
+    else if ($action === "stay")
+    {
+        $app->GameState["rocket"]->ChangeDirection(["x" => 0,"y" => 0]);
+    }
+}
+
+function HandleFire() 
+{
+    global $app;
+
+    $app->GameState["movable_entities"][] = Bullet::CreateDefault($app->GameState["rocket"]->GetPosition());
+}
 
 // ---Settings section---
 function initialization()
@@ -356,16 +422,21 @@ function initialization()
         "static_entities" => [],
         "movable_entities" => [],
         "rocket" => null,
-        "time" => time()
+        "time" => time();
     ];
     $applicationSettings = [
-        "sensitivity" => 10,
-        "height" => 700
+        "sensitivity" => 100,
+        "height" => 800,
+        "width" => 700
     ];
 
-    $gameState["rocket"] = Rocket::CreateDefault(["x" => 10, "y" => $applicationSettings["height"] - 50]);
+    $gameState["rocket"] = Rocket::CreateDefault(["x" => 10, "y" => $applicationSettings["height"] - 150]);
+    $gameState["static_entities"][] = Background::CreateDefault();
 
     $app = new Application($gameState, $applicationSettings);
+
+    createTimer("timer3", $applicationSettings["sensitivity"], "HandleTick");
+	startTimer("timer3");
 }
 
 // ---Executable section---
