@@ -8,7 +8,6 @@ function render()
 	global $counter;
 	echo "<p>$counter</p>";
 	echo "<button onclick=\"window.eventManager.callEvent('HandleClick');\">Click me!</button>";
-	registerEvent("HandleClick");
 }
 
 function HandleClick()

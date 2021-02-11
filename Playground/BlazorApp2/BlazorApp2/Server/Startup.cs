@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using System;
 
 namespace BlazorApp2.Server
 {
@@ -46,7 +47,13 @@ namespace BlazorApp2.Server
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
-           
+
+            //https://stackoverflow.com/questions/816566/how-do-you-get-the-current-project-directory-from-c-sharp-code-when-creating-a-c
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.FullName, "Asteroids\\StaticFiles")),
+                RequestPath = "/StaticFiles"
+            });
 
 
             app.UseRouting();

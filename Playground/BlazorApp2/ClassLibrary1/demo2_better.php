@@ -422,7 +422,7 @@ function initialization()
         "static_entities" => [],
         "movable_entities" => [],
         "rocket" => null,
-        "time" => time();
+        "time" => time()
     ];
     $applicationSettings = [
         "sensitivity" => 100,
@@ -432,6 +432,13 @@ function initialization()
 
     $gameState["rocket"] = Rocket::CreateDefault(["x" => 10, "y" => $applicationSettings["height"] - 150]);
     $gameState["static_entities"][] = Background::CreateDefault();
+
+    $i = 0;
+    while ($i < 10)
+    {
+        $gameState["movable_entities"][] = 
+        $i++;
+    }
 
     $app = new Application($gameState, $applicationSettings);
 

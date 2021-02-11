@@ -25,7 +25,8 @@ namespace BlazorApp2.Client
 
         public static void ForceLoadOfPHPAssemblies()
         {
-            var force1 = typeof(ForceClass);
+            var force1 = typeof(ForceClass1);
+            var force2 = typeof(ForceClass2);
         }
     }
 }

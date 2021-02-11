@@ -1,3 +1,3 @@
 ﻿<?php
 
-class ForceClass{}
+class ForceClass2{}

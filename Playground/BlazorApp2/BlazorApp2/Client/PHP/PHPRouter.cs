@@ -60,8 +60,10 @@ namespace BlazorApp2.Client.PHP
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			Assembly phpassembly = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName == "ClassLibrary1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
-			Context.AddScriptReference(phpassembly);
+			Assembly phpassembly1 = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName == "ClassLibrary1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
+			Assembly phpassembly2 = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName == "Asteroids, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
+			Context.AddScriptReference(phpassembly1);
+			Context.AddScriptReference(phpassembly2);
 
 			_event = new EventHelper(JSRuntime, this);
 			_timerManager = new TimerManager();
@@ -76,13 +78,13 @@ namespace BlazorApp2.Client.PHP
 		private Context CreateContext(EventHelper @event)
 		{
 			var ctx = Context.CreateEmpty(); ;
-			ctx.DeclareFunction("CallStateHasChanged", new Action(() => this.StateHasChanged()));
-			ctx.DeclareFunction("MyLog", new Action<string>((msg) => Console.WriteLine(msg)));
+			ctx.DeclareFunction("logPHP", new Action<string>((msg) => Console.WriteLine(msg)));
+			ctx.DeclareFunction("stateHasChangedPHP", new Action(() => this.StateHasChanged()));
 
-			ctx.DeclareFunction("createTimer", new Action<string, double, string>((name, interval, method) => _timerManager.AddTimer(name,interval,() => HandleEvent((ctx=> ctx.Call(method))))));
-			ctx.DeclareFunction("startTimer", new Action<string>((name) => _timerManager.StartTimer(name)));
-			ctx.DeclareFunction("stopTimer", new Action<string>((name) => _timerManager.StopTimer(name)));
-
+			ctx.DeclareFunction("createTimerPHP", new Action<string, double, string>((name, interval, method) => _timerManager.AddTimer(name,interval,() => HandleEvent((ctx=> ctx.Call(method))))));
+			ctx.DeclareFunction("startTimerPHP", new Action<string>((name) => _timerManager.StartTimer(name)));
+			ctx.DeclareFunction("stopTimerPHP", new Action<string>((name) => _timerManager.StopTimer(name)));
+			ctx.DeclareFunction("deleteTimerPHP", new Action<string>((name) => _timerManager.RemoveTimer(name)));
 			return ctx;
 		}
 
@@ -115,7 +117,6 @@ namespace BlazorApp2.Client.PHP
 		public void HandleEvent(Action<Context> action)
 		{
 			action(_ctx);
-			//StateHasChanged();
 		}
 	}
 
@@ -180,6 +181,11 @@ namespace BlazorApp2.Client.PHP
 			{
 				timer.Stop();
 			}
+		}
+
+		public void RemoveTimer(string name)
+		{
+			_timers.Remove(name);
 		}
 
 	}
