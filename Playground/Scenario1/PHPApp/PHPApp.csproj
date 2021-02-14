@@ -1,0 +1,16 @@
+﻿<Project Sdk="Peachpie.NET.Sdk/1.0.0-preview5">
+	<PropertyGroup>
+		<OutputType>library</OutputType>
+		<TargetFramework>netstandard2.1</TargetFramework>
+	</PropertyGroup>
+		
+	<ItemGroup>
+		<Compile Include="**/*.php;" />
+		<Content Include="**/*" Exclude="**/*.php;obj/*;bin/**;" />
+	</ItemGroup>
+		
+	<ItemGroup>
+	  <ProjectReference Include="..\PHPBlazorInteropt\PHPBlazorInteropt.csproj" />
+	</ItemGroup>
+
+</Project>

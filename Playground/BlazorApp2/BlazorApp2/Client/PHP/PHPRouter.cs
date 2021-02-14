@@ -49,7 +49,7 @@ namespace BlazorApp2.Client.PHP
 			using StreamWriter writer = new StreamWriter(buffer, System.Text.Encoding.UTF8);
 			_ctx.Output = writer;
 			_exeScript.Evaluate(_ctx, _ctx.Globals, null);
-
+ 
 			writer.Flush();
 			buffer.Position = 0;
 
