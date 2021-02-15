@@ -1,43 +1,51 @@
 # Overview
 
-I decided to aim at 3 scenarios.
+## Scenarios
 
-- Scenario 1. - We have some heavy application (like a game) written in PHP and we want to add it as a part of an existing website in Blazor.
-- Scenario 2. - We want to move whole PHP web (static) to the browser. 
-- Scenario 3. - We have a part of PHP web using database and we want to securely access it from a client through the server.
+I made five possible scenarios, which demonstrates possible ways how to use PHP in Blazor. The first three scenarios are the point of interest. It will be determined later, if the next two scenarios are necessary to show.
 
-## Scenario 1.
+| Scenario | Description                                                  |
+| -------- | ------------------------------------------------------------ |
+| 1        | We have a part of application, which is better to write in PHP (Existing library, PHP syntax, etc..). So we want a opportunity to plug this part into an existing Blazor application. |
+| 2        | We have a part of application, which is heavy and the rendering is crucial. So we want more control above the rendering in PHP scripts and has an opportunity to plug it into an existing Blazor application. |
+| 3        | We want to write while web application in PHP, but the application should run on the client side. |
+| 4        | We have some common structures in PHP on the client side, which should be serialized, sent to server, and deserialized. |
+| 5        | We have a classical 3 layer application (Client-Server-Database) and we  want to securely work with the database on the client side. |
 
-We want to develop a component, which offers a possibility to render a page by PHP in comfortable way. The component should be the best choice, because we want a part, which is rendered by PHP, to be inserted into Blazor(by router or just an another page). There are two ways how to achieve this. 
+It will be created demo in other to try and evaluate the approaches above.
 
-We make a custom component, which will seek out scripts to be evaluated. Advantage of this approach is eliminate Blazor's interface from a programmer. The programmer just render the page by echo (or php interleaving).
+### Scenario 1
 
+We want to develop a custom Blazor component, which will offer a way how to navigate scripts, which are defined by a Peachpie assembly and render them. The component should be the best choice because we want a part, which is written in PHP, to be inserted into Blazor(by router or just an another page). The rendering will be provided by PHP interleaving and echo function. This approach has an advantage that the scripts are just common PHP scripts. The programmer of these scripts can have no information about Blazor.
 
+Purpose of this scenario is to provide a simple and fast way, how to write a part of Blazor application in PHP.
 
-The ComponentBase can be derived in PHP due to Peachpie and we can call RenderBuilderTree by myself. Advantage of this is a full control of rendering.
+Demo will use PHP library (gd2 graphics) to process an image, which will be uploaded by client. 
 
+### Scenario 2
 
+We want to have more control above the rendering. So we can derive ComponentBase in PHP and build the Render tree by ourselves. There is an advantage of faster rendering than in scenario 1. A disadvantage of this is a harder implementation of correct usage of RenderTreeBuilder and  having a knowledge about how Blazor works. Helper classes will be created in other to make it easy for PHP programmer.
 
-Also It will be nice to have a choice call PHP functions from Blazor and Javascript.
+Purpose of this scenario is to provide a way, how to render an application which rendering is crucial.
 
-### Demo
+Demo will contain a game in PHP (like Space Invaders) and will execute it in the real time. There will be a comparison between scenario 1 and 2.
 
-Simple game of type Space Invaders. There will be a version for each approach. Each version will contain a way how to call Javascript a how Javascript can call PHP. 
+### Scenario 3
 
-## Scenario 2.
+We want to write whole web application in PHP. So we create a special router for navigating these pages in Peachpie assembly. This router can behaves in two different ways. The context of PHP will be persistent or it will be reset after each navigation.
 
-There is a several conditions, which we have to consider. We already have some functional PHP web (e.g. implemented by Front Controller pattern ) and we want to deploy it to browser. Or we have just PHP pages and wants to glue it together. And we want a opportunity somehow to interop with Javascript. 
+Purpose of this scenario is to move PHP web to client and save the resources of the server.
 
-So we want to develop a Router, which will serves these pages and a mechanism, which can call PHP functions by Javascript.    
+Demo will contain a simple web, which will demonstrate usage of the router.
 
-### Demo
+### Scenario 4
 
-There will be two versions. The first will use the Router as an bridge between C# and PHP. The second will use a Router as Front Controller. Each version will contain a way how to call Javascript a how Javascript can call PHP. 
+will be determined later.
 
-## Scenario 3.
+### Scenario 5
 
-We want some PHP helper class, which will offer an API for sending and receiving http request from browser.  
+will be determined later.
 
-### Demo
+### Appendix
 
-There will be a demo, which will a server like a middleware between client and database.
+Also It will be nice to have a choice call PHP functions from Blazor or Javascript. And make a option to call Javascript from PHP and react to events 
