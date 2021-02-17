@@ -20,7 +20,11 @@ We want to develop a custom Blazor component, which will offer a way how to navi
 
 Purpose of this scenario is to provide a simple and fast way, how to write a part of Blazor application in PHP.
 
-Demo will use PHP library (gd2 graphics) to process an image, which will be uploaded by client. 
+Demo will use PHP library (gd2 graphics) to process an image, which will be uploaded by client.
+
+To Solve:
+
+- Parameters in URL.
 
 ### Scenario 2
 

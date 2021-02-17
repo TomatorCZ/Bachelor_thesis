@@ -1,4 +1,7 @@
 ﻿@page "/counter"
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+
 
 <h1>Counter</h1>
 
@@ -7,7 +10,21 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 <a href="demo.php?action=a">Counter</a>
 
+
+
+<div @ref="divElement">Text during render</div>
+
 @code {
+    private ElementReference divElement;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync(
+                "setElementText", divElement, "Text after render");
+        }
+    }
     private int currentCount = 0;
 
     private void IncrementCount()

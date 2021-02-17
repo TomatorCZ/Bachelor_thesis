@@ -12,5 +12,9 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\PHPBlazorInteropt\PHPBlazorInteropt.csproj" />
 	</ItemGroup>
+		
+	<ItemGroup>
+	  <Folder Include="Css\" />
+	</ItemGroup>
 
 </Project>
