@@ -117,8 +117,8 @@ class Text implements iBlazorWritable
 
 	public function writeWithTreeBuilder($builder, int $startIndex) : int 
     {
-        //TODO: Implement
-        throw new \Exception("Not Implemented");
+        $builder->addContent($startIndex++, $this->content);
+        return $startIndex;
     }
 }
 
@@ -203,9 +203,9 @@ class AttributeCollection implements \ArrayAccess, iBlazorWritable
             $builder->AddAttribute($startIndex++, strval($key), strval($value));
         }
 
-        foreach($this->events as $key => $value)
+        foreach($this->events as $value)
         {
-            $value($startIndex++, $key, $builder);
+            $value($startIndex++, $builder);
         }
 
         return $startIndex;

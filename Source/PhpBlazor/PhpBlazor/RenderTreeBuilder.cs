@@ -24,6 +24,7 @@ namespace PhpBlazor
 
         public void AddAttribute(int sequence, string name, string? value) => builder.AddAttribute(sequence, name, value);
 
+        public void AddContent(int sequence, string textContent) => builder.AddContent(sequence, textContent);
         #region events
         public void AddEventCallback(Context ctx, int sequence, string name, IPhpCallable value)
         {

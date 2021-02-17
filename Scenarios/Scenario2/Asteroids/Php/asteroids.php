@@ -128,7 +128,7 @@ class Bullet extends MovableEntity
         $this["attributes"]["style"]["left"] = $this->position["x"] . "px";
     }
 
-        public function move(float $time) : void
+    public function move(float $time) : void
     {
         parent::move($time);
         $this["attributes"]["style"]["top"] = $this->position["y"] . "px";
@@ -192,7 +192,49 @@ class Application extends \BlazorUtilities\Tag
         $this["attributes"]["style"]["width"] = $this->gameSettings["width"] . "px";
         $this["attributes"]["tabindex"] = 0;
 
+        $this->addButtons();
         $this->initGame();
+    }
+
+    public function addButtons() : void
+    {
+        $button= new \BlazorUtilities\Tag("button");
+        $button["attributes"]["style"]["position"] = "absolute";
+        $button["attributes"]["style"]["top"] = "700px";
+        $button["attributes"]["style"]["left"] = "0px";
+
+        $button["attributes"]->addEvent("onmousedown", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmousedown", function($e) {$this->HandleMouseDownMoveRight($e);});});
+        $button["attributes"]->addEvent("onmouseup", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmouseup", function($e) {$this->HandleMouseUp($e);});});
+        
+        $button["content"][] = new \BlazorUtilities\Text("Move Right");
+
+        $this["content"][] = $button;
+        unset($button);
+
+        $button= new \BlazorUtilities\Tag("button");
+        $button["attributes"]["style"]["position"] = "absolute";
+        $button["attributes"]["style"]["top"] = "700px";
+        $button["attributes"]["style"]["left"] = "100px";
+        
+        $button["attributes"]->addEvent("onclick", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onclick", function($e) {$this->HandleFire($e);});});
+        
+        $button["content"][] = new \BlazorUtilities\Text("Fire");
+
+        $this["content"][] = $button;
+        unset($button);
+
+        $button= new \BlazorUtilities\Tag("button");
+        $button["attributes"]["style"]["position"] = "absolute";
+        $button["attributes"]["style"]["top"] = "700px";
+        $button["attributes"]["style"]["left"] = "200px";
+        
+        $button["attributes"]->addEvent("onmousedown", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmousedown", function($e) {$this->HandleMouseDownMoveLeft($e);});});
+        $button["attributes"]->addEvent("onmouseup", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmouseup", function($e) {$this->HandleMouseUp($e);});});
+        
+        $button["content"][] = new \BlazorUtilities\Text("Move Left");
+
+        $this["content"][] = $button;
+        unset($button);
     }
 
     public function initGame() : void
@@ -237,5 +279,27 @@ class Application extends \BlazorUtilities\Tag
             $this->asteroids[] = $asteroid;
             $this->content[] = &$asteroid;
         }
+    }
+
+    private function HandleMouseDownMoveRight($e) : void
+    {
+         $this->rocket->changeDirection(["x" => 1,"y" => 0]);
+    }
+
+    private function HandleMouseUp($e) : void
+    {
+         $this->rocket->changeDirection(["x" => 0,"y" => 0]);
+    }
+
+    private function HandleMouseDownMoveLeft($e) : void
+    {
+         $this->rocket->changeDirection(["x" => -1,"y" => 0]);
+    }
+
+    private function HandleFire($e) : void
+    {
+        $bullet = Bullet::CreateDefault($this->rocket->GetPosition());
+        $this->bullets[] = $bullet;
+        $this["content"][] = &$bullet;
     }
 }
