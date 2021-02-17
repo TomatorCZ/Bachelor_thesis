@@ -26,7 +26,7 @@ abstract class Entity extends \BlazorUtilities\Tag
     }
 }
 
-abstract class MovableEntity extends Entity 
+abstract class MovableEntity extends Entity
 {
     protected array $direction;
 
@@ -44,8 +44,9 @@ abstract class MovableEntity extends Entity
 
     public function moveWithBounderies(float $time, array $bounderies) : void
     {
-        $this->position["x"] = max(min($this->direction["x"] * $time + $this->position["x"], $bounderies["max_x"]),$bounderies["min_x"]); 
-        $this->position["y"] = max(min($this->direction["y"] * $time + $this->position["y"], $bounderies["max_y"]),$bounderies["min_y"]); 
+        $this->move($time);
+        $this->position["x"] = max(min($this->position["x"], $bounderies["max_x"]), $bounderies["min_x"]);
+        $this->position["y"] = max(min($this->position["y"], $bounderies["max_y"]), $bounderies["min_y"]); 
     }
 
     public function changeDirection(array $direction) : void
@@ -94,6 +95,13 @@ class Asteroid extends MovableEntity
         return new self($position, ["x" => 0, "y" => 1], ["height" => 50, "width" => 50]);
     }
 
+    public function move(float $time) : void
+    {
+        parent::move($time);
+        $this["attributes"]["style"]["top"] = $this->position["y"] . "px";
+        $this["attributes"]["style"]["left"] = $this->position["x"] . "px";
+    }
+
     public function penetration(array $position, array $size) : bool
     {
         $endAsteroidX = $this->position["x"] + $this->size["width"];
@@ -116,6 +124,13 @@ class Bullet extends MovableEntity
         $this["attributes"]["style"]["height"] = $this->size["height"] . "px";
         $this["attributes"]["style"]["z-index"] = 1;
         $this["attributes"]["style"]["width"] = $this->size["width"] . "px";
+        $this["attributes"]["style"]["top"] = $this->position["y"] . "px";
+        $this["attributes"]["style"]["left"] = $this->position["x"] . "px";
+    }
+
+        public function move(float $time) : void
+    {
+        parent::move($time);
         $this["attributes"]["style"]["top"] = $this->position["y"] . "px";
         $this["attributes"]["style"]["left"] = $this->position["x"] . "px";
     }
@@ -147,6 +162,13 @@ class Rocket extends MovableEntity
         $height = 40;
 
         return new self($position, ["x" => 0, "y" => 0], ["height" => $height, "width" => $width]);
+    }
+
+    public function move(float $time) : void
+    {
+        parent::move($time);
+        $this["attributes"]["style"]["top"] = $this->position["y"] . "px";
+        $this["attributes"]["style"]["left"] = $this->position["x"] . "px";
     }
 }
 
@@ -185,5 +207,35 @@ class Application extends \BlazorUtilities\Tag
         $this["content"][] = &$this->rocket;
 
         $this->time = 0;
+    }
+
+    public function tick() : void
+    {
+       // Move
+        $newTime = $this->time + $this->gameSettings["sensitivity"]; 
+        $delta = $newTime - $this->time;
+        $this->time = $newTime;
+
+        $max_x = $this->gameSettings["width"] - $this->rocket->getSize()["width"];
+        $bounderies = ["max_x" => $max_x, "max_y" => $this->gameSettings["height"] - 150, "min_x"=> 0, "min_y"=> 0];
+        
+        foreach($this->asteroids as $entity)
+        {
+            $entity->moveWithBounderies($delta, $bounderies);
+        }
+        foreach($this->bullets as $entity)
+        {
+            $entity->move($delta, $bounderies);
+        }
+        $bounderies["max_y"]+=10;
+        $this->rocket->moveWithBounderies($delta,$bounderies);  
+
+        // Create asteroids
+        if ($this->time % $this->gameSettings["asteroidFrequency"] === 0)
+        {
+            $asteroid = Asteroid::createDefault(["x" => rand (0, $this->gameSettings["width"] - 50), "y"=> 0]);
+            $this->asteroids[] = $asteroid;
+            $this->content[] = &$asteroid;
+        }
     }
 }

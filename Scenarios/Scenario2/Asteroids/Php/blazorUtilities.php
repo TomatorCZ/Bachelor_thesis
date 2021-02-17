@@ -125,12 +125,24 @@ class Text implements iBlazorWritable
 class AttributeCollection implements \ArrayAccess, iBlazorWritable
 {
     private array $attributes;
+    private array $events;
 
     public function __construct()
     {
         $this->attributes = array();
+        $this->events = array();
     }
-    
+
+    public function addEvent(string $name, $handlerAdder)
+    {
+        $this->events[$name] = $handlerAdder;
+    }
+
+    public function removeEvent(string $name)
+    {
+        unset($this->events[$name]);
+    }
+
 	// ArrayAccess
 
     public function offsetExists ($offset) : bool 
@@ -189,6 +201,11 @@ class AttributeCollection implements \ArrayAccess, iBlazorWritable
         foreach($this->attributes as $key => $value)
         {
             $builder->AddAttribute($startIndex++, strval($key), strval($value));
+        }
+
+        foreach($this->events as $key => $value)
+        {
+            $value($startIndex++, $key, $builder);
         }
 
         return $startIndex;

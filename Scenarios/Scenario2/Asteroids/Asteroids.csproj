@@ -21,4 +21,10 @@
 	  <None Remove="Js\blazorUtilities.js" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Reference Include="PhpBlazor">
+	    <HintPath>..\..\..\Source\PhpBlazor\PhpBlazor\bin\Debug\netstandard2.1\PhpBlazor.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
 </Project>
