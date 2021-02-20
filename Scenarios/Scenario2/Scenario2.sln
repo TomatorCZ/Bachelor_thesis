@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp.Server", "BlazorApp\Server\BlazorApp.Server.csproj", "{6CBAC4DF-445C-4B7D-9176-6A281FDBAC5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp.Server", "BlazorApp\Server\BlazorApp.Server.csproj", "{6CBAC4DF-445C-4B7D-9176-6A281FDBAC5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp.Client", "BlazorApp\Client\BlazorApp.Client.csproj", "{D2A77F0B-BD55-4BD6-97FE-3383B4CA1685}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp.Client", "BlazorApp\Client\BlazorApp.Client.csproj", "{D2A77F0B-BD55-4BD6-97FE-3383B4CA1685}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp.Shared", "BlazorApp\Shared\BlazorApp.Shared.csproj", "{B5F52584-EC1A-41FB-A0E1-FC2AA8A191BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp.Shared", "BlazorApp\Shared\BlazorApp.Shared.csproj", "{B5F52584-EC1A-41FB-A0E1-FC2AA8A191BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids", "Asteroids\Asteroids.csproj", "{DE7D2B67-3269-4577-874A-4FA8629F1ABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asteroids", "Asteroids\Asteroids.csproj", "{DE7D2B67-3269-4577-874A-4FA8629F1ABD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

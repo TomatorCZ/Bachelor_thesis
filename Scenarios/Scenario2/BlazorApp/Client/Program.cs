@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Client
 {
@@ -15,6 +16,7 @@ namespace BlazorApp.Client
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddBaseAddressHttpClient();
+            
 
             await builder.Build().RunAsync();
         }

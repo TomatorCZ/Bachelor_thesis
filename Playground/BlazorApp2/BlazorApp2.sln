@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp2.Shared", "Blazor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.csproj", "{3069DA55-4650-4987-A2F2-6A90634AEB86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids", "Asteroids\Asteroids.csproj", "{0FE03ED0-E585-4151-B84A-4D0EE0B8A215}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asteroids", "Asteroids\Asteroids.csproj", "{0FE03ED0-E585-4151-B84A-4D0EE0B8A215}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary2", "ClassLibrary2\ClassLibrary2.csproj", "{F9167B30-936A-4543-A33B-607100CA9C46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{0FE03ED0-E585-4151-B84A-4D0EE0B8A215}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FE03ED0-E585-4151-B84A-4D0EE0B8A215}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FE03ED0-E585-4151-B84A-4D0EE0B8A215}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9167B30-936A-4543-A33B-607100CA9C46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9167B30-936A-4543-A33B-607100CA9C46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9167B30-936A-4543-A33B-607100CA9C46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9167B30-936A-4543-A33B-607100CA9C46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
