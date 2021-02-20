@@ -192,6 +192,9 @@ class Application extends \BlazorUtilities\Tag
         $this["attributes"]["style"]["width"] = $this->gameSettings["width"] . "px";
         $this["attributes"]["tabindex"] = 0;
 
+        $this["attributes"]->addEvent("onkeydown", function($seq, $builder) {$builder->AddEventKeyboardCallback($seq, "onkeydown", function($e) {$this->HandleKeyDown($e);});});
+        $this["attributes"]->addEvent("onkeyup", function($seq, $builder) {$builder->AddEventKeyboardCallback($seq, "onkeyup", function($e) {$this->HandleKeyUp();});});
+
         $this->addButtons();
         $this->initGame();
     }
@@ -203,8 +206,8 @@ class Application extends \BlazorUtilities\Tag
         $button["attributes"]["style"]["top"] = "700px";
         $button["attributes"]["style"]["left"] = "0px";
 
-        $button["attributes"]->addEvent("onmousedown", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmousedown", function($e) {$this->HandleMouseDownMoveRight($e);});});
-        $button["attributes"]->addEvent("onmouseup", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmouseup", function($e) {$this->HandleMouseUp($e);});});
+        $button["attributes"]->addEvent("onmousedown", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmousedown", function($e) {$this->HandleMouseDownMoveRight();});});
+        $button["attributes"]->addEvent("onmouseup", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmouseup", function($e) {$this->HandleMouseUp();});});
         
         $button["content"][] = new \BlazorUtilities\Text("Move Right");
 
@@ -216,7 +219,7 @@ class Application extends \BlazorUtilities\Tag
         $button["attributes"]["style"]["top"] = "700px";
         $button["attributes"]["style"]["left"] = "100px";
         
-        $button["attributes"]->addEvent("onclick", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onclick", function($e) {$this->HandleFire($e);});});
+        $button["attributes"]->addEvent("onclick", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onclick", function($e) {$this->HandleFire();});});
         
         $button["content"][] = new \BlazorUtilities\Text("Fire");
 
@@ -228,8 +231,8 @@ class Application extends \BlazorUtilities\Tag
         $button["attributes"]["style"]["top"] = "700px";
         $button["attributes"]["style"]["left"] = "200px";
         
-        $button["attributes"]->addEvent("onmousedown", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmousedown", function($e) {$this->HandleMouseDownMoveLeft($e);});});
-        $button["attributes"]->addEvent("onmouseup", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmouseup", function($e) {$this->HandleMouseUp($e);});});
+        $button["attributes"]->addEvent("onmousedown", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmousedown", function($e) {$this->HandleMouseDownMoveLeft();});});
+        $button["attributes"]->addEvent("onmouseup", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmouseup", function($e) {$this->HandleMouseUp();});});
         
         $button["content"][] = new \BlazorUtilities\Text("Move Left");
 
@@ -253,7 +256,7 @@ class Application extends \BlazorUtilities\Tag
 
     public function tick() : void
     {
-       // Move
+        // Move
         $newTime = $this->time + $this->gameSettings["sensitivity"]; 
         $delta = $newTime - $this->time;
         $this->time = $newTime;
@@ -270,36 +273,120 @@ class Application extends \BlazorUtilities\Tag
             $entity->move($delta, $bounderies);
         }
         $bounderies["max_y"]+=10;
-        $this->rocket->moveWithBounderies($delta,$bounderies);  
+        $this->rocket->moveWithBounderies($delta,$bounderies);
+
+        // Destroy asteroids and bullets
+        $bulletsDestroyed = array();
+        $asteroidsDestroyed = array();
+
+        foreach($this->bullets as $keyBullet => $bullet)
+        {
+            foreach($this->asteroids as $keyAsteroid => $asteroid)
+            {
+                if ($asteroid->penetration($bullet->getPosition(), $bullet->getSize()))
+                {
+                    $asteroidsDestroyed[$keyAsteroid] = true;
+                    $bulletsDestroyed[$keyBullet]= true;
+                    break;
+                }
+            }
+
+            if ($bullet->getPosition()["y"] <= 0)
+            {
+                $bulletsDestroyed[$keyBullet]= true;
+            }
+        }
+
+        foreach($this->asteroids as $keyAsteroid => $asteroid)
+        {
+            if ($asteroid->getPosition()["y"] >= 650)
+            {
+                $asteroidsDestroyed[$keyAsteroid] = true;
+            }
+        }
+
+        $this->bullets = array_diff_key($this->bullets, $bulletsDestroyed);
+        $this->asteroids = array_diff_key($this->asteroids, $asteroidsDestroyed);
 
         // Create asteroids
         if ($this->time % $this->gameSettings["asteroidFrequency"] === 0)
         {
             $asteroid = Asteroid::createDefault(["x" => rand (0, $this->gameSettings["width"] - 50), "y"=> 0]);
             $this->asteroids[] = $asteroid;
-            $this->content[] = &$asteroid;
         }
     }
 
-    private function HandleMouseDownMoveRight($e) : void
+    private function HandleKeyDown($e) : void
     {
-         $this->rocket->changeDirection(["x" => 1,"y" => 0]);
+        if ($e->Key === "ArrowLeft")
+        {
+            $this->rocket->changeDirection(["x" => -2,"y" => 0]);
+        }
+        else if ($e->Key === "ArrowRight")
+        {
+            $this->rocket->changeDirection(["x" => 2,"y" => 0]);
+        }
+        else if ($e->Key === "f")
+        {
+            $bullet = Bullet::CreateDefault($this->rocket->GetPosition());
+            $this->bullets[] = $bullet;
+        }
+
+        \System\Console::WriteLine($e->Key);
     }
 
-    private function HandleMouseUp($e) : void
+    private function HandleKeyUp() : void
     {
          $this->rocket->changeDirection(["x" => 0,"y" => 0]);
     }
 
-    private function HandleMouseDownMoveLeft($e) : void
+    private function HandleMouseDownMoveRight() : void
     {
-         $this->rocket->changeDirection(["x" => -1,"y" => 0]);
+         $this->rocket->changeDirection(["x" => 2,"y" => 0]);
     }
 
-    private function HandleFire($e) : void
+    private function HandleMouseUp() : void
+    {
+         $this->rocket->changeDirection(["x" => 0,"y" => 0]);
+    }
+
+    private function HandleMouseDownMoveLeft() : void
+    {
+         $this->rocket->changeDirection(["x" => -2,"y" => 0]);
+    }
+
+    private function HandleFire() : void
     {
         $bullet = Bullet::CreateDefault($this->rocket->GetPosition());
         $this->bullets[] = $bullet;
-        $this["content"][] = &$bullet;
+    }
+
+    public function writeWithTreeBuilder($builder, int $startIndex) : int
+    {
+        $builder->OpenElement($startIndex++, $this->name);
+
+        $startIndex = $this["attributes"]->writeWithTreeBuilder($builder, $startIndex);
+
+        $startIndex = $this->rocket->writeWithTreeBuilder($builder, $startIndex);
+        $startIndex = $this->background->writeWithTreeBuilder($builder, $startIndex);
+
+        foreach ($this->content as $fragment)
+        {
+            $startIndex = $fragment->writeWithTreeBuilder($builder, $startIndex);
+        }
+
+        foreach ($this->asteroids as $fragment)
+        {
+            $startIndex = $fragment->writeWithTreeBuilder($builder, $startIndex);
+        }
+
+        foreach ($this->bullets as $fragment)
+        {
+            $startIndex = $fragment->writeWithTreeBuilder($builder, $startIndex);
+        }
+
+        $builder->CloseElement();
+
+        return $startIndex;
     }
 }
