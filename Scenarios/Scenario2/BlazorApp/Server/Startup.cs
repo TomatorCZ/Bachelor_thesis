@@ -52,13 +52,8 @@ namespace BlazorApp.Server
 
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.FullName, "Asteroids\\Css")),
-                RequestPath = "/Asteroids/css"
-            });
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.FullName, "Asteroids\\Js")),
-                RequestPath = "/Asteroids/js"
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.FullName, "Asteroids\\wwwroot")),
+                RequestPath = "/Asteroids"
             });
 
             app.UseRouting();

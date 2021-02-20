@@ -17,8 +17,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Css\styles.css" />
-	  <None Remove="Js\blazorUtilities.js" />
+	  <None Remove="wwwroot\css\styles.css" />
+	  <None Remove="wwwroot\js\blazorUtilities.js" />
 	</ItemGroup>
 
 	<ItemGroup>
