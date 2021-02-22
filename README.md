@@ -2,7 +2,9 @@
 
 ## Status
 
-20.2.2021 - Scenario 2 is functional and can be reviewed for first time.
+20.2.2021 - Scenario 2 is functional and can be reviewed for the first time.
+
+22.2.2021 - Scenario 1 was set and it is in progress. 
 
 ## Scenarios
 
