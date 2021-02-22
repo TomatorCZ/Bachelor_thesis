@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 
-namespace BlazorApp.Server
+namespace UploadFile.Server
 {
     public class Startup
     {
@@ -49,8 +49,8 @@ namespace BlazorApp.Server
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
-                endpoints.MapFallbackToFile("/{**.php}", "index.html");
             });
         }
     }

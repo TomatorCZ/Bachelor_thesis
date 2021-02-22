@@ -1,5 +1,9 @@
 # Overview
 
+## Status
+
+20.2.2021 - Scenario 2 is functional and can be reviewed for first time.
+
 ## Scenarios
 
 I made five possible scenarios, which demonstrates possible ways how to use PHP in Blazor. The first three scenarios are the point of interest. It will be determined later, if the next two scenarios are necessary to show.
