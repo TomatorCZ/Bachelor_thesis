@@ -6,6 +6,29 @@
 
 22.2.2021 - Scenario 1 was set and it is in progress. 
 
+## Project structure
+
+The project is divided into 3 folders
+
+- Playground - There are projects, which can be broken and they are used for experiments.
+- Scenarios - There are projects which represents individual scenarios. See the section <a href="#scenarios">Scenarios</a>.
+- Source - There is a project(s) which is shared by scenarios and are used for supporting to use PHP in Blazor.
+
+## API & Architecture
+
+To be determined.
+
+## TODO
+
+- [ ] Move [blazorUtilities.php](https://github.com/TomatorCZ/Bachelor_thesis/blob/main/Scenarios/Scenario2/Asteroids/Php/blazorUtilities.php) to Source.
+- [ ] [FEATURE] Make rendering, which is implemented by Tag class in [blazorUtilities.php](https://github.com/TomatorCZ/Bachelor_thesis/blob/main/Scenarios/Scenario2/Asteroids/Php/blazorUtilities.php) smarter.
+- [ ] [FEATURE] Think of a better way how to supply static files in Peachpie libraries.
+- [ ] Use user defined webpage(php scripts) without Router in Scenario.
+- [ ] Make Scenario 3.
+- [ ] Make Scenario 2.
+- [ ] Support for files.
+- [ ] [FEATURE] Lazy loading assemblies
+
 ## Scenarios
 
 I made five possible scenarios, which demonstrates possible ways how to use PHP in Blazor. The first three scenarios are the point of interest. It will be determined later, if the next two scenarios are necessary to show.
