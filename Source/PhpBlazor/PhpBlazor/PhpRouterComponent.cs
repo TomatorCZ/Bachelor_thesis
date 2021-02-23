@@ -7,16 +7,20 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Linq;
+using Microsoft.JSInterop;
 
 [assembly: PhpExtension]
 
 namespace PhpBlazor
 {
-    public class PhpRouterComponent : ComponentBase
+    public class PhpRouterComponent : ComponentBase, IDisposable
     {
         [Parameter] public Assembly[] Assemblies { get; set; }
         [Inject] public NavigationManager Navigation { get; set; }
-        
+        [Inject] public IJSRuntime JS {get;set;}
+
+
+        private DotNetObjectReference<BlazorContext> _objRef;
         private BlazorContext _context;
         private Context.ScriptInfo _script;
 
@@ -41,6 +45,11 @@ namespace PhpBlazor
             initializeSession();
         }
 
+        protected override void OnAfterRender(bool firstRender)
+        {
+            base.OnAfterRender(firstRender);
+        }
+
         private void initializeSession()
         {
             _context = BlazorContext.Create(this);
@@ -50,6 +59,10 @@ namespace PhpBlazor
                 if (assem != null)
                     BlazorContext.AddScriptReference(assem);
             }
+
+            //Init JS
+            _objRef = DotNetObjectReference.Create(_context);
+            ((JSInProcessRuntime)JS).InvokeVoid("php.setContext", _objRef);
 
             // Querry
             //https://chrissainty.com/working-with-query-strings-in-blazor/
@@ -65,8 +78,16 @@ namespace PhpBlazor
 
         private void handleLocationChanged(object sender, LocationChangedEventArgs e) 
         {
+            _objRef?.Dispose();
             initializeSession();
             StateHasChanged();
+        }
+
+        public void Changed() => StateHasChanged();
+
+        public void Dispose()
+        {
+            _objRef?.Dispose();
         }
     }
 }

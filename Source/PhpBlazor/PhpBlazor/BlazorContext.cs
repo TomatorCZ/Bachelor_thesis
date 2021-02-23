@@ -1,4 +1,5 @@
-﻿using Pchp.Core;
+﻿using Microsoft.JSInterop;
+using Pchp.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,6 +36,7 @@ namespace PhpBlazor
             return ctx;
         }
 
+        public void ComponentStateHadChanged() => _component.Changed();
 
         public void StartRender(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
         {
@@ -45,5 +47,15 @@ namespace PhpBlazor
         {
             Output.Dispose();
         }
+
+        [JSInvokable]
+        public void CallFromJS(string function, params object[] args) => Call(function, args);
+
+        public TResult CallToJS<TResult>(string function, params object[] args)
+        {
+            return ((IJSInProcessRuntime)_component.JS).Invoke<TResult>(function, args);
+        }
+
+        public void CallToJSVoid(string function, params object[] args) => ((IJSInProcessRuntime)_component.JS).InvokeVoid(function, args);
     }
 }

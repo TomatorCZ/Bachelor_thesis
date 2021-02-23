@@ -17,7 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="wwwroot\fileUtils.js" />
+	  <None Remove="wwwroot\MyUtils.js" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using System.IO;
+using System;
+using Microsoft.Extensions.FileProviders;
 
 namespace BlazorApp.Server
 {
@@ -44,6 +47,22 @@ namespace BlazorApp.Server
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
+
+            //TODO: Replace it with copy to wwwroot
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.FullName, "ImageProcessing\\wwwroot")),
+                RequestPath = "/ImageProcessing"
+            });
+
+            //TODO: Replace it with copy to wwwroot
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName, "Source\\PhpBlazor\\PhpBlazor\\wwwroot")),
+                RequestPath = "/PhpBlazor"
+            });
 
             app.UseRouting();
 

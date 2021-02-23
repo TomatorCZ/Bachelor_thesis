@@ -5,6 +5,7 @@ using System.Text;
 
 namespace PhpBlazor
 {
+    [PhpHidden]
     public static class ScriptInfoExtensions
     {
         public static PhpValue Evaluate(this Context.ScriptInfo script, BlazorContext ctx, Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
