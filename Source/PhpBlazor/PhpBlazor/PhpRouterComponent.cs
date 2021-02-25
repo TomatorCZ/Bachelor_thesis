@@ -59,7 +59,7 @@ namespace PhpBlazor
                 if (assem != null)
                     BlazorContext.AddScriptReference(assem);
             }
-
+            
             //Init JS
             _objRef = DotNetObjectReference.Create(_context);
             ((JSInProcessRuntime)JS).InvokeVoid("php.setContext", _objRef);

@@ -28,7 +28,7 @@ namespace PhpBlazor
             ctx.InitOutput(null);
             ctx.InitSuperglobals();
             ctx._component = component;
-
+            ctx.Output = Console.Out;
             //
             ctx.AutoloadFiles();
 
@@ -46,10 +46,14 @@ namespace PhpBlazor
         public void StopRender()
         {
             Output.Dispose();
+            Output = Console.Out;
         }
 
         [JSInvokable]
-        public void CallFromJS(string function, params object[] args) => Call(function, args);
+        public void CallFromJS(string function, params object[] args)
+        {
+            Call(function, PhpValue.FromClr(args));
+        }
 
         public TResult CallToJS<TResult>(string function, params object[] args)
         {

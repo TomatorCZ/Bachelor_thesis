@@ -12,7 +12,7 @@ namespace PhpBlazor
     {
         public static void StateHasChanged(Context ctx) => ((BlazorContext)ctx).ComponentStateHadChanged();
 
-
+        public static void CallJSVoid(Context ctx, string method, params object[] args) => ((BlazorContext)ctx).CallToJSVoid(method, args);
     }
 
     [PhpType]
@@ -21,7 +21,6 @@ namespace PhpBlazor
         public static TResult CallJS<TResult>(Context ctx, string method, params object[] args)
         {
             return ((BlazorContext)ctx).CallToJS<TResult>(method, args);
-        }
-        public static void CallJSVoid(Context ctx, string method, params object[] args) => ((BlazorContext)ctx).CallToJSVoid(method, args);
+        }   
     }
 }
