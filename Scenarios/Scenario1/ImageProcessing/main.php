@@ -8,8 +8,7 @@ function HandleImg(string $stringImage) : void
     $image = imagecreatefromstring($data);
    
     global $url;
-    Foo<string>("Ahoj");
-    //$url = CallJS<string>("createUrl", base64_encode($image));
+    //$url = PhpBlazor\GenericHelper::CallJS<string>("myUtils.createUrl", base64_encode($image));
 
     StateHasChanged();
 }
@@ -29,6 +28,10 @@ function HandleNew() : void
     StateHasChanged();
 }
 
+function getImage()
+{
+}
+
 ?>
 
 <h1>Image processing demo</h1>
@@ -36,7 +39,7 @@ function HandleNew() : void
     if(isset($image)) {
 ?>
 
-<img alt="The image" src="<?php echo $url;?>"/>
+<img alt="The image" src="<?php echo $res;?>"/>
 <button onclick="window.php.callCallback('HandleBlackAndWhite');">Black&White</button>
 <button onclick="window.myUtils.saveImg();">SaveAs</button>
 <button onclick="window.php.callCallback('HandleNew');">New</button>

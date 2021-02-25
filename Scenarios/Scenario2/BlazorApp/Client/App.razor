@@ -1,4 +1,4 @@
-<Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="new[] { typeof(Asteroids.AsteroidsComponent).Assembly }">
+<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true" AdditionalAssemblies="new[] { typeof(Asteroids.AsteroidsComponent).Assembly }">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
@@ -8,4 +8,3 @@
         </LayoutView>
     </NotFound>
 </Router>
-

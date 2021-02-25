@@ -12,15 +12,16 @@ namespace PhpBlazor
     {
         public static void StateHasChanged(Context ctx) => ((BlazorContext)ctx).ComponentStateHadChanged();
 
+
+    }
+
+    [PhpType]
+    public static class GenericHelper
+    {
         public static TResult CallJS<TResult>(Context ctx, string method, params object[] args)
         {
             return ((BlazorContext)ctx).CallToJS<TResult>(method, args);
         }
         public static void CallJSVoid(Context ctx, string method, params object[] args) => ((BlazorContext)ctx).CallToJSVoid(method, args);
-
-        public static void Foo<T>(T arg)
-        {
-            
-        }
     }
 }

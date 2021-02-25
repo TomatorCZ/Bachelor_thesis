@@ -1,8 +1,9 @@
 <Project Sdk="Peachpie.NET.Sdk/1.0.0-preview5">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
-		<SignAssembly>false</SignAssembly>
+		<OutputType>library</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 	</PropertyGroup>
 
 	<ItemGroup>

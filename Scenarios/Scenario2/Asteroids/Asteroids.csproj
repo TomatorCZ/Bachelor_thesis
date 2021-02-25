@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Peachpie.NET.Sdk/1.0.0-preview5">
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFramework>netstandard2.1</TargetFramework>
+		<TargetFramework>net5.0</TargetFramework>
+		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.0-preview3.20168.3" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.0-preview3.20168.3" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.0-preview3.20168.3" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview3.20168.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.3" PrivateAssets="all" />
+		<PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -23,7 +23,7 @@
 
 	<ItemGroup>
 	  <Reference Include="PhpBlazor">
-	    <HintPath>..\..\..\Source\PhpBlazor\PhpBlazor\bin\Debug\netstandard2.1\PhpBlazor.dll</HintPath>
+	    <HintPath>..\..\..\Source\PhpBlazor\PhpBlazor\bin\Debug\net5.0\PhpBlazor.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 

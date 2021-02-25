@@ -28,6 +28,7 @@ To be determined.
 - [ ] Make Scenario 2.
 - [ ] Support for files.
 - [ ] [FEATURE] Lazy loading assemblies
+- [x] Update to .net5.0
 
 ## Scenarios
 
