@@ -25,7 +25,8 @@ To be determined.
 - [ ] [FEATURE] Think of a better way how to supply static files in Peachpie libraries.
 - [ ] Use user defined webpage(php scripts) without Router in Scenario.
 - [ ] Make Scenario 3.
-- [ ] Make Scenario 2.
+- [ ] Make Scenario 1(File up/downloading...).
+- [ ] [FEATURE] Make file up/downloading as streams
 - [ ] Support for files.
 - [ ] [FEATURE] Lazy loading assemblies
 - [x] Update to .net5.0

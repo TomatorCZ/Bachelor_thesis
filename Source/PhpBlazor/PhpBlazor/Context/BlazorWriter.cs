@@ -11,20 +11,32 @@ namespace PhpBlazor
         private Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder _builder;
         private int _counter;
 
-        public BlazorWriter(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) : base()
+        #region Create
+        private BlazorWriter(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) : base()
         {
             _builder = builder;
             _counter = 0;
         }
+
+        public static BlazorWriter CreateConsole()
+        {
+            return new BlazorWriter(null);
+        }
+
+        public static BlazorWriter CreateTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
+        {
+            return new BlazorWriter(builder);
+        }
+        #endregion
 
         public override Encoding Encoding => Encoding.UTF8;
 
         public override void Write(string value)
         {
             if (_builder == null)
-                throw new NotSupportedException();
-
-            _builder.AddMarkupContent(_counter++, value);
+                Console.Write(value);
+            else
+                _builder.AddMarkupContent(_counter++, value);
         }
 
         protected override void Dispose(bool disposing)

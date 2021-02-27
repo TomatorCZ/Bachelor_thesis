@@ -32,7 +32,5 @@ namespace PhpBlazor
         public void Start() => timer.Start();
 
         public void Stop() => timer.Stop();
-
-
     }
 }

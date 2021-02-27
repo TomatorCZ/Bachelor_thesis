@@ -48,6 +48,7 @@ namespace PhpBlazor
         protected override void OnAfterRender(bool firstRender)
         {
             base.OnAfterRender(firstRender);
+            _context.CallAfterRender();
         }
 
         private void initializeSession()
@@ -62,7 +63,7 @@ namespace PhpBlazor
             
             //Init JS
             _objRef = DotNetObjectReference.Create(_context);
-            ((JSInProcessRuntime)JS).InvokeVoid("php.setContext", _objRef);
+            ((JSInProcessRuntime)JS).InvokeVoid("php.init", _objRef);
 
             // Querry
             //https://chrissainty.com/working-with-query-strings-in-blazor/

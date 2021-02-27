@@ -1,0 +1,51 @@
+﻿@page "/"
+@inject IJSRuntime js
+
+<input id="input1" type='file' onchange="window.example.callCS('HandleOnChange');" />
+<img id="img1" alt="Image" src=""/>
+
+<button onclick="window.example.callCS('Foo','A');" >Foo</button>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ((JSInProcessRuntime)js).InvokeVoid("window.example.init", DotNetObjectReference.Create(this));
+    }
+
+    [JSInvokable]
+    public void HandleOnClick(string msg)
+    {
+        Console.WriteLine($"Click: {msg}");
+    }
+
+    [JSInvokable]
+    public void HandleOnChange()
+    {
+        BrowserFile[] files = ((JSInProcessRuntime)js).Invoke<BrowserFile[]>("window.example.getFilesInfo", "input1");
+
+        Console.WriteLine("HandleOnChange files: ");
+        foreach (var item in files)
+            Console.WriteLine($"File: id:{item.id}, name:{item.name}, size:{item.size}, type:{item.type}");
+
+        Console.WriteLine("Getting data for id 1...");
+        ((JSInProcessRuntime)js).InvokeVoid("window.example.getData", files[0].id, "BytesCallback");
+    }
+
+    [JSInvokable]
+    public void BytesCallback(string data)
+    {
+
+        Console.WriteLine("BytesCallback data: ");
+        Console.WriteLine(data);
+        ((JSInProcessRuntime)js).InvokeVoid("window.example.loadImg");
+        StateHasChanged();
+    }
+
+    [JSInvokable]
+    public void Foo(object arg)
+    {
+        Console.WriteLine($"Foo: {(string)arg}");
+    }
+}
