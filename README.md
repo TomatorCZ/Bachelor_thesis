@@ -58,7 +58,8 @@ Demo will use PHP library (gd2 graphics) to process an image, which will be uplo
 #### Known issues
 
 - Image uploading is slow due to converting whole file into base64 string. Can be improved by streams...
-- Calling custom js functions is limited due to strong type of Blazor(params object[] doesn't work properly) 
+- Calling custom js functions is limited due to strong type of Blazor(params object[] doesn't work properly)
+- Unable to insert url with builder as addMarkUp()...
 
 ### Scenario 2
 
