@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PhpBlazor
 {
-    public static class Interop
+    public static class InteropUtils
     {
         public static void CallJsVoid(Context ctx, string method, params object[] args) => ((BlazorContext)ctx).CallJsVoid(method, args);
 

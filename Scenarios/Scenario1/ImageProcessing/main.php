@@ -2,7 +2,7 @@
 function encodeImage($img)
 {
     ob_start();
-    imagepng($img);
+    imagejpeg($img, NULL, 100);
     $bin = ob_get_clean();
     return base64_encode($bin);
 }
@@ -12,16 +12,11 @@ function HandleData($data)
     global $image, $content, $url;
 
     $tokens = split(',', $data);
-    $content = $tokens[0];
+    $content = "image/jpeg";
     $image = imagecreatefromstring(base64_decode($tokens[1]));
-    if (!$image)
-    {
-        echo "Image loading failed\n";
-    }
 
     $b64 = encodeImage($image);
-
-    $url = \PhpBlazor\GenericHelper::CallJs<string>('window.php.fileUtils.createUrlObject',  ToString($b64), ToString($tokens[0]));
+    $url = CreateUrl(ToString($b64), ToString($content));
 
     CallAfterRender(AfterRender);
     StateHasChanged();
@@ -29,16 +24,15 @@ function HandleData($data)
 
 function HandleOnChange()
 {
-    $files = \PhpBlazor\GenericHelper::CallJsArray<\PhpBlazor\BrowserFile>('window.php.fileUtils.getFilesInfo', 'input1');
-
-    CallJsCustomVoid('window.php.fileUtils.getData', $files[0]->id, 'HandleData');
+    $files = GetFilesInfo('input1');
+    GetData($files[0]->id, 'HandleData');
 }
 
 function HandleOnClick()
 {
     global $image, $content, $url;
     imagefilter($image, IMG_FILTER_GRAYSCALE);
-    $url = \PhpBlazor\GenericHelper::CallJs<string>('window.php.fileUtils.createUrlObject',  ToString(encodeImage($image)), ToString($content));
+    $url = CreateUrl(ToString(encodeImage($image)), ToString($content));
     
     CallAfterRender(AfterRender);
     StateHasChanged();
@@ -57,7 +51,7 @@ function HandleSave()
 
     $b64 = encodeImage($image);
 
-    CallJsVoid('window.php.fileUtils.downloadData',  ToString($b64), ToString($content));
+    DownloadData(ToString($b64), ToString($content), "myImg.jpg");
 }
 
 function AfterRender()
@@ -78,6 +72,6 @@ function AfterRender()
 <?php } else { ?>
 
 <label for="picture">Choose a picture:</label>
-<input id="input1" type="file" id="picture" name="picture" accept="image/png, image/jpeg" onchange="window.php.interop.callPhpVoid('HandleOnChange');">
+<input id="input1" type="file" name="picture" accept="image/jpeg" onchange="window.php.interop.callPhpVoid('HandleOnChange');">
 
 <?php }

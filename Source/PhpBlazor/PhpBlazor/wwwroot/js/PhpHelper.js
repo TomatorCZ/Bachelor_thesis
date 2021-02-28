@@ -71,10 +71,12 @@ window.php.fileUtils = {
         document.getElementById(elementId).setAttribute(attribute, value);
     },
 
-    downloadData: function (data, contentType)
+    downloadData: function (data, contentType, filename)
     {
+        console.log(filename);
         var a = document.createElement('a');
         a.href = this.createUrlObject(data, contentType);
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);

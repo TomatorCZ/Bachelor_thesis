@@ -36,7 +36,7 @@ namespace PhpBlazor
         protected override void OnInitialized()
 		{
             base.OnInitialized();
-            Navigation.LocationChanged += handleLocationChanged;
+            //Navigation.LocationChanged += handleLocationChanged;
         }
 
         protected override void OnParametersSet()
