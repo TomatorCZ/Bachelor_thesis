@@ -6,6 +6,8 @@
 
 22.2.2021 - Scenario 1 was set and it is in progress. 
 
+28.2.2021 - Scenario 1 is functional and can be reviewed for the first time
+
 ## Project structure
 
 The project is divided into 3 folders
@@ -25,9 +27,9 @@ To be determined.
 - [ ] [FEATURE] Think of a better way how to supply static files in Peachpie libraries.
 - [ ] Use user defined webpage(php scripts) without Router in Scenario.
 - [ ] Make Scenario 3.
-- [ ] Make Scenario 1(File up/downloading...).
+- [x] Make Scenario 1(File up/downloading...).
 - [ ] [FEATURE] Make file up/downloading as streams
-- [ ] Support for files.
+- [x] Support for files.
 - [ ] [FEATURE] Lazy loading assemblies
 - [x] Update to .net5.0
 
@@ -53,9 +55,10 @@ Purpose of this scenario is to provide a simple and fast way, how to write a par
 
 Demo will use PHP library (gd2 graphics) to process an image, which will be uploaded by client.
 
-To Solve:
+#### Known issues
 
-- Parameters in URL.
+- Image uploading is slow due to converting whole file into base64 string. Can be improved by streams...
+- Calling custom js functions is limited due to strong type of Blazor(params object[] doesn't work properly) 
 
 ### Scenario 2
 
