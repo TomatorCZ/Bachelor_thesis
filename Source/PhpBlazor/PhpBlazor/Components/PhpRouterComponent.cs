@@ -16,6 +16,7 @@ namespace PhpBlazor
     public class PhpRouterComponent : ComponentBase, IDisposable
     {
         [Parameter] public Assembly[] Assemblies { get; set; }
+        [Parameter] public string ScriptName { get; set; }
         [Inject] public NavigationManager Navigation { get; set; }
         [Inject] public IJSRuntime JS {get;set;}
 
@@ -73,8 +74,8 @@ namespace PhpBlazor
                 _context.Get.Add(item.Key, item.Value);
 
             // Script name
-            string scriptName = uri.Segments.LastOrDefault();
-            _script = Context.TryGetDeclaredScript($"{scriptName}.php");
+            string scriptName = ScriptName;// uri.Segments.LastOrDefault();
+            _script = Context.TryGetDeclaredScript(scriptName);
         }
 
         private void handleLocationChanged(object sender, LocationChangedEventArgs e) 
