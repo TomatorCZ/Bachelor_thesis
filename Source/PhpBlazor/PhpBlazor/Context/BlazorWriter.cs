@@ -6,16 +6,16 @@ using System.Text;
 
 namespace PhpBlazor
 {
-    class BlazorWriter : TextWriter
+    public class BlazorWriter : TextWriter
     {
         private Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder _builder;
-        private int _counter;
+        private StringBuilder _buffer;
 
         #region Create
         private BlazorWriter(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) : base()
         {
             _builder = builder;
-            _counter = 0;
+            _buffer = new StringBuilder();
         }
 
         public static BlazorWriter CreateConsole()
@@ -29,6 +29,7 @@ namespace PhpBlazor
         }
         #endregion
 
+        #region TextWriter
         public override Encoding Encoding => Encoding.UTF8;
 
         public override void Write(string value)
@@ -36,13 +37,25 @@ namespace PhpBlazor
             if (_builder == null)
                 Console.Write(value);
             else
-                _builder.AddMarkupContent(_counter++, value);
+                _buffer.Append(value);
         }
+
 
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
             _builder = null;
         }
+
+        public override void Flush()
+        {
+            base.Flush();
+            if (_buffer != null && _builder != null && _buffer.Length > 0)
+            {
+                _builder.AddMarkupContent(0, _buffer.ToString());
+                _buffer.Clear();
+            }
+        }
+        #endregion
     }
 }

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp.Shared", "BlazorA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageProcessing", "ImageProcessing\ImageProcessing.csproj", "{0F67C8FD-B2E1-4459-B5F5-816B9197D22E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhpBlazor", "..\..\Source\PhpBlazor\PhpBlazor\PhpBlazor.csproj", "{8776F262-5ED7-4D9C-A3D0-D783943A17CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{0F67C8FD-B2E1-4459-B5F5-816B9197D22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F67C8FD-B2E1-4459-B5F5-816B9197D22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F67C8FD-B2E1-4459-B5F5-816B9197D22E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8776F262-5ED7-4D9C-A3D0-D783943A17CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8776F262-5ED7-4D9C-A3D0-D783943A17CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8776F262-5ED7-4D9C-A3D0-D783943A17CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8776F262-5ED7-4D9C-A3D0-D783943A17CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

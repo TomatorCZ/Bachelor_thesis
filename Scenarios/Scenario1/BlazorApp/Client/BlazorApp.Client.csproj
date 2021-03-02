@@ -12,14 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Source\PhpBlazor\PhpBlazor\PhpBlazor.csproj" />
     <ProjectReference Include="..\..\ImageProcessing\ImageProcessing.csproj" />
     <ProjectReference Include="..\Shared\BlazorApp.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="PhpBlazor">
-      <HintPath>..\..\..\..\Source\PhpBlazor\PhpBlazor\bin\Debug\net5.0\PhpBlazor.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

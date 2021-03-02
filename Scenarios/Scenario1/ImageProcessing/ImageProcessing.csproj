@@ -22,9 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="PhpBlazor">
-			<HintPath>..\..\..\Source\PhpBlazor\PhpBlazor\bin\Debug\net5.0\PhpBlazor.dll</HintPath>
-		</Reference>
+	  <ProjectReference Include="..\..\..\Source\PhpBlazor\PhpBlazor\PhpBlazor.csproj" />
 	</ItemGroup>
 
 </Project>

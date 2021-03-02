@@ -1,77 +1,18 @@
-﻿<?php
-function encodeImage($img)
-{
-    ob_start();
-    imagejpeg($img, NULL, 100);
-    $bin = ob_get_clean();
-    return base64_encode($bin);
-}
-
-function HandleData($data)
-{
-    global $image, $content, $url;
-
-    $tokens = split(',', $data);
-    $content = "image/jpeg";
-    $image = imagecreatefromstring(base64_decode($tokens[1]));
-
-    $b64 = encodeImage($image);
-    $url = CreateUrl(ToString($b64), ToString($content));
-
-    CallAfterRender(AfterRender);
-    StateHasChanged();
-}
-
-function HandleOnChange()
-{
-    $files = GetFilesInfo('input1');
-    GetData($files[0]->id, 'HandleData');
-}
-
-function HandleOnClick()
-{
-    global $image, $content, $url;
-    imagefilter($image, IMG_FILTER_GRAYSCALE);
-    $url = CreateUrl(ToString(encodeImage($image)), ToString($content));
-    
-    CallAfterRender(AfterRender);
-    StateHasChanged();
-}
-
-function HandleNew()
-{
-    unset($GLOBALS[image]);
-
-    StateHasChanged();
-}
-
-function HandleSave() 
-{
-    global $image, $content, $url;
-
-    $b64 = encodeImage($image);
-
-    DownloadData(ToString($b64), ToString($content), "myImg.jpg");
-}
-
-function AfterRender()
-{
-    global $url;
-    CallJsVoid('window.php.fileUtils.setUrlTo', "img1", "src",  ToString($url));
-}
-?>
-
-<h1>Image processing demo</h1>
-<?php if (isset($image)) { ?>
-<img id="img1" alt="picture" src=""></img>
-
-<button onclick="window.php.interop.callPhpVoid('HandleOnClick');">Black&White</button>
-<button onclick="window.php.interop.callPhpVoid('HandleSave');">Save</button>
-<button onclick="window.php.interop.callPhpVoid('HandleNew');">New</button>
-
-<?php } else { ?>
-
-<label for="picture">Choose a picture:</label>
-<input id="input1" type="file" name="picture" accept="image/jpeg" onchange="window.php.interop.callPhpVoid('HandleOnChange');">
-
-<?php }
+﻿<h1>Hello from php!</h1>
+<p>Form example 1</p>
+<form id="form1" action="/form1" method="get">
+	<input type="text" name="text1"/>
+	<input type="text" name="text2"/>
+	<input type="submit" value="Submit"/>
+</form>
+<p>Form example 2</p>
+<form id="form2" action="/form2" method="post">
+	<input type="text" name="text1"/>
+	<input type="text" name="text2"/>
+	<input type="submit" value="Submit"/>
+</form>
+<p>Form example 3</p>
+	<form id="form3" action="/form3" method="get">
+	<input type="file" name="file1"/>
+	<input type="submit" value="Submit"/>
+</form>

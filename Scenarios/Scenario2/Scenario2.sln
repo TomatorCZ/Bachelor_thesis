@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp.Shared", "BlazorA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asteroids", "Asteroids\Asteroids.csproj", "{613010D7-FCD6-4627-8F83-473A21B23632}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhpBlazor", "..\..\Source\PhpBlazor\PhpBlazor\PhpBlazor.csproj", "{9A6E1B1C-4844-47D5-92CC-DE02AF166488}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{613010D7-FCD6-4627-8F83-473A21B23632}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{613010D7-FCD6-4627-8F83-473A21B23632}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{613010D7-FCD6-4627-8F83-473A21B23632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A6E1B1C-4844-47D5-92CC-DE02AF166488}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A6E1B1C-4844-47D5-92CC-DE02AF166488}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A6E1B1C-4844-47D5-92CC-DE02AF166488}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A6E1B1C-4844-47D5-92CC-DE02AF166488}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

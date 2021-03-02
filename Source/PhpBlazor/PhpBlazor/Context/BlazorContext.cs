@@ -11,12 +11,20 @@ namespace PhpBlazor
 {
     public class BlazorContext : Context
     {
-        private PhpRouterComponent _component;
-        private IPhpCallable _callAfterRender;
+        private DotNetObjectReference<BlazorContext> _objRef;
+        private PhpScript _component;
+        private IPhpCallable _afterRender;
 
-        protected BlazorContext(IServiceProvider services) : base(services){}
+        #region Create
+        protected BlazorContext(IServiceProvider services) : base(services)
+        {
+            Output = Console.Out;
+            _objRef = DotNetObjectReference.Create<BlazorContext>(this);
+        }
 
-        public static BlazorContext Create(PhpRouterComponent component)
+        public static BlazorContext Create() => Create(null);
+
+        public static BlazorContext Create(PhpScript component)
         {
             var ctx = new BlazorContext(null)
             {
@@ -28,13 +36,16 @@ namespace PhpBlazor
             ctx.InitOutput(null);
             ctx.InitSuperglobals();
             ctx._component = component;
-            ctx.Output = Console.Out;
+            
             //
             ctx.AutoloadFiles();
 
             //
             return ctx;
         }
+        #endregion
+
+        public void SetCurrentComponent(PhpScript component) => _component = component;
 
         #region Rendering
         public void ComponentStateHadChanged() => _component.Changed();
@@ -46,40 +57,34 @@ namespace PhpBlazor
 
         public void StopRender()
         {
+            Output.Flush();
             Output.Dispose();
             Output = BlazorWriter.CreateConsole();
         }
 
         public void CallAfterRender(IPhpCallable function)
         {
-            _callAfterRender = function;
+            _afterRender = function;
         }
 
-        public void CallAfterRender()
+        public void OnAfterRender() 
         {
-            _callAfterRender?.Invoke(this);
-            _callAfterRender = null;
+            _afterRender?.Invoke(this);
+            _afterRender = null;
         }
         #endregion
 
+        public override void Dispose()
+        {
+            base.Dispose();
+            _objRef?.Dispose();
+        }
+
         #region JSInterop
-        [JSInvokable("CallPhpVoid")]
-        public void CallPhpVoid(string function) => Call(function);
+        //TODO: CallPhpFromJS
+        public void CallJsVoid(string function, params object[] args) =>((IJSInProcessRuntime)_component.Js).InvokeVoid(function, args);
 
-        [JSInvokable("CallPhpString")]
-        public void CallPhpVoid(string function, string data) => Call(function, data);
-
-        public void CallJsVoid(string function, params object[] args)
-        {
-            ((IJSInProcessRuntime)_component.JS).InvokeVoid(function, args);
-        }
-
-        public void CallJsVoid(string function, params int[] args)
-        {
-            ((IJSInProcessRuntime)_component.JS).InvokeVoid(function, args);
-        }
-
-        public TResult CallJs<TResult>(string function, params object[] args) => ((IJSInProcessRuntime)_component.JS).Invoke<TResult>(function, args);
+        public TResult CallJs<TResult>(string function, params object[] args) => ((IJSInProcessRuntime)_component.Js).Invoke<TResult>(function, args);
         #endregion
     }
 }
