@@ -8,9 +8,9 @@ window.php.forms = {
     turnFormToClientSide: function (form) {
         form.addEventListener("submit", (event) => {
             //TODO: save forms
-            //TODO: navigate to action
 
-            event.preventDefault();
+            window.php.internal.navigateTo(event.target.getAttribute("action"));
+            event.stopPropagation()
         });
     },
 
@@ -21,4 +21,14 @@ window.php.forms = {
             this.turnFormToClientSide(forms[i]);
         }
     }
-}
+};
+
+window.php.internal = {
+    navigateTo: function (url) {
+        var a = document.createElement('a');
+        a.href = url;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+};

@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Pchp.Core;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace PhpBlazor
         private DotNetObjectReference<BlazorContext> _objRef;
         private PhpScript _component;
         private IPhpCallable _afterRender;
+        private IJSRuntime _js;
 
         #region Create
         protected BlazorContext(IServiceProvider services) : base(services)
@@ -36,6 +38,7 @@ namespace PhpBlazor
             ctx.InitOutput(null);
             ctx.InitSuperglobals();
             ctx._component = component;
+            ctx._js = component.Js;
             
             //
             ctx.AutoloadFiles();
@@ -46,6 +49,7 @@ namespace PhpBlazor
         #endregion
 
         public void SetCurrentComponent(PhpScript component) => _component = component;
+        public void SetJs(IJSRuntime js) => _js = js;
 
         #region Rendering
         public void ComponentStateHadChanged() => _component.Changed();
@@ -82,9 +86,9 @@ namespace PhpBlazor
 
         #region JSInterop
         //TODO: CallPhpFromJS
-        public void CallJsVoid(string function, params object[] args) =>((IJSInProcessRuntime)_component.Js).InvokeVoid(function, args);
+        public void CallJsVoid(string function, params object[] args) => (_js as IJSInProcessRuntime).InvokeVoid(function, args);
 
-        public TResult CallJs<TResult>(string function, params object[] args) => ((IJSInProcessRuntime)_component.Js).Invoke<TResult>(function, args);
+        public TResult CallJs<TResult>(string function, params object[] args) => (_js as IJSInProcessRuntime).Invoke<TResult>(function, args);
         #endregion
     }
 }
