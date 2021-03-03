@@ -72,7 +72,17 @@ namespace PhpBlazor
             }
         }
 
-        public void SetFiles() => throw new NotImplementedException();
+        public void SetFiles()
+        {
+            if (CallJs<bool>(JsResource.IsFiles))
+            {
+                var files = CallJs<FormFile[]>(JsResource.getFiles);
+                foreach (var file in files)
+                {
+                    Files.Add(file.fieldName, file);
+                }
+            }
+        }
 
         #region Rendering
         public void ComponentStateHadChanged() => _component.Changed();

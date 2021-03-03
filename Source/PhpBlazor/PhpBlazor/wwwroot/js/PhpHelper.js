@@ -80,7 +80,17 @@ window.php.forms = {
     },
 
     getFilesData: function () {
+        let result = [];
 
+        for (var key in this.filesData) {
+            if (this.filesData.hasOwnProperty(key)) {
+                let struct = window.php.files.createStructure(this.filesData[key])
+                struct["fieldName"] = key;
+                result.push(struct);
+            }
+        }
+
+        return result;
     }
 };
 
@@ -92,8 +102,18 @@ window.php.files = {
     addFile: function (file) {
         this.files[this.nextFileId] = file;
         return this.nextFileId++;
+    },
+
+    createStructure: function (fileId) {
+        let file = this.files[fileId];
+        return {
+            "id": fileId,
+            "name": file.name,
+            "size": file.size,
+            "type": file.type
+        };
     }
-}
+};
 
 window.php.internal = {
     navigateTo: function (url) {

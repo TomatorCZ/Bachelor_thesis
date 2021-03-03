@@ -27,10 +27,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Include="wwwroot\ComponentUtils.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\..\..\Source\PhpBlazor\PhpBlazor\PhpBlazor.csproj" />
 	</ItemGroup>
 
