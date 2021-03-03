@@ -32,7 +32,7 @@ window.php.forms = {
             this.processFormsData(formData, form.getAttribute("method"));
 
             if (form.getAttribute("method") == "get") {
-                if (this.getData != undefined)
+                if (Object.keys(this.getData).length > 0)
                     url = url + "?" + new URLSearchParams(this.getData);;
             }
             else if (form.getAttribute("method") == "post") {
@@ -97,6 +97,8 @@ window.php.forms = {
 window.php.files = {
     files: {},
 
+    urlObjects: {},
+
     nextFileId: 0,
 
     addFile: function (file) {
@@ -126,7 +128,18 @@ window.php.files = {
 
             reader.readAsArrayBuffer(this.files[fileId]);
         });
-    }
+    },
+
+    createUrlObject: function (fileId) {
+        if (!(fileId in this.urlObjects))
+            this.urlObjects[fileId] = URL.createObjectURL(this.files[fileId]); 
+
+        return this.urlObjects[fileId];
+    },
+
+    downloadFile: function (fileId) { },
+
+    createFile: function (data, type, name) { }
 };
 
 window.php.internal = {

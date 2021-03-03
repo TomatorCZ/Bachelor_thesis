@@ -1,28 +1,48 @@
-﻿<h1>Form3</h1>
-<p>Data:</p>
-
+﻿<h1>Graph Inspector</h1>
 <?php
-	function HandleFileData($data, $id)
+	foreach($_GET as $key => $value)
 	{
-		global $file;
-		$file = $data;
-		StateHasChanged();
-	}
-
-	if (isset($file))
-	{
-		foreach($_FILES as $key => $value)
-		{
-			echo "<p>" . "Field name: " . $value->fieldName . "</p>";
-			echo "<p>" . "Name: " . $value->name . "</p>";
-			echo "<p>" . "Size: " . $value->size . "</p>";
-			echo "<p>" . "Type: " . $value->type . "</p>";
-			echo "<p>" . "Id: " . $value->id . "</p>";
-			echo "<p>" .$file . "</p>"; 
-		}
-	}
-	else
-	{
-		GetBrowserFileContent($_FILES["file1"]->id, "HandleFileData");
+		echo "<p>$key => $value</p>";
 	}
 ?>
+
+<?php if ($_GET["action"] === "random") { ?>
+
+<form action="form3" method="get">
+	<select name="function">
+        <option value="const" selected>Constant</option>
+        <option value="linear">Linear</option>
+        <option value="expo">Exponential</option>
+        <option value="quad">Quadratic</option>
+    </select>
+    <input name="start" type="number" min="0"/>
+    <input name="step" type="number" min="1"/>
+    <input name="count" type="number" min="1"/>
+    <input type="hidden" name="action" value="look"/>
+    <input type="submit" value="Submit"/>
+</form>
+
+<?php } elseif ($_GET["action"] === "fileInput") { ?>
+
+<form action="form3" method="get">
+	<input type="file" name="file1"/>
+    <input type="hidden" name="action" value="look"/>
+	<input type="submit" value="Submit"/>
+</form>
+
+<?php } elseif ($_GET["action"] === "look") { ?>
+
+
+
+<?php } else { ?>
+
+<form id="form1" action="form3" method="get">
+    <input name="action" type="radio" value="random"/>
+    <input name="action" type="radio" value="fileInput"/>
+    <input type="submit" value="Submit"/>
+</form>
+
+
+
+
+<?php } ?>

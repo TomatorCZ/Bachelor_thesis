@@ -30,5 +30,10 @@ namespace PhpBlazor
 
             Task.AsTask().ContinueWith((result) => callback.Invoke(ctx, new PhpString(result.Result), PhpValue.Create(id)));
         }
+
+        public static string CreateUrlObject(Context ctx, int id)
+        {
+            return GenericHelper.CallJs<string>(ctx, JsResource.createUrlObject, id);
+        }
     }
 }

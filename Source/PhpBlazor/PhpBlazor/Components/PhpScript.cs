@@ -39,6 +39,13 @@ namespace PhpBlazor
         private bool _sharedContext = true;
 
         #region ComponentBase
+        protected override Task OnInitializedAsync()
+        {
+            base.OnInitializedAsync();
+            Navigation.LocationChanged += OnNavigationChanged;
+            return Task.CompletedTask;
+        }
+
         public override Task SetParametersAsync(ParameterView parameters)
         {
             base.SetParametersAsync(parameters);
@@ -70,14 +77,25 @@ namespace PhpBlazor
 
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
         {
-            Console.WriteLine("Rendering");
             base.BuildRenderTree(builder);
             if (_script.IsValid)
                 _script.Evaluate(Context, builder);
             else
-                Console.WriteLine($"Script {_script} is invalid");
+                Console.WriteLine($"Script {_script.Path} is invalid");
         }
         #endregion
+
+        private void OnNavigationChanged(object sender, LocationChangedEventArgs args)
+        {
+            var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+
+            if (QuerryPart == null)
+                QuerryPart = QueryHelpers.ParseQuery(uri.Query);
+
+            Context.SetGet(QuerryPart);
+            Context.SetPost();
+            Context.SetFiles();
+        }
 
         private void initializeSession()
         {
@@ -119,6 +137,7 @@ namespace PhpBlazor
             {
                 Context?.Dispose();
             }
+            Navigation.LocationChanged -= OnNavigationChanged;
         }
         #endregion
     }

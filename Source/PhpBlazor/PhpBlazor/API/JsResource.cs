@@ -15,5 +15,6 @@ namespace PhpBlazor
         public static readonly string getPost = "window.php.forms.getPostData";
         public static readonly string getFiles = "window.php.forms.getFilesData";
         public static readonly string getFileContentAsBase64 = "window.php.files.readAllFileAsBase64";
+        public static readonly string createUrlObject = "window.php.files.createUrlObject";
     }
 }
