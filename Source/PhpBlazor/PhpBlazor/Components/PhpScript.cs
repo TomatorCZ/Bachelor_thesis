@@ -70,6 +70,7 @@ namespace PhpBlazor
 
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
         {
+            Console.WriteLine("Rendering");
             base.BuildRenderTree(builder);
             if (_script.IsValid)
                 _script.Evaluate(Context, builder);
@@ -106,7 +107,10 @@ namespace PhpBlazor
             _script = BlazorContext.TryGetDeclaredScript(Script);
         }
 
-        public void Changed() => StateHasChanged();
+        public void Changed()
+        {
+            StateHasChanged();
+        }
 
         #region IDisposable
         public void Dispose()

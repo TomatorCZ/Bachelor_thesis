@@ -85,7 +85,10 @@ namespace PhpBlazor
         }
 
         #region Rendering
-        public void ComponentStateHadChanged() => _component.Changed();
+        public void ComponentStateHadChanged()
+        {
+            _component.Changed();
+        }
 
         public void StartRender(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
         {
@@ -122,6 +125,10 @@ namespace PhpBlazor
         public void CallJsVoid(string function, params object[] args) => (_js as IJSInProcessRuntime).InvokeVoid(function, args);
 
         public TResult CallJs<TResult>(string function, params object[] args) => (_js as IJSInProcessRuntime).Invoke<TResult>(function, args);
+
+        public void CallJsVoidAsync(string function, params object[] args) => _js.InvokeVoidAsync(function, args);
+
+        public ValueTask<TResult> CallJsAsync<TResult>(string function, params object[] args) => _js.InvokeAsync<TResult>(function, args);
         #endregion
     }
 }

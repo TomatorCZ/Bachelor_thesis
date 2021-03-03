@@ -11,9 +11,8 @@ namespace PhpBlazor
     {
         public static void CallJsVoid(Context ctx, string method, params object[] args) => ((BlazorContext)ctx).CallJsVoid(method, args);
 
-        public static void CallJsCustomVoid(Context ctx, string method, int arg1, string arg2) => ((BlazorContext)ctx).CallJsVoid(method, arg1, arg2);
+        public static void CallJsVoidAsync(Context ctx, string method, params object[] args) => ((BlazorContext)ctx).CallJsVoid(method, args);
 
-        public static string ToString(string value) => value;
     }
 
     [PhpType]
@@ -24,9 +23,6 @@ namespace PhpBlazor
             return ((BlazorContext)ctx).CallJs<TResult>(method, args);
         }
 
-        public static PhpArray CallJsArray<TResult>(Context ctx, string method, params object[] args)
-        {
-            return new PhpArray(((BlazorContext)ctx).CallJs<TResult[]>(method, args));
-        }
+        public static ValueTask<TResult> CallJsAsync<TResult>(Context ctx, string method, params object[] args) => ((BlazorContext)ctx).CallJsAsync<TResult>(method, args);
     }
 }

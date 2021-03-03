@@ -2,8 +2,27 @@
 <p>Data:</p>
 
 <?php
-	foreach($_FILES as $key => $value)
+	function HandleFileData($data, $id)
 	{
-		print_r($value);
+		global $file;
+		$file = $data;
+		StateHasChanged();
+	}
+
+	if (isset($file))
+	{
+		foreach($_FILES as $key => $value)
+		{
+			echo "<p>" . "Field name: " . $value->fieldName . "</p>";
+			echo "<p>" . "Name: " . $value->name . "</p>";
+			echo "<p>" . "Size: " . $value->size . "</p>";
+			echo "<p>" . "Type: " . $value->type . "</p>";
+			echo "<p>" . "Id: " . $value->id . "</p>";
+			echo "<p>" .$file . "</p>"; 
+		}
+	}
+	else
+	{
+		GetBrowserFileContent($_FILES["file1"]->id, "HandleFileData");
 	}
 ?>

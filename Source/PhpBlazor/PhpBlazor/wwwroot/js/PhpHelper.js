@@ -112,6 +112,20 @@ window.php.files = {
             "size": file.size,
             "type": file.type
         };
+    },
+
+    readAllFileAsBase64: function (fileId) {
+        return new Promise((resolve, reject) => {
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                resolve(window.php.internal.arrayBufferToBase64(e.target.result));
+            };
+
+            reader.onerror = reject;
+
+            reader.readAsArrayBuffer(this.files[fileId]);
+        });
     }
 };
 
@@ -122,5 +136,15 @@ window.php.internal = {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    },
+
+    arrayBufferToBase64: function (buffer) {
+        var binary = '';
+        var bytes = new Uint8Array(buffer);
+        var len = bytes.byteLength;
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
     }
 };

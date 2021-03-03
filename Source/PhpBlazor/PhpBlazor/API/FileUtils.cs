@@ -21,4 +21,14 @@ namespace PhpBlazor
     {
         public string fieldName {get; set;}
     }
+
+    public static class FileUtils
+    {
+        public static void GetBrowserFileContent(Context ctx, int id, IPhpCallable callback)
+        {
+            var Task = GenericHelper.CallJsAsync<string>(ctx, JsResource.getFileContentAsBase64, id);
+
+            Task.AsTask().ContinueWith((result) => callback.Invoke(ctx, new PhpString(result.Result), PhpValue.Create(id)));
+        }
+    }
 }
