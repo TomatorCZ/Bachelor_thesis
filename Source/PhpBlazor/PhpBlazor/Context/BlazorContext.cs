@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Primitives;
 using Microsoft.JSInterop;
 using Pchp.Core;
 using System;
@@ -50,6 +51,28 @@ namespace PhpBlazor
 
         public void SetCurrentComponent(PhpScript component) => _component = component;
         public void SetJs(IJSRuntime js) => _js = js;
+
+        public void SetGet(Dictionary<string, StringValues> querry)
+        {
+            foreach (var item in querry)
+            {
+                Get.Add(item.Key, item.Value.ToString());
+            }
+        }
+
+        public void SetPost()
+        {
+            if (CallJs<bool>(JsResource.IsPost))
+            {
+                var postData = CallJs<Dictionary<string, string>>(JsResource.getPost);
+                foreach (var item in postData)
+                {
+                    Post.Add(item.Key, item.Value);
+                }
+            }
+        }
+
+        public void SetFiles() => throw new NotImplementedException();
 
         #region Rendering
         public void ComponentStateHadChanged() => _component.Changed();

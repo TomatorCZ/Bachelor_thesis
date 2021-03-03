@@ -18,7 +18,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Content Remove="wwwroot\ComponentUtils.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="wwwroot\ComponentUtils.cs" />
 	  <None Remove="wwwroot\MyUtils.js" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Include="wwwroot\ComponentUtils.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

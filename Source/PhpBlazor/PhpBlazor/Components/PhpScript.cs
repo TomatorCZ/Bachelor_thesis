@@ -99,6 +99,10 @@ namespace PhpBlazor
                 }
             }
 
+            Context.SetGet(QuerryPart);
+            Context.SetPost();
+            //Context.SetFiles();
+
             _script = BlazorContext.TryGetDeclaredScript(Script);
         }
 

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Pchp.Core;
 
-namespace PhpBlazor.Components
+namespace PhpBlazor
 {
     [PhpHidden]
     public static class WebAssemblyHostBuilderExtensions
