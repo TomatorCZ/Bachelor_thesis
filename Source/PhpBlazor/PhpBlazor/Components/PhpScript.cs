@@ -89,12 +89,12 @@ namespace PhpBlazor
         {
             var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
 
-            if (QuerryPart == null)
-                QuerryPart = QueryHelpers.ParseQuery(uri.Query);
+            QuerryPart = QueryHelpers.ParseQuery(uri.Query);
 
             Context.SetGet(QuerryPart);
             Context.SetPost();
             Context.SetFiles();
+            StateHasChanged();
         }
 
         private void initializeSession()

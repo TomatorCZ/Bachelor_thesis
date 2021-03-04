@@ -35,5 +35,15 @@ namespace PhpBlazor
         {
             return GenericHelper.CallJs<string>(ctx, JsResource.createUrlObject, id);
         }
+
+        public static BrowserFile CreateFile(Context ctx, string data, string name, string contentType)
+        {
+            return GenericHelper.CallJs<BrowserFile>(ctx, JsResource.createFile, data, name, contentType);
+        }
+
+        public static void DownLoadFile(Context ctx, int id)
+        {
+            InteropUtils.CallJsVoid(ctx, JsResource.downloadFile, id);
+        }
     }
 }

@@ -137,9 +137,25 @@ window.php.files = {
         return this.urlObjects[fileId];
     },
 
-    downloadFile: function (fileId) { },
+    downloadFile: function (fileId) {
+        var a = document.createElement('a');
+        a.href = this.createUrlObject(fileId);
+        a.download = this.files[fileId].name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    },
 
-    createFile: function (data, type, name) { }
+    createFile: function (data, type, name) {
+        console.log(data);
+        console.log(type);
+        console.log(name);
+        let file = new File([data], name, {
+            type: type,
+        });
+
+        return this.createStructure(this.addFile(file));
+    }
 };
 
 window.php.internal = {
