@@ -81,7 +81,7 @@ namespace PhpBlazor
             if (_script.IsValid)
                 _script.Evaluate(Context, builder);
             else
-                Console.WriteLine($"Script {_script.Path} is invalid");
+                Console.WriteLine($"Script {Script} is invalid");
         }
         #endregion
 
@@ -121,7 +121,7 @@ namespace PhpBlazor
             Context.SetGet(QuerryPart);
             Context.SetPost();
             Context.SetFiles();
-            
+
             _script = BlazorContext.TryGetDeclaredScript(Script);
         }
 

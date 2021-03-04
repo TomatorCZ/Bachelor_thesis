@@ -5,5 +5,5 @@
 </head>
 <body>
 <?php
-    require("../layouts/defaultLayout.php");
+    require("/layouts/defaultLayout.php");
 ?>

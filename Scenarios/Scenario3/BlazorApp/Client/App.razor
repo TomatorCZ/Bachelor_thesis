@@ -1,5 +1,5 @@
 @using PhpBlazor
-<PhpRouter Assemblies="@(new[] { typeof(force).Assembly })" SessionLifetime="@SessionLifetime.Persistant">
+<PhpRouter Assemblies="@(new[] { typeof(force).Assembly })" SessionLifetime="@SessionLifetime.OnNavigationChange">
     <Found Context="routeData">
         <PhpRouteView RouteData="@routeData"/>
     </Found>

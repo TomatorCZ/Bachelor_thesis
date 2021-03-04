@@ -11,6 +11,42 @@ namespace PhpBlazor
         public Type Handler;
         public string[] UriSegments;
 
-        public MatchResult Match(string[] uriSegments) => throw new NotImplementedException();
+        #region Create
+        public Route(Type handler, string[] uriSegments)
+        {
+            Handler = handler;
+            UriSegments = uriSegments;
+        }
+
+        public static Route CreateScript(string[] uriSegments) => new Route(typeof(PhpScript), uriSegments);
+        #endregion
+
+        public MatchResult Match(string[] segments)
+        {
+            if (segments.Length != UriSegments.Length)
+            {
+                return MatchResult.NoMatch();
+            }
+
+            for (var i = 0; i < UriSegments.Length - 1; i++)
+            {
+                if (string.Compare(segments[i], UriSegments[i], StringComparison.OrdinalIgnoreCase) != 0)
+                {
+                    return MatchResult.NoMatch();
+                }
+            }
+
+            // Ignoring .php
+            string lastSegment = UriSegments[UriSegments.Length - 1];
+            if (lastSegment.EndsWith(".php"))
+                lastSegment = lastSegment.Remove(lastSegment.Length - 4);
+
+            if (string.Compare(lastSegment, segments[segments.Length - 1], StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                return MatchResult.NoMatch();
+            }
+
+            return MatchResult.Match(this);
+        }
     }
 }

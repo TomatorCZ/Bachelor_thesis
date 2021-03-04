@@ -49,8 +49,8 @@ namespace PhpBlazor
         {
             parameters.SetParameterProperties(this);
 
-            if (SessionLifetime == SessionLifetime.Persistant)
-                _context = BlazorContext.Create();
+
+             _context = BlazorContext.Create();
 
             RouteManager.Initiliase(Assemblies);
 
@@ -59,7 +59,11 @@ namespace PhpBlazor
         }
         #endregion
 
-        public void HandleLocationChanged(object sender, LocationChangedEventArgs args) => Refresh();
+        public void HandleLocationChanged(object sender, LocationChangedEventArgs args) {
+            if (SessionLifetime == SessionLifetime.OnNavigationChange)
+                _context = BlazorContext.Create();
+            Refresh();
+        } 
         
         public void Refresh()
         {
@@ -73,15 +77,13 @@ namespace PhpBlazor
 
             var segments = relativeUri.Trim().Split('/', StringSplitOptions.RemoveEmptyEntries);
             var matchResult = RouteManager.Match(segments);
-
-
-
+            
             if (matchResult.IsMatch)
             {
                 var parameters = new Dictionary<string, object>();
                 parameters.Add("QuerryPart", querryParameters);
                 parameters.Add("Context", _context);
-                parameters.Add("Script", relativeUri);
+                parameters.Add("Script", String.Join('/',matchResult.MatchedRoute.UriSegments));
 
                 var routeData = new RouteData(matchResult.MatchedRoute.Handler, parameters);
                 _renderHandle.Render(Found(routeData));

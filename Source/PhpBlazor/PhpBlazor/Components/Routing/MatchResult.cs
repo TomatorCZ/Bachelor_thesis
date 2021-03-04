@@ -8,7 +8,7 @@ namespace PhpBlazor
 {
     public class MatchResult
     {
-        public MatchResult(bool isMatch, Route matchedRoute)
+        private MatchResult(bool isMatch, Route matchedRoute)
         {
             IsMatch = isMatch;
             MatchedRoute = matchedRoute;
@@ -17,7 +17,7 @@ namespace PhpBlazor
         public bool IsMatch { get; }
         public Route MatchedRoute { get; }
 
-
-        public static MatchResult Empty => new MatchResult(false, null);
+        public static MatchResult Match(Route matchedRoute) => new MatchResult(true, matchedRoute);
+        public static MatchResult NoMatch() => new MatchResult(false, null);
     }
 }
