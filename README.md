@@ -8,6 +8,8 @@
 
 28.2.2021 - Scenario 1 is functional and can be reviewed for the first time
 
+4.3.2021 - Scenario 3 is almost done. 
+
 ## Project structure
 
 The project is divided into 3 folders
@@ -23,10 +25,11 @@ To be determined.
 ## TODO
 
 - [ ] Move [blazorUtilities.php](https://github.com/TomatorCZ/Bachelor_thesis/blob/main/Scenarios/Scenario2/Asteroids/Php/blazorUtilities.php) to Source.
+- [ ] Make Router to support PhpComponent
 - [ ] [FEATURE] Make rendering, which is implemented by Tag class in [blazorUtilities.php](https://github.com/TomatorCZ/Bachelor_thesis/blob/main/Scenarios/Scenario2/Asteroids/Php/blazorUtilities.php) smarter.
 - [ ] [FEATURE] Think of a better way how to supply static files in Peachpie libraries.
 - [ ] Use user defined webpage(php scripts) without Router in Scenario.
-- [ ] Make Scenario 3.
+- [x] Make Scenario 3.
 - [x] Make Scenario 1(File up/downloading...).
 - [ ] [FEATURE] Make file up/downloading as streams
 - [x] Support for files.
