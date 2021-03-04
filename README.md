@@ -25,7 +25,7 @@ To be determined.
 ## TODO
 
 - [ ] Move [blazorUtilities.php](https://github.com/TomatorCZ/Bachelor_thesis/blob/main/Scenarios/Scenario2/Asteroids/Php/blazorUtilities.php) to Source.
-- [ ] Make Router to support PhpComponent
+- [x] Make Router to support PhpComponent
 - [ ] [FEATURE] Make rendering, which is implemented by Tag class in [blazorUtilities.php](https://github.com/TomatorCZ/Bachelor_thesis/blob/main/Scenarios/Scenario2/Asteroids/Php/blazorUtilities.php) smarter.
 - [ ] [FEATURE] Think of a better way how to supply static files in Peachpie libraries.
 - [ ] Use user defined webpage(php scripts) without Router in Scenario.

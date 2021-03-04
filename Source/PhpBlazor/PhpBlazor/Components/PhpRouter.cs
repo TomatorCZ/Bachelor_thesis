@@ -81,10 +81,12 @@ namespace PhpBlazor
             if (matchResult.IsMatch)
             {
                 var parameters = new Dictionary<string, object>();
-                parameters.Add("QuerryPart", querryParameters);
-                parameters.Add("Context", _context);
-                parameters.Add("Script", String.Join('/',matchResult.MatchedRoute.UriSegments));
-
+                if (matchResult.MatchedRoute.Handler == typeof(PhpBlazor.PhpScript))
+                {
+                    parameters.Add("QuerryPart", querryParameters);
+                    parameters.Add("Context", _context);
+                    parameters.Add("Script", String.Join('/', matchResult.MatchedRoute.UriSegments));
+                }
                 var routeData = new RouteData(matchResult.MatchedRoute.Handler, parameters);
                 _renderHandle.Render(Found(routeData));
             }

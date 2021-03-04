@@ -6,6 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using PhpBlazor;
+using Microsoft.AspNetCore.Components;
 
 namespace PhpBlazor
 {
@@ -17,7 +19,6 @@ namespace PhpBlazor
         {
             List<Route> routes = new List<Route>();
 
-            //TODO: Find Components...
             foreach (var assm in assemblies)
             {
                 Context.AddScriptReference(assm);
@@ -30,6 +31,14 @@ namespace PhpBlazor
                         if (sattr != null && sattr.Path != null && t.GetCustomAttribute<PharAttribute>() == null)
                         {
                             routes.Add(new Route(typeof(PhpScript), sattr.Path.Split('/')));
+                        }
+                    }
+                    else if (t.IsSubclassOf(typeof(PhpComponent)))
+                    {
+                        var pattr = Attribute.GetCustomAttribute(t, typeof(RouteAttribute)) as RouteAttribute;
+                        if (pattr != null)
+                        {
+                            routes.Add(new Route(t, pattr.Template.Split('/')));
                         }
                     }
                 }
