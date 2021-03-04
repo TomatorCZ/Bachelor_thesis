@@ -54,6 +54,7 @@ namespace PhpBlazor
 
             RouteManager.Initiliase(Assemblies);
 
+            Refresh();
             return Task.CompletedTask;
         }
         #endregion

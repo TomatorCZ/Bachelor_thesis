@@ -11,6 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Source\PhpBlazor\PhpBlazor\PhpBlazor.csproj" />
+    <ProjectReference Include="..\..\Web1\Web1.csproj" />
     <ProjectReference Include="..\Shared\BlazorApp.Shared.csproj" />
   </ItemGroup>
 

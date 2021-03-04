@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pchp.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,8 +12,16 @@ namespace PhpBlazor
     {
         public Route[] Routes { get; private set; }
 
-        public static void Initiliase(Assembly[] assemblies) => throw new NotImplementedException();
+        public static void Initiliase(Assembly[] assemblies)
+        {
+            foreach (var assm in assemblies)
+                Context.AddScriptReference(assm);
+            
+        }
 
-        public static MatchResult Match(string[] uriSegments) => throw new NotImplementedException();
+        public static MatchResult Match(string[] uriSegments)
+        {
+            return MatchResult.Empty;
+        }
     }
 }

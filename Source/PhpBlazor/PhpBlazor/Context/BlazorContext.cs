@@ -39,7 +39,7 @@ namespace PhpBlazor
             ctx.InitOutput(null);
             ctx.InitSuperglobals();
             ctx._component = component;
-            ctx._js = component.Js;
+            ctx._js = component?.Js;
             
             //
             ctx.AutoloadFiles();
@@ -49,7 +49,11 @@ namespace PhpBlazor
         }
         #endregion
 
-        public void SetCurrentComponent(PhpScript component) => _component = component;
+        public void SetCurrentComponent(PhpScript component)
+        {
+            _component = component;
+            _js = component?.Js;
+        }
         public void SetJs(IJSRuntime js) => _js = js;
 
         public void SetGet(Dictionary<string, StringValues> querry)

@@ -1,10 +1,9 @@
-<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+@using PhpBlazor
+<PhpRouter Assemblies="@(new[] { typeof(force).Assembly })" SessionLifetime="@SessionLifetime.Persistant">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <PhpRouteView RouteData="@routeData"/>
     </Found>
-    <NotFound>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p>Sorry, there's nothing at this address.</p>
-        </LayoutView>
+    <NotFound Context="context">
+        <PhpScript Context="@context" Script="notfound.php"/>
     </NotFound>
-</Router>
+</PhpRouter>
