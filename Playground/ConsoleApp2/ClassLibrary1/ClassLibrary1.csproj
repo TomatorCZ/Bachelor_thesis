@@ -1,0 +1,16 @@
+<Project Sdk="Peachpie.NET.Sdk/1.0.0-preview5">
+	<PropertyGroup>
+		<OutputType>library</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="**/*.php;" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\ClassLibrary2\ClassLibrary2.csproj" />
+	</ItemGroup>
+
+</Project>
