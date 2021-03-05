@@ -10,6 +10,8 @@
 
 4.3.2021 - Scenario 3 is almost done. 
 
+5.3.2021 - Scenario 1,2,3 is done and can be reviewed.
+
 ## Project structure
 
 The project is divided into 3 folders
