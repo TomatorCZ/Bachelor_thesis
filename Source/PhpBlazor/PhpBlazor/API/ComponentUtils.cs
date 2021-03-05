@@ -18,14 +18,12 @@ namespace PhpBlazor
         public static void CallAfterRender(Context ctx, IPhpCallable function) => ((BlazorContext)ctx).CallAfterRender(function);
     }
 
-    /* Implemenation of BlazorUtilities....
     [PhpType]
     public interface iBlazorWritable
     {
-        public void writeWithEcho(Context ctx);
-        public int writeWithTreeBuilder(RenderTreeBuilder builder, int startIndex);
+        public int writeWithTreeBuilder(Context ctx, RenderTreeBuilder builder, int startIndex);
     }
-
+    
     [PhpType]
     public class Text : iBlazorWritable
     {
@@ -42,19 +40,14 @@ namespace PhpBlazor
         #endregion
 
         #region iBlazorWritable
-        public void writeWithEcho(Context ctx)
-        {
-            ctx.Echo(content);
-        }
-
-        public int writeWithTreeBuilder(RenderTreeBuilder builder, int startIndex)
+        public int writeWithTreeBuilder(Context ctx, RenderTreeBuilder builder, int startIndex)
         {
             builder.AddContent(startIndex++, content);
             return startIndex;
         }
         #endregion
     }
-
+    
     [PhpType]
     public class Tag : iBlazorWritable
     {
@@ -62,23 +55,33 @@ namespace PhpBlazor
         protected AttributeCollection attributes;
         protected List<iBlazorWritable> content;
 
+        public Tag():this("div")
+        { }
+
         public Tag(string name)
+        {
+            this.name = name;
+            attributes = new AttributeCollection();
+            content = new List<iBlazorWritable>();
+        }
+
+        public void __construct(string name)
         {
             this.name = name;
         }
 
-        public PhpValue this[string index] 
+        public PhpAlias this[string index] 
         {
             get
             {
                 switch (index)
                 {
                     case "content":
-                        return PhpValue.FromClass(content);
+                        return PhpValue.FromClass(content).AsPhpAlias();
                     case "attributes":
-                        return PhpValue.FromClass(attributes);
+                        return PhpValue.FromClass(attributes).AsPhpAlias();
                     case "name":
-                        return name;
+                        return new PhpAlias(name);
                     default:
                         throw new ArgumentException();
                 }
@@ -86,38 +89,31 @@ namespace PhpBlazor
         }
 
         #region iBlazorWritable
-        public void writeWithEcho(Context ctx)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int writeWithTreeBuilder(RenderTreeBuilder builder, int startIndex)
+        public int writeWithTreeBuilder(Context ctx, RenderTreeBuilder builder, int startIndex)
         {
             builder.OpenElement(startIndex++, name);
 
-            startIndex = attributes.writeWithTreeBuilder(builder, startIndex);
+            startIndex = attributes.writeWithTreeBuilder(ctx, builder, startIndex);
 
-            content.ForEach(x => startIndex = x.writeWithTreeBuilder(builder, startIndex));
+            content.ForEach(x => startIndex = x.writeWithTreeBuilder(ctx, builder, startIndex));
 
             builder.CloseElement();
             return startIndex;
         }
         #endregion
     }
-
+    
     [PhpType]
-    public class AttributeCollection : iBlazorWritable
+    public class AttributeCollection : iBlazorWritable, ArrayAccess
     {
-        protected Dictionary<string, string> keyValueAttributes;
-        protected List<string> valueAttributes;
+        protected PhpArray attributes;
         protected Dictionary<string, IPhpCallable> events;
         protected CssBuilder styles;
         protected ClassBuilder classes;
 
         public AttributeCollection()
         {
-            keyValueAttributes = new Dictionary<string, string>();
-            valueAttributes = new List<string>();
+            attributes = new PhpArray();
             events = new Dictionary<string, IPhpCallable>();
         }
 
@@ -132,77 +128,145 @@ namespace PhpBlazor
                 events.Remove(name);
         }
 
-        public PhpValue this[string index] 
-        {
-            get
-            {
-                if (keyValueAttributes.ContainsKey(index))
-                    return keyValueAttributes[index];
-                else if (valueAttributes.Contains(index))
-                    return index;
-                else if (events.ContainsKey(index))
-                    return PhpValue.FromClass(events[index]);
-                else if (index == "styles")
-                {
-                    styles ??= new CssBuilder();
-                    return PhpValue.FromClass(styles);
-                }
-                else if (index == "class")
-                {
-                    classes ??= new ClassBuilder();
-                    return PhpValue.FromClass(classes);
-                }
-                else
-                {
-                    return PhpValue.Null;
-                }
-            }
-            set
-            {
-                if (String.IsNullOrEmpty(index))
-                {
-                    valueAttributes.Add(value.ToString());
-                }
-                else if (index != "styles" || index != "classes")
-                {
-                    keyValueAttributes.Add(index, value.ToString());
-                }
-                else
-                {
-                    throw new ArgumentException();
-                }
-            }
-        }
-
         #region iBlazorWritable
-        public void writeWithEcho(Context ctx)
+        public int writeWithTreeBuilder(Context ctx, RenderTreeBuilder builder, int startIndex)
         {
-            throw new NotImplementedException();
-        }
-
-        public int writeWithTreeBuilder(RenderTreeBuilder builder, int startIndex)
-        {
-            foreach (var item in keyValueAttributes)
+            foreach (var item in attributes)
             {
-                builder.AddAttribute(startIndex++, item.Key, item.Value);
+                if (!item.Key.IsString)
+                    builder.AddAttribute(startIndex++, item.Value.ToString(), null);
+                else
+                    builder.AddAttribute(startIndex++, item.Key.String, item.Value.ToString());
             }
 
-            valueAttributes.ForEach(x => builder.AddAttribute(startIndex++, x, null));
+            if (styles != null)
+                builder.AddAttribute(startIndex++, "style", styles.ToString());
 
-            var ctx = Context.CreateEmpty();
+            if (classes != null)
+                builder.AddAttribute(startIndex++, "class", classes.ToString());
+
             foreach (var item in events)
             {
-                //item.Value.Invoke(ctx, )
+                item.Value.Invoke(ctx, startIndex++, PhpValue.FromClass(builder));
             }
-            throw new NotImplementedException();
+
+            return startIndex;
+        }
+        #endregion
+
+        #region ArrayAccess
+        public PhpValue offsetGet(PhpValue offset)
+        {
+            if (attributes.ContainsKey(offset))
+                return attributes[offset].AsPhpAlias();
+            else if (offset.AsString() == "style")
+            {
+                styles ??= new CssBuilder();
+                return PhpValue.FromClass(styles).AsPhpAlias();
+            }
+            else if (offset.AsString() == "class")
+            {
+                classes ??= new ClassBuilder();
+                return PhpValue.FromClass(classes).AsPhpAlias();
+            }
+            else
+                throw new ArgumentException();
+        }
+
+        public void offsetSet(PhpValue offset, PhpValue value)
+        {
+            attributes[offset] = value;
+        }
+
+        public void offsetUnset(PhpValue offset)
+        {
+            attributes.Remove(offset);
+        }
+
+        public bool offsetExists(PhpValue offset)
+        {
+            return attributes.ContainsKey(offset);
         }
         #endregion
     }
+    
+    [PhpType]
+    public class CssBuilder : ArrayAccess
+    {
+        protected Dictionary<string, string> _styles;
 
-    public class CssBuilder
-    { }
+        public CssBuilder()
+        {
+            _styles = new Dictionary<string, string>();
+        }
 
+        #region ArrayAccess
+        public bool offsetExists(PhpValue offset)
+        {
+            return _styles.ContainsKey(offset.AsString());
+        }
+
+        public PhpValue offsetGet(PhpValue offset)
+        {
+            if (offsetExists(offset))
+                return _styles[offset.AsString()];
+            else
+                return PhpValue.False;
+        }
+
+        public void offsetSet(PhpValue offset, PhpValue value)
+        {
+            _styles[offset.AsString()] = value.AsString();
+        }
+
+        public void offsetUnset(PhpValue offset)
+        {
+            _styles.Remove(offset.AsString());
+        }
+        #endregion
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in _styles)
+            {
+                sb.Append(item.Key);
+                sb.Append(":");
+                sb.Append(item.Value);
+                sb.Append(";");
+            }
+
+            return sb.ToString();
+        }
+    }
+
+    [PhpType]
     public class ClassBuilder
-    { }
-    */
+    {
+        protected List<string> _classes;
+
+        public ClassBuilder()
+        {
+            _classes = new List<string>();
+        }
+
+        public void add(string @class) => _classes.Add(@class);
+
+        public void remove(string @class)
+        {
+            _classes.Remove(@class);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in _classes)
+            {
+                sb.Append(item);
+                sb.Append(" ");
+            }
+
+            return sb.ToString();
+        }
+    }
 }

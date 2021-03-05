@@ -1,9 +1,8 @@
 ﻿<?php namespace Asteroids;
 
-require_once(__DIR__ . "\blazorUtilities.php");
 // ---Entities---
 
-abstract class Entity extends \BlazorUtilities\Tag
+abstract class Entity extends \PhpBlazor\Tag
 {
     protected array $position;
     protected array $size;
@@ -172,7 +171,7 @@ class Rocket extends MovableEntity
     }
 }
 
-class Application extends \BlazorUtilities\Tag 
+class Application extends \PhpBlazor\Tag 
 {
     private $rocket;
     private $bullets;
@@ -201,7 +200,7 @@ class Application extends \BlazorUtilities\Tag
 
     public function addButtons() : void
     {
-        $button= new \BlazorUtilities\Tag("button");
+        $button= new \PhpBlazor\Tag("button");
         $button["attributes"]["style"]["position"] = "absolute";
         $button["attributes"]["style"]["top"] = "700px";
         $button["attributes"]["style"]["left"] = "0px";
@@ -209,24 +208,24 @@ class Application extends \BlazorUtilities\Tag
         $button["attributes"]->addEvent("onmousedown", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmousedown", function($e) {$this->HandleMouseDownMoveRight();});});
         $button["attributes"]->addEvent("onmouseup", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmouseup", function($e) {$this->HandleMouseUp();});});
         
-        $button["content"][] = new \BlazorUtilities\Text("Move Right");
+        $button["content"][] = new \PhpBlazor\Text("Move Right");
 
         $this["content"][] = $button;
         unset($button);
 
-        $button= new \BlazorUtilities\Tag("button");
+        $button= new \PhpBlazor\Tag("button");
         $button["attributes"]["style"]["position"] = "absolute";
         $button["attributes"]["style"]["top"] = "700px";
         $button["attributes"]["style"]["left"] = "100px";
         
         $button["attributes"]->addEvent("onclick", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onclick", function($e) {$this->HandleFire();});});
         
-        $button["content"][] = new \BlazorUtilities\Text("Fire");
+        $button["content"][] = new \PhpBlazor\Text("Fire");
 
         $this["content"][] = $button;
         unset($button);
 
-        $button= new \BlazorUtilities\Tag("button");
+        $button= new \PhpBlazor\Tag("button");
         $button["attributes"]["style"]["position"] = "absolute";
         $button["attributes"]["style"]["top"] = "700px";
         $button["attributes"]["style"]["left"] = "200px";
@@ -234,7 +233,7 @@ class Application extends \BlazorUtilities\Tag
         $button["attributes"]->addEvent("onmousedown", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmousedown", function($e) {$this->HandleMouseDownMoveLeft();});});
         $button["attributes"]->addEvent("onmouseup", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmouseup", function($e) {$this->HandleMouseUp();});});
         
-        $button["content"][] = new \BlazorUtilities\Text("Move Left");
+        $button["content"][] = new \PhpBlazor\Text("Move Left");
 
         $this["content"][] = $button;
         unset($button);
@@ -331,8 +330,6 @@ class Application extends \BlazorUtilities\Tag
             $bullet = Bullet::CreateDefault($this->rocket->GetPosition());
             $this->bullets[] = $bullet;
         }
-
-        \System\Console::WriteLine($e->Key);
     }
 
     private function HandleKeyUp() : void
