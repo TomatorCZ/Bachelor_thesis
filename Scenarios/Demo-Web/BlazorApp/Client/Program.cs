@@ -16,11 +16,9 @@ namespace BlazorApp.Client
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("#app");
-
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             // Add PHP
+            builder.RootComponents.Add(typeof(PhpBlazor.PhpScriptProvider), "#app");
 
             await builder.Build().RunAsync();
         }
