@@ -8,11 +8,12 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
-
-            //Context ctx = Context.CreateEmpty();
-
-            var a = new foo.PhpClass();
-            string n = a.GetName();
+            Context.AddScriptReference(typeof(foo.PhpClass).Assembly);
+            
+            Context ctx = Context.CreateConsole("index2.php");
+            
+            var script = Context.TryGetDeclaredScript("index2.php");
+            script.Evaluate(ctx, ctx.Globals, null);
             
             
             Console.WriteLine("Hello World!");
