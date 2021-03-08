@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Components;
 
 namespace PhpBlazor
 {
-    public class RouteManager
+    public class PhpComponentRouteManager
     {
-        public static Route[] Routes { get; private set; }
+        public Route[] Routes { get; private set; }
 
-        public static void Initiliase(Assembly[] assemblies)
+        public PhpComponentRouteManager(Assembly[] assemblies)
         {
             List<Route> routes = new List<Route>();
 
@@ -25,15 +25,7 @@ namespace PhpBlazor
 
                 foreach (var t in assm.ExportedTypes)
                 {
-                    if (t.IsAbstract && t.IsSealed)
-                    {
-                        var sattr = ReflectionUtils.GetScriptAttribute(t);
-                        if (sattr != null && sattr.Path != null && t.GetCustomAttribute<PharAttribute>() == null)
-                        {
-                            routes.Add(new Route(typeof(PhpScript), sattr.Path.Split('/')));
-                        }
-                    }
-                    else if (t.IsSubclassOf(typeof(PhpComponent)))
+                    if (t.IsSubclassOf(typeof(PhpComponent)))
                     {
                         var pattr = Attribute.GetCustomAttribute(t, typeof(RouteAttribute)) as RouteAttribute;
                         if (pattr != null)
@@ -47,11 +39,11 @@ namespace PhpBlazor
             Routes = routes.ToArray();
         }
 
-        public static MatchResult Match(string[] segments)
+        public MatchResult Match(string[] segments)
         {
             if (segments.Length == 0)
             {
-                var indexRoute =Routes.SingleOrDefault(x => x.UriSegments.Length == 1 && x.UriSegments[0] == "index.php");
+                var indexRoute = Routes.SingleOrDefault(x => x.UriSegments.Length == 1 && x.UriSegments[0] == "index");
                 return (indexRoute == null) ? MatchResult.NoMatch() : MatchResult.Match(indexRoute);
             }
 

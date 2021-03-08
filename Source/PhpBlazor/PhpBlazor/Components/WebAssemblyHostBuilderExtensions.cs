@@ -9,7 +9,7 @@ namespace PhpBlazor
     {
         public static void AddPhp(this WebAssemblyHostBuilder host)
         {
-            host.Services.AddSingleton<RouteManager>();
+            host.Services.AddSingleton<PhpComponentRouteManager>();
         }
     }
 }

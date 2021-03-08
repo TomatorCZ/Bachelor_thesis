@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Source\PhpBlazor\PhpBlazor\PhpBlazor.csproj" />
+    <ProjectReference Include="..\..\Web\Web.csproj" />
   </ItemGroup>
 
 </Project>

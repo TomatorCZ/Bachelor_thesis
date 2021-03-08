@@ -17,8 +17,12 @@ namespace BlazorApp.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
+            // Configure logging
+            builder.Logging.SetMinimumLevel(LogLevel.Debug); // Debug does not work
+
             // Add PHP
             builder.RootComponents.Add(typeof(PhpBlazor.PhpScriptProvider), "#app");
+            builder.Services.AddSingleton(new PhpBlazor.PhpComponentRouteManager(new[] { typeof(force).Assembly}));
 
             await builder.Build().RunAsync();
         }

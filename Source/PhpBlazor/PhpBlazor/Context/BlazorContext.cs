@@ -14,8 +14,7 @@ namespace PhpBlazor
     public class BlazorContext : Context
     {
         private DotNetObjectReference<BlazorContext> _objRef;
-        private PhpScript _component;
-        private IPhpCallable _afterRender;
+        private PhpScriptProvider _component;
         private IJSRuntime _js;
 
         #region Create
@@ -27,7 +26,7 @@ namespace PhpBlazor
 
         public static BlazorContext Create() => Create(null);
 
-        public static BlazorContext Create(PhpScript component)
+        public static BlazorContext Create(PhpScriptProvider component)
         {
             var ctx = new BlazorContext(null)
             {
@@ -39,7 +38,7 @@ namespace PhpBlazor
             ctx.InitOutput(null);
             ctx.InitSuperglobals();
             ctx._component = component;
-            ctx._js = component?.Js;
+            ctx._js = component.Js;
             
             //
             ctx.AutoloadFiles();
@@ -49,12 +48,19 @@ namespace PhpBlazor
         }
         #endregion
 
-        public void SetCurrentComponent(PhpScript component)
+        #region Rendering
+        public void StartRender(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
         {
-            _component = component;
-            _js = component?.Js;
+            Output = BlazorWriter.CreateTree(builder);
         }
-        public void SetJs(IJSRuntime js) => _js = js;
+
+        public void StopRender()
+        {
+            Output.Flush();
+            Output.Dispose();
+            Output = BlazorWriter.CreateConsole();
+        }
+        #endregion
 
         public void SetGet(Dictionary<string, StringValues> querry)
         {
@@ -76,47 +82,11 @@ namespace PhpBlazor
             }
         }
 
-        public void SetFiles()
+        public Task SetFilesAsync()
         {
-            if (CallJs<bool>(JsResource.IsFiles))
-            {
-                var files = CallJs<FormFile[]>(JsResource.getFiles);
-                foreach (var file in files)
-                {
-                    Files.Add(file.fieldName, file);
-                }
-            }
+            //TODO: Files
+            return Task.CompletedTask;
         }
-
-        #region Rendering
-        public void ComponentStateHadChanged()
-        {
-            _component.Changed();
-        }
-
-        public void StartRender(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
-        {
-            Output = BlazorWriter.CreateTree(builder);
-        }
-
-        public void StopRender()
-        {
-            Output.Flush();
-            Output.Dispose();
-            Output = BlazorWriter.CreateConsole();
-        }
-
-        public void CallAfterRender(IPhpCallable function)
-        {
-            _afterRender = function;
-        }
-
-        public void OnAfterRender() 
-        {
-            _afterRender?.Invoke(this);
-            _afterRender = null;
-        }
-        #endregion
 
         public override void Dispose()
         {
