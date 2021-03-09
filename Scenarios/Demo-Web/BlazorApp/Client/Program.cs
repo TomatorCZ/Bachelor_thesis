@@ -1,12 +1,6 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Pchp.Core;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+using PhpBlazor;
 using System.Threading.Tasks;
 
 namespace BlazorApp.Client
@@ -21,9 +15,9 @@ namespace BlazorApp.Client
             builder.Logging.SetMinimumLevel(LogLevel.Debug); // Debug does not work
 
             // Add PHP
-            builder.RootComponents.Add(typeof(PhpBlazor.PhpScriptProvider), "#app");
-            builder.Services.AddSingleton(new PhpBlazor.PhpComponentRouteManager(new[] { typeof(force).Assembly}));
-
+            builder.AddPhp(new[] { typeof(force).Assembly });
+            builder.RootComponents.Add(typeof(PhpScriptProvider), "#app");
+            
             await builder.Build().RunAsync();
         }
     }

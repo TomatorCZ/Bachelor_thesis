@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.IO;
 using System.Linq;
 
 namespace BlazorApp.Server
@@ -42,6 +44,13 @@ namespace BlazorApp.Server
             // Add helper js code for php.
             var fileProvider = new ManifestEmbeddedFileProvider(typeof(PhpBlazor.BlazorContext).Assembly);
             app.UseStaticFiles(new StaticFileOptions() { FileProvider = fileProvider });
+
+            //If you have external resources like images, you can add them in this way
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.FullName, "Web\\wwwroot")),
+                RequestPath = "/Web"
+            });
 
             app.UseRouting();
 
