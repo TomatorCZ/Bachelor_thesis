@@ -1,0 +1,20 @@
+﻿@page "/community/{*sth}"
+@page "/about/{*sth}"
+@page "/index"
+@page "/simpleComponent"
+@using PhpBlazor
+
+<PhpScriptProvider ContextLifetime="@SessionLifetime.OnNavigationChanged" Type="@PhpScriptProviderType.ScriptProvider">
+    <Navigating>
+        <PhpScriptProvider ContextLifetime="@SessionLifetime.OnNavigationChanged" Type="@PhpScriptProviderType.Script" ScriptName="navigating.php" />
+    </Navigating>
+    <NotFound>
+        <PhpScriptProvider ContextLifetime="@SessionLifetime.OnNavigationChanged" Type="@PhpScriptProviderType.Script" ScriptName="notfound.php" />
+    </NotFound>
+</PhpScriptProvider>
+
+@code
+{
+    [Parameter]
+    public string sth { get; set; }
+}

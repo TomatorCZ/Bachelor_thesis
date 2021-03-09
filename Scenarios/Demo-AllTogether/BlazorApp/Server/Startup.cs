@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.IO;
 using System.Linq;
 
 namespace BlazorApp.Server
@@ -20,12 +23,7 @@ namespace BlazorApp.Server
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
-
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-        }
+        public void ConfigureServices(IServiceCollection services){}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -46,12 +44,26 @@ namespace BlazorApp.Server
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
+            // Add helper js code for php.
+            var fileProvider = new ManifestEmbeddedFileProvider(typeof(PhpBlazor.BlazorContext).Assembly);
+            app.UseStaticFiles(new StaticFileOptions() { FileProvider = fileProvider });
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, "Demo-Web\\Web\\wwwroot")),
+                RequestPath = "/Web"
+            });
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, "Demo-PhpComponent\\Asteroids\\wwwroot")),
+                RequestPath = "/Asteroids"
+            });
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
-                endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
             });
         }

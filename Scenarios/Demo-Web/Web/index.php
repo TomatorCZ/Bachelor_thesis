@@ -26,6 +26,8 @@ public static async Task Main(string[] args)
 <p>You can try the offline mode by disabling it in the developer tools.</p>
 <p>You can navigate through the website as normal, but external resources (like images) can not be loaded.</p>
 <img src="Web/images/offlineMode.png"/>
+<h3>Compatible with PhpComponents</h3>
+Try to navigate to the <a href="/simpleComponent">component</a>
 <?php
     require("/footers/defaultFooter.php");
 ?>

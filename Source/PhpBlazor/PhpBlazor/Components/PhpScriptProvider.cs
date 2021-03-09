@@ -53,6 +53,7 @@ namespace PhpBlazor
         private bool _navigationInterceptionEnabled;
         private BlazorContext _ctx;
         private string _previousRelativeUri = null;
+        private bool _navigated = false;
 
         #region IComponent
         void IComponent.Attach(RenderHandle renderHandle)
@@ -74,6 +75,7 @@ namespace PhpBlazor
             if (ContextLifetime == SessionLifetime.OnNavigationChanged || _ctx == null)
                 _ctx = BlazorContext.Create(this);
 
+            _navigated = true;
             Refresh();
             return Task.CompletedTask;
         }
@@ -81,6 +83,7 @@ namespace PhpBlazor
 
         private void Refresh()
         {
+            _navigated = false;
             // Find Script
             var relativeUri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
             var querryParameters = QueryHelpers.ParseQuery(NavigationManager.ToAbsoluteUri(relativeUri).Query);
@@ -149,7 +152,8 @@ namespace PhpBlazor
             if (relativeUri.IndexOf('?') > -1)
                 relativeUri = relativeUri.Substring(0, relativeUri.IndexOf('?'));
 
-            if (Type == PhpScriptProviderType.ScriptProvider || (Type == PhpScriptProviderType.Script && relativeUri != _previousRelativeUri))
+            if ((Type == PhpScriptProviderType.Script && relativeUri != _previousRelativeUri)
+                || (Type == PhpScriptProviderType.ScriptProvider && _navigated))
             {
                 _previousRelativeUri = relativeUri;
                 return;
