@@ -1,9 +1,0 @@
-@using PhpBlazor
-<PhpRouter Assemblies="@(new[] { typeof(force).Assembly })" SessionLifetime="@SessionLifetime.OnNavigationChange">
-    <Found Context="routeData">
-        <PhpRouteView RouteData="@routeData"/>
-    </Found>
-    <NotFound Context="context">
-        <PhpScript Context="@context" Script="notfound.php"/>
-    </NotFound>
-</PhpRouter>
