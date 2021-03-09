@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Microsoft.JSInterop;
 using Pchp.Core;
@@ -14,9 +15,11 @@ namespace PhpBlazor
     public class BlazorContext : Context
     {
         private DotNetObjectReference<BlazorContext> _objRef;
-        private PhpScript _component;
-        private IPhpCallable _afterRender;
+        private PhpScriptProvider _component;
         private IJSRuntime _js;
+        private ILoggerFactory _loggerFactory;
+        private FileManager _fileManager;
+        private ILogger<BlazorContext> _logger;
 
         #region Create
         protected BlazorContext(IServiceProvider services) : base(services)
@@ -25,9 +28,7 @@ namespace PhpBlazor
             _objRef = DotNetObjectReference.Create<BlazorContext>(this);
         }
 
-        public static BlazorContext Create() => Create(null);
-
-        public static BlazorContext Create(PhpScript component)
+        public static BlazorContext Create(PhpScriptProvider component)
         {
             var ctx = new BlazorContext(null)
             {
@@ -39,8 +40,10 @@ namespace PhpBlazor
             ctx.InitOutput(null);
             ctx.InitSuperglobals();
             ctx._component = component;
-            ctx._js = component?.Js;
-            
+            ctx._js = component.Js;
+            ctx._fileManager = new FileManager(ctx);
+            ctx._loggerFactory = component.LoggerFactory;
+            ctx._logger = ctx._loggerFactory.CreateLogger<BlazorContext>();
             //
             ctx.AutoloadFiles();
 
@@ -49,13 +52,21 @@ namespace PhpBlazor
         }
         #endregion
 
-        public void SetCurrentComponent(PhpScript component)
+        #region Rendering
+        public void StartRender(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
         {
-            _component = component;
-            _js = component?.Js;
+            Output = BlazorWriter.CreateTree(builder);
         }
-        public void SetJs(IJSRuntime js) => _js = js;
 
+        public void StopRender()
+        {
+            Output.Flush();
+            Output.Dispose();
+            Output = BlazorWriter.CreateConsole();
+        }
+        #endregion
+
+        #region Set Globals
         public void SetGet(Dictionary<string, StringValues> querry)
         {
             foreach (var item in querry)
@@ -76,45 +87,16 @@ namespace PhpBlazor
             }
         }
 
-        public void SetFiles()
+        public async Task SetFilesAsync()
         {
-            if (CallJs<bool>(JsResource.IsFiles))
+            var files = _fileManager.FetchFiles();
+            foreach (var item in files)
             {
-                var files = CallJs<FormFile[]>(JsResource.getFiles);
-                foreach (var file in files)
-                {
-                    Files.Add(file.fieldName, file);
-                }
+                Files.Add(item.fieldName, item);
             }
-        }
+            Log.FetchingFiles(_logger, files);
 
-        #region Rendering
-        public void ComponentStateHadChanged()
-        {
-            _component.Changed();
-        }
-
-        public void StartRender(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
-        {
-            Output = BlazorWriter.CreateTree(builder);
-        }
-
-        public void StopRender()
-        {
-            Output.Flush();
-            Output.Dispose();
-            Output = BlazorWriter.CreateConsole();
-        }
-
-        public void CallAfterRender(IPhpCallable function)
-        {
-            _afterRender = function;
-        }
-
-        public void OnAfterRender() 
-        {
-            _afterRender?.Invoke(this);
-            _afterRender = null;
+            await _fileManager.DownloadFilesAsync();
         }
         #endregion
 
@@ -124,8 +106,14 @@ namespace PhpBlazor
             _objRef?.Dispose();
         }
 
+        public string GetDownloadFile(int id)
+        {
+            return _fileManager.GetFileData(id);
+        }
+
         #region JSInterop
         //TODO: CallPhpFromJS
+
         public void CallJsVoid(string function, params object[] args) => (_js as IJSInProcessRuntime).InvokeVoid(function, args);
 
         public TResult CallJs<TResult>(string function, params object[] args) => (_js as IJSInProcessRuntime).Invoke<TResult>(function, args);

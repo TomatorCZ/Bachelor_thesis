@@ -24,11 +24,9 @@ namespace PhpBlazor
 
     public static class FileUtils
     {
-        public static void GetBrowserFileContent(Context ctx, int id, IPhpCallable callback)
+        public static PhpString GetBrowserFileContent(Context ctx, int id)
         {
-            var Task = GenericHelper.CallJsAsync<string>(ctx, JsResource.getFileContentAsBase64, id);
-
-            Task.AsTask().ContinueWith((result) => callback.Invoke(ctx, new PhpString(result.Result), PhpValue.Create(id)));
+            return new PhpString ((ctx as BlazorContext).GetDownloadFile(id));
         }
 
         public static string CreateUrlObject(Context ctx, int id)

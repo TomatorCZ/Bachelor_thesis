@@ -1,15 +1,19 @@
 ﻿using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Pchp.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PhpBlazor
 {
-    [PhpHidden]
     public static class WebAssemblyHostBuilderExtensions
     {
-        public static void AddPhp(this WebAssemblyHostBuilder host)
+        public static void AddPhp(this WebAssemblyHostBuilder builder, Assembly[] assemblies)
         {
-            host.Services.AddSingleton<RouteManager>();
+            builder.Services.AddSingleton(new PhpComponentRouteManager(assemblies));
         }
     }
 }

@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
+		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -9,8 +10,13 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.3" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.3" />
 		<PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
 		<PackageReference Include="Peachpie.Runtime" Version="1.0.0-preview5" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="**/*.js" />
 	</ItemGroup>
 
 </Project>

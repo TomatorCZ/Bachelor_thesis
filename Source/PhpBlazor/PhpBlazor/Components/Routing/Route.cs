@@ -11,15 +11,11 @@ namespace PhpBlazor
         public Type Handler;
         public string[] UriSegments;
 
-        #region Create
         public Route(Type handler, string[] uriSegments)
         {
             Handler = handler;
             UriSegments = uriSegments;
         }
-
-        public static Route CreateScript(string[] uriSegments) => new Route(typeof(PhpScript), uriSegments);
-        #endregion
 
         public MatchResult Match(string[] segments)
         {
