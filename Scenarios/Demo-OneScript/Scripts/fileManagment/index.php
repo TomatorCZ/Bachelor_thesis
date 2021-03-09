@@ -36,7 +36,8 @@ function printGraphView()
 		DownLoadFile($file->id);
 	}
 	else {
-		print_r($graph);
+		require("/fileManagment/showGraph.php");
+		printGraph($graph);
 		require("/fileManagment/downloadForm.php");
 	}
 }
