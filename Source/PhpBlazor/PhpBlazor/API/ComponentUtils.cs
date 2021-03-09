@@ -45,9 +45,9 @@ namespace PhpBlazor
     [PhpType]
     public class Tag : iBlazorWritable
     {
-        protected string name;
-        protected AttributeCollection attributes;
-        protected List<iBlazorWritable> content;
+        public string name;
+        public AttributeCollection attributes;
+        public List<iBlazorWritable> content;
 
         public Tag():this("div")
         { }
@@ -62,24 +62,6 @@ namespace PhpBlazor
         public void __construct(string name)
         {
             this.name = name;
-        }
-
-        public PhpAlias this[string index] 
-        {
-            get
-            {
-                switch (index)
-                {
-                    case "content":
-                        return PhpValue.FromClass(content).AsPhpAlias();
-                    case "attributes":
-                        return PhpValue.FromClass(attributes).AsPhpAlias();
-                    case "name":
-                        return new PhpAlias(name);
-                    default:
-                        throw new ArgumentException();
-                }
-            }
         }
 
         #region iBlazorWritable

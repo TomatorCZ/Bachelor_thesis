@@ -60,12 +60,12 @@ class Background extends Entity
     {
         parent::__construct(["x" => 0, "y" => 0], $size);
 
-        $this["attributes"]["class"]->add("asteroids-background");
-
-        $this["attributes"]["style"]["height"] = $size["height"] . "px";
-        $this["attributes"]["style"]["width"] = $size["width"] . "px";
-        $this["attributes"]["style"]["top"] = "0px";
-        $this["attributes"]["style"]["left"] = "0px";
+        $this->attributes["class"]->add("asteroids-background");
+             
+        $this->attributes["style"]["height"] = $size["height"] . "px";
+        $this->attributes["style"]["width"] = $size["width"] . "px";
+        $this->attributes["style"]["top"] = "0px";
+        $this->attributes["style"]["left"] = "0px";
     }
 
     public static function createDefault() : Background
@@ -80,13 +80,13 @@ class Asteroid extends MovableEntity
     {
         parent::__construct($position, $direction, $size);
 
-        $this["attributes"]["class"]->add("asteroids-asteroid");
-
-        $this["attributes"]["style"]["height"] = $this->size["height"] . "px";
-        $this["attributes"]["style"]["z-index"] = 1;
-        $this["attributes"]["style"]["width"] = $this->size["width"] . "px";
-        $this["attributes"]["style"]["top"] = $this->position["y"] . "px";
-        $this["attributes"]["style"]["left"] = $this->position["x"] . "px";
+        $this->attributes["class"]->add("asteroids-asteroid");
+             
+        $this->attributes["style"]["height"] = $this->size["height"] . "px";
+        $this->attributes["style"]["z-index"] = 1;
+        $this->attributes["style"]["width"] = $this->size["width"] . "px";
+        $this->attributes["style"]["top"] = $this->position["y"] . "px";
+        $this->attributes["style"]["left"] = $this->position["x"] . "px";
     }
 
     public static function createDefault(array $position) : Asteroid
@@ -97,8 +97,8 @@ class Asteroid extends MovableEntity
     public function move(float $time) : void
     {
         parent::move($time);
-        $this["attributes"]["style"]["top"] = $this->position["y"] . "px";
-        $this["attributes"]["style"]["left"] = $this->position["x"] . "px";
+        $this->attributes["style"]["top"] = $this->position["y"] . "px";
+        $this->attributes["style"]["left"] = $this->position["x"] . "px";
     }
 
     public function penetration(array $position, array $size) : bool
@@ -118,20 +118,20 @@ class Bullet extends MovableEntity
     {
         parent::__construct($position, $direction, $size);
 
-        $this["attributes"]["class"]->add("asteroids-bullet");
-
-        $this["attributes"]["style"]["height"] = $this->size["height"] . "px";
-        $this["attributes"]["style"]["z-index"] = 1;
-        $this["attributes"]["style"]["width"] = $this->size["width"] . "px";
-        $this["attributes"]["style"]["top"] = $this->position["y"] . "px";
-        $this["attributes"]["style"]["left"] = $this->position["x"] . "px";
+        $this->attributes["class"]->add("asteroids-bullet");
+             
+        $this->attributes["style"]["height"] = $this->size["height"] . "px";
+        $this->attributes["style"]["z-index"] = 1;
+        $this->attributes["style"]["width"] = $this->size["width"] . "px";
+        $this->attributes["style"]["top"] = $this->position["y"] . "px";
+        $this->attributes["style"]["left"] = $this->position["x"] . "px";
     }
 
     public function move(float $time) : void
     {
         parent::move($time);
-        $this["attributes"]["style"]["top"] = $this->position["y"] . "px";
-        $this["attributes"]["style"]["left"] = $this->position["x"] . "px";
+        $this->attributes["style"]["top"] = $this->position["y"] . "px";
+        $this->attributes["style"]["left"] = $this->position["x"] . "px";
     }
 
     public static function createDefault(array $position)
@@ -146,13 +146,13 @@ class Rocket extends MovableEntity
     {
         parent::__construct($position, $direction, $size);
 
-        $this["attributes"]["class"]->add("asteroids-rocket");
-
-        $this["attributes"]["style"]["height"] = $this->size["height"] . "px";
-        $this["attributes"]["style"]["z-index"] = 1;
-        $this["attributes"]["style"]["width"] = $this->size["width"] . "px";
-        $this["attributes"]["style"]["top"] = $this->position["y"] . "px";
-        $this["attributes"]["style"]["left"] = $this->position["x"] . "px";
+        $this->attributes["class"]->add("asteroids-rocket");
+             
+        $this->attributes["style"]["height"] = $this->size["height"] . "px";
+        $this->attributes["style"]["z-index"] = 1;
+        $this->attributes["style"]["width"] = $this->size["width"] . "px";
+        $this->attributes["style"]["top"] = $this->position["y"] . "px";
+        $this->attributes["style"]["left"] = $this->position["x"] . "px";
     }
 
     public static function createDefault(array $position)
@@ -166,8 +166,8 @@ class Rocket extends MovableEntity
     public function move(float $time) : void
     {
         parent::move($time);
-        $this["attributes"]["style"]["top"] = $this->position["y"] . "px";
-        $this["attributes"]["style"]["left"] = $this->position["x"] . "px";
+        $this->attributes["style"]["top"] = $this->position["y"] . "px";
+        $this->attributes["style"]["left"] = $this->position["x"] . "px";
     }
 }
 
@@ -186,13 +186,13 @@ class Application extends \PhpBlazor\Tag
         parent::__construct("div");
         $this->gameSettings = $settings;
         
-        $this["attributes"]["class"]->add("asteroids-app");
-        $this["attributes"]["style"]["height"] = $this->gameSettings["height"] . "px";
-        $this["attributes"]["style"]["width"] = $this->gameSettings["width"] . "px";
-        $this["attributes"]["tabindex"] = 0;
-
-        $this["attributes"]->addEvent("onkeydown", function($seq, $builder) {$builder->AddEventKeyboardCallback($seq, "onkeydown", function($e) {$this->HandleKeyDown($e);});});
-        $this["attributes"]->addEvent("onkeyup", function($seq, $builder) {$builder->AddEventKeyboardCallback($seq, "onkeyup", function($e) {$this->HandleKeyUp();});});
+        $this->attributes["class"]->add("asteroids-app");
+        $this->attributes["style"]["height"] = $this->gameSettings["height"] . "px";
+        $this->attributes["style"]["width"] = $this->gameSettings["width"] . "px";
+        $this->attributes["tabindex"] = 0;
+             
+        $this->attributes->addEvent("onkeydown", function($seq, $builder) {$builder->AddEventKeyboardCallback($seq, "onkeydown", function($e) {$this->HandleKeyDown($e);});});
+        $this->attributes->addEvent("onkeyup", function($seq, $builder) {$builder->AddEventKeyboardCallback($seq, "onkeyup", function($e) {$this->HandleKeyUp();});});
 
         $this->addButtons();
         $this->initGame();
@@ -201,41 +201,41 @@ class Application extends \PhpBlazor\Tag
     public function addButtons() : void
     {
         $button= new \PhpBlazor\Tag("button");
-        $button["attributes"]["style"]["position"] = "absolute";
-        $button["attributes"]["style"]["top"] = "700px";
-        $button["attributes"]["style"]["left"] = "0px";
+        $button->attributes["style"]["position"] = "absolute";
+        $button->attributes["style"]["top"] = "700px";
+        $button->attributes["style"]["left"] = "0px";
+               
+        $button->attributes->addEvent("onmousedown", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmousedown", function($e) {$this->HandleMouseDownMoveRight();});});
+        $button->attributes->addEvent("onmouseup", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmouseup", function($e) {$this->HandleMouseUp();});});
+               
+        $button->content[] = new \PhpBlazor\Text("Move Right");
 
-        $button["attributes"]->addEvent("onmousedown", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmousedown", function($e) {$this->HandleMouseDownMoveRight();});});
-        $button["attributes"]->addEvent("onmouseup", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmouseup", function($e) {$this->HandleMouseUp();});});
-        
-        $button["content"][] = new \PhpBlazor\Text("Move Right");
-
-        $this["content"][] = $button;
+        $this->content[] = $button;
         unset($button);
 
         $button= new \PhpBlazor\Tag("button");
-        $button["attributes"]["style"]["position"] = "absolute";
-        $button["attributes"]["style"]["top"] = "700px";
-        $button["attributes"]["style"]["left"] = "100px";
+        $button->attributes["style"]["position"] = "absolute";
+        $button->attributes["style"]["top"] = "700px";
+        $button->attributes["style"]["left"] = "100px";
         
-        $button["attributes"]->addEvent("onclick", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onclick", function($e) {$this->HandleFire();});});
+        $button->attributes->addEvent("onclick", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onclick", function($e) {$this->HandleFire();});});
         
-        $button["content"][] = new \PhpBlazor\Text("Fire");
+        $button->content[] = new \PhpBlazor\Text("Fire");
 
-        $this["content"][] = $button;
+        $this->content[] = $button;
         unset($button);
 
         $button= new \PhpBlazor\Tag("button");
-        $button["attributes"]["style"]["position"] = "absolute";
-        $button["attributes"]["style"]["top"] = "700px";
-        $button["attributes"]["style"]["left"] = "200px";
-        
-        $button["attributes"]->addEvent("onmousedown", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmousedown", function($e) {$this->HandleMouseDownMoveLeft();});});
-        $button["attributes"]->addEvent("onmouseup", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmouseup", function($e) {$this->HandleMouseUp();});});
-        
-        $button["content"][] = new \PhpBlazor\Text("Move Left");
+        $button->attributes["style"]["position"] = "absolute";
+        $button->attributes["style"]["top"] = "700px";
+        $button->attributes["style"]["left"] = "200px";
+               
+        $button->attributes->addEvent("onmousedown", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmousedown", function($e) {$this->HandleMouseDownMoveLeft();});});
+        $button->attributes->addEvent("onmouseup", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onmouseup", function($e) {$this->HandleMouseUp();});});
+               
+        $button->content[] = new \PhpBlazor\Text("Move Left");
 
-        $this["content"][] = $button;
+        $this->content[] = $button;
         unset($button);
     }
 
@@ -244,11 +244,11 @@ class Application extends \PhpBlazor\Tag
         $this->bullets = array();
         $this->asteroids = array();
         $this->background = Background::createDefault();
-        $this["content"][] = &$this->background; 
+        $this->content[] = &$this->background; 
 
         // 40 is a default height of rocket
         $this->rocket = Rocket::createDefault(["x" => 0, "y" => $this->gameSettings["height"] - 140 ]);
-        $this["content"][] = &$this->rocket;
+        $this->content[] = &$this->rocket;
 
         $this->time = 0;
     }
@@ -362,7 +362,7 @@ class Application extends \PhpBlazor\Tag
     {
         $builder->OpenElement($startIndex++, $this->name);
 
-        $startIndex = $this["attributes"]->writeWithTreeBuilder($builder, $startIndex);
+        $startIndex = $this->attributes->writeWithTreeBuilder($builder, $startIndex);
 
         $startIndex = $this->rocket->writeWithTreeBuilder($builder, $startIndex);
         $startIndex = $this->background->writeWithTreeBuilder($builder, $startIndex);
