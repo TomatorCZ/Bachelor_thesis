@@ -17,6 +17,12 @@ namespace PhpBlazor
 
         public PhpComponentRouteManager(Assembly[] assemblies)
         {
+            if (assemblies == null)
+            {
+                Routes = new Route[0];
+                return;
+            }
+
             List<Route> routes = new List<Route>();
 
             foreach (var assm in assemblies)

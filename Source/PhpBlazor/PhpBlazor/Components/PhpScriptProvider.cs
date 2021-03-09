@@ -153,7 +153,7 @@ namespace PhpBlazor
                 return NavigationInterception.EnableNavigationInterceptionAsync();
             }
 
-            //TODO:Turn forms to client side.
+            _ctx.CallJsVoid(JsResource.turnFormsToClient);
 
             return Task.CompletedTask;
         }

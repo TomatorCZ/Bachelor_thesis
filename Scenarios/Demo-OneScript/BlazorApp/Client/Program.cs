@@ -17,7 +17,11 @@ namespace BlazorApp.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            // Configure logging
+            builder.Logging.SetMinimumLevel(LogLevel.Debug); // Debug does not work
+
+            builder.Services.AddSingleton(new PhpBlazor.PhpComponentRouteManager(new[] { typeof(force).Assembly}));
+
 
             await builder.Build().RunAsync();
         }

@@ -16,6 +16,7 @@ namespace PhpBlazor
         private DotNetObjectReference<BlazorContext> _objRef;
         private PhpScriptProvider _component;
         private IJSRuntime _js;
+        private FileManager _fileManager;
 
         #region Create
         protected BlazorContext(IServiceProvider services) : base(services)
@@ -23,8 +24,6 @@ namespace PhpBlazor
             Output = Console.Out;
             _objRef = DotNetObjectReference.Create<BlazorContext>(this);
         }
-
-        public static BlazorContext Create() => Create(null);
 
         public static BlazorContext Create(PhpScriptProvider component)
         {
@@ -39,6 +38,7 @@ namespace PhpBlazor
             ctx.InitSuperglobals();
             ctx._component = component;
             ctx._js = component.Js;
+            ctx._fileManager = new FileManager(ctx);
             
             //
             ctx.AutoloadFiles();
@@ -62,6 +62,7 @@ namespace PhpBlazor
         }
         #endregion
 
+        #region Set Globals
         public void SetGet(Dictionary<string, StringValues> querry)
         {
             foreach (var item in querry)
@@ -82,16 +83,27 @@ namespace PhpBlazor
             }
         }
 
-        public Task SetFilesAsync()
+        public async Task SetFilesAsync()
         {
-            //TODO: Files
-            return Task.CompletedTask;
+            var files = _fileManager.FetchFiles();
+            foreach (var item in files)
+            {
+                Files.Add(item.fieldName, item);
+            }
+
+            await _fileManager.DownloadFilesAsync();
         }
+        #endregion
 
         public override void Dispose()
         {
             base.Dispose();
             _objRef?.Dispose();
+        }
+
+        public string GetDownloadFile(int id)
+        {
+            return _fileManager.GetFileData(id);
         }
 
         #region JSInterop

@@ -18,5 +18,6 @@ namespace PhpBlazor
         public static readonly string createUrlObject = "window.php.files.createUrlObject";
         public static readonly string createFile = "window.php.files.createFile";
         public static readonly string downloadFile = "window.php.files.downloadFile";
+        public static readonly string turnFormsToClient = "window.php.forms.turnFormsToClientSide";
     }
 }
