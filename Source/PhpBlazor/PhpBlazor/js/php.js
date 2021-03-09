@@ -46,7 +46,7 @@ window.php.forms = {
             if (this.filesData != undefined)
                 window.php.filesPresented = true;
 
-            window.php.internal.navigateTo(url);
+            window.php.internal.navigateFormTo(url);
             event.preventDefault();
             event.stopPropagation();
         });
@@ -89,6 +89,9 @@ window.php.forms = {
                 result.push(struct);
             }
         }
+
+        this.filesData = {};
+        window.php.filesPresented = false;
 
         return result;
     }
@@ -147,9 +150,6 @@ window.php.files = {
     },
 
     createFile: function (data, type, name) {
-        console.log(data);
-        console.log(type);
-        console.log(name);
         let file = new File([data], name, {
             type: type,
         });
@@ -159,7 +159,7 @@ window.php.files = {
 };
 
 window.php.internal = {
-    navigateTo: function (url) {
+    navigateFormTo: function (url) {
         var a = document.createElement('a');
         a.href = url;
         document.body.appendChild(a);

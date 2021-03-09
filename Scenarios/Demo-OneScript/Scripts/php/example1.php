@@ -1,4 +1,6 @@
 ﻿<h2>Form example 1</h2>
+<p>You can create a form and use get method.</p>
+
 <form method="get" action="php/viewform">
     <label>Username:</label>
     <input name="username" type="text" required="required"/><br/>

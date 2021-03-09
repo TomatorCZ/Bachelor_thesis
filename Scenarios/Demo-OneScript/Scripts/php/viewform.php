@@ -22,6 +22,7 @@
 		echo "<p>" . "Size: " . $file->size . "</p>";
 		echo "<p>" . "Type: " . $file->type . "</p>";
 		echo "<p>" . "Id: " . $file->id . "</p>";
+		echo "<p>Base64 content:\n" . GetBrowserFileContent($file->id) . "</p>";
 	}
 
 	foreach($_FILES as $key => $value)

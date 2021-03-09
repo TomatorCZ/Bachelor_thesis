@@ -43,7 +43,7 @@ namespace PhpBlazor
                 _downloaded.Add(item.id, await _ctx.CallJsAsync<string>(JsResource.getFileContentAsBase64, item.id));
             }
 
-            _fetched.Clear();
+            _fetched = new List<FormFile>();
         }
 
         public string GetFileData(int id) => _downloaded[id];

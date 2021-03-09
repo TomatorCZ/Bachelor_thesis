@@ -4,8 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+using PhpBlazor;
 using System.Threading.Tasks;
 
 namespace BlazorApp.Client
@@ -20,7 +19,7 @@ namespace BlazorApp.Client
             // Configure logging
             builder.Logging.SetMinimumLevel(LogLevel.Debug); // Debug does not work
 
-            builder.Services.AddSingleton(new PhpBlazor.PhpComponentRouteManager(new[] { typeof(force).Assembly}));
+            builder.AddPhp(new[] { typeof(force).Assembly});
 
 
             await builder.Build().RunAsync();

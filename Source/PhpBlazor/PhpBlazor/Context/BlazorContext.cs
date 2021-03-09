@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Microsoft.JSInterop;
 using Pchp.Core;
@@ -16,7 +17,9 @@ namespace PhpBlazor
         private DotNetObjectReference<BlazorContext> _objRef;
         private PhpScriptProvider _component;
         private IJSRuntime _js;
+        private ILoggerFactory _loggerFactory;
         private FileManager _fileManager;
+        private ILogger<BlazorContext> _logger;
 
         #region Create
         protected BlazorContext(IServiceProvider services) : base(services)
@@ -39,7 +42,8 @@ namespace PhpBlazor
             ctx._component = component;
             ctx._js = component.Js;
             ctx._fileManager = new FileManager(ctx);
-            
+            ctx._loggerFactory = component.LoggerFactory;
+            ctx._logger = ctx._loggerFactory.CreateLogger<BlazorContext>();
             //
             ctx.AutoloadFiles();
 
@@ -90,6 +94,7 @@ namespace PhpBlazor
             {
                 Files.Add(item.fieldName, item);
             }
+            Log.FetchingFiles(_logger, files);
 
             await _fileManager.DownloadFilesAsync();
         }
@@ -108,6 +113,7 @@ namespace PhpBlazor
 
         #region JSInterop
         //TODO: CallPhpFromJS
+
         public void CallJsVoid(string function, params object[] args) => (_js as IJSInProcessRuntime).InvokeVoid(function, args);
 
         public TResult CallJs<TResult>(string function, params object[] args) => (_js as IJSInProcessRuntime).Invoke<TResult>(function, args);
