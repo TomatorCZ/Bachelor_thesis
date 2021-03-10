@@ -1,5 +1,3 @@
-
-
 ## Status
 
 20.2.2021 - Scenario 2 is functional and can be reviewed for the first time.
@@ -12,13 +10,16 @@
 
 5.3.2021 - Scenario 1,2,3 is done and can be reviewed.
 
+10.3.2021 - Scenarios are recreated as Demo-(Web/PhpScript/PhpComponent/AllTogether) 
+
 ## Project structure
 
-The project is divided into 3 folders
+The project is divided into 4 folders
 
 - Playground - There are projects, which can be broken and they are used for experiments.
 - Scenarios - There are projects which represents individual scenarios. See the section <a href="#scenarios">Scenarios</a>.
 - Source - There is a project(s) which is shared by scenarios and are used for supporting to use PHP in Blazor.
+- Documents - There are documents, which are related to BT.
 
 ## API & Architecture
 
@@ -33,15 +34,14 @@ To be determined.
 
 ## Scenarios
 
-I made five possible scenarios, which demonstrates possible ways how to use PHP in Blazor. The first three scenarios are the point of interest. It will be determined later, if the next two scenarios are necessary to show.
+I made four possible scenarios, which demonstrates possible ways how to use PHP in Blazor.
 
 | Scenario | Description                                                  |
 | -------- | ------------------------------------------------------------ |
 | 1        | We have a part of application, which is better to write in PHP (Existing library, PHP syntax, etc..). So we want a opportunity to plug this part into an existing Blazor application. |
-| 2        | We have a part of application, which is heavy and the rendering is crucial. So we want more control above the rendering in PHP scripts and has an opportunity to plug it into an existing Blazor application. |
-| 3        | We want to write while web application in PHP, but the application should run on the client side. |
+| 2        | We have a part of application, which we want to write in PHP, but is heavy and the rendering is crucial. So we want more control above the rendering in other to make rendering more effective. |
+| 3        | We want to write whole web application in PHP, but the application should run on the client side. |
 | 4        | We have some common structures in PHP on the client side, which should be serialized, sent to server, and deserialized. |
-| 5        | We have a classical 3 layer application (Client-Server-Database) and we  want to securely work with the database on the client side. |
 
 It will be created demo in other to try and evaluate the approaches above.
 
