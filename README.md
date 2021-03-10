@@ -1,6 +1,7 @@
 <h1 align="center">
 Client-side execution of PHP applications compiled to .NET
 </h1>
+
 ### Introduction
 
 Blazor is a new technology enabling to run .NET applications directly in the browser using WebAssembly, a recently created binary instruction format adopted by major web browsers. Whilst PHP is the most popular language in the realm of web applications, it cannot run directly in the browser. The PeachPie compiler provides a way to compile projects written in PHP into Common Intermediate Language (CIL), enabling them to run on the .NET platform.
@@ -25,7 +26,7 @@ I created four demo, which demonstrates common usage of using the library.
 
 The web is placed in standalone project **Web**. You can see that there is no special constructs. 
 
-<img src="E:\OwnCode\Github\Bachelor_thesis\Documents\Pictures\web.png" alt="VS project" style="zoom:33%;" />
+<img src="./Documents/Pictures/web.png" alt="VS project" style="zoom:33%;" />
 
 The benefit of creation this web in this manner is client side execution and navigation of the scrips. You can try it yourself. The magic of this is hide in *PhpScriptProvider* class. 
 
@@ -129,7 +130,7 @@ You have to make same modification of client's *Main*, *index.html* and server's
 
 At the end, the components are designed to be able to be put together. So you can easily have static web in Blazor web. 
 
-![web](E:\OwnCode\Github\Bachelor_thesis\Documents\Pictures\webInweb.png)
+![web](./Documents/Pictures/webInweb.png)
 
 ### Project structure
 
