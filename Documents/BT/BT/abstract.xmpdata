@@ -1,5 +1,5 @@
 % Metadata to be stored in PDF, see documentation of the pdfx package for more details.
 
-\Author{Name Surname}
-\Title{Thesis title}
+\Author{Tomáš Husák}
+\Title{Client-side execution of PHP applications compiled to .NET}
 \Publisher{Charles University}

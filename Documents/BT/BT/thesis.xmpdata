@@ -1,7 +1,7 @@
 % Metadata to be stored in PDF, see documentation of the pdfx package for more details.
 
-\Author{Name Surname}
-\Title{Thesis title}
-\Keywords{keywords\sep more such\sep yet another}
+\Author{Tomáš Husák}
+\Title{Client-side execution of PHP applications compiled to .NET}
+\Keywords{PHP\sep .NET\sep Blazor\sep Peachpie}
 \Subject{Abstract of thesis}
 \Publisher{Charles University}
