@@ -1,15 +1,27 @@
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
+Nowdays, web applications are mostly dynamic in order to offer a convinient user interface.
+Dynamic features of a web application is achived by a programming language JavaScript which is supported by all modern web browsers like Google Chrome, Safari, Opera and Mozzila.
+In despite of advantages which has JavaScript like a manipulation with DOM, WebAPI and an easy syntax, there are also several severe disadvantages.
+
+The first of them is a slow execution and effectivness compered with other languages like C++ and CSharp.
+This became crutial for 3D graphics and another time expensive computations.
+Since December 2019, when the W3 Consortium has begun recommending WebAssembly, this problem is solved, because WebAssembly is almost as fast as native code in modern browsers.
+Another advantage of WebAssembly is being a target of compilation-friendly low-level languages like C or C++ due to its memory model.
+Althought there are exists ways, how to compile other high-level languages like CSharp or PHP.
+A concrete project relates to a PHP to WebAssembly compilation is \cite{Pib}.
+
+The second problem of Javascript relates to developing a whole web application in more than one single language even though there is Node.js and the project \cite{Pib} which has some limitations.
 PHP is the most popular server-side language.
-Websites are more interested in rich graphic interface in nowdays.
-Javascript has been developed for interact with Browser and DOM.
-Since developers have to understand two programming languages, there are more space for  mistakes. 
-One of goals of this thesis is designing a comfortable way, how developers can write a whole web application using only PHP.
-There already exists project \cite{Pib} which uses WebAssembly directly. 
-Since it is a WebAssembly, the code should run like in native enviroment.
-But there is an another way how to be able to write a php script and run it in browser.
-This thesis aims to make integration between PeachPie and Blazor which results in a same goal as previous mentioned project.
-Peachpie is able to compile PHP into CIL and Blazor runs CSharp code on clien-side.
-As a consequence of these technologies is a possibility to use PHP in an existing Blazor project, which can be beneficial for a large amount of PHP libraries. 
-So this approach has an extra feature that PHP and CSharp developers will be able to colaborate with their programming languages with minimum knowing of the integration. Another advantage is CSharp, PHP and JavaScript interop which offers more options for developer.
+Since developers have to understand two programming languages, there are more space for  mistakes.
+
+One of goals of this thesis is to design a comfortable way, how developers can write a whole web application using only PHP.
+It can be consider to reinvent a gear, but there is another way how to achieve similar results as the mentioned project and even more to add a new feature.
+
+This thesis aims to make an integration between Peachpie and Blazor which results in an interesting connection between PHP world of libraries for server-side processing and Blazor world which is an another way how to create dynamic web application without JavaScript.
+Peachpie is able to compile PHP into CIL and Blazor runs CSharp code on a clien-side.
+So this approach has an potencial to offer a posibility to PHP and CSharp developers colaborate with their programming languages using a minimum knowledge of the integration. 
+Another interesting functionality of this approach is full CSharp, PHP and JavaScript interop which offers more options for developers and future extensions.
+
+\change[inline]{TODO: Thesis overview}
