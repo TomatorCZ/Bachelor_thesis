@@ -1,0 +1,71 @@
+\chapter{Existing technologies}
+
+\section{WebAssembly}
+
+\cite{WebAssembly} is a new code format which can be run in today's browsers. 
+It has compact byte format and it's performance is near to native code. 
+WebAssembly is designed to be a compiling target of popular low-level languages like C or C++ due to it's memory model. 
+It should be able to support languages with carbage collector in the future. Advantage of this format is similarity with Javascript module ES2015 after compilation into machine code. 
+This enables browsers to execute it by Javascript runtime. 
+So it's security is same as code written in Javascript. 
+Because of the same runtime WebAssembly can call Javascript and vice versa.
+
+Despite of supporting to run WebAssembly in browser, the browser can't load it as a normal ES2015 module yet.
+WebAssembly Javasrcipt API was created in order to be able to load a WebAssembly to browser using JavaScript.
+
+\section{Mono}
+
+Mono is a .NET runtime which aims to mobile platforms. 
+Recently, they started to support \cite{compilation} into WebAssembly.
+This support allows executing CIL inside browsers.
+The compilation has two modes. 
+One of the modes compiles only Mono runtime which then  can executes .dll files without further compilation of them into WebAssembly.
+A consequence of this compilation is enabling to call Javascript and WebAPI from CIL.
+
+\section{Blazor}
+
+Blazor is a framework which provides a convinient way how to write dynamic web pages in CSharp.
+It offers two \cite{Hosting models} how to build your websites.
+
+The first one consists of two parts. Server part cares about serving web pages to client via SignalR.
+The thesis uses the second way which Microsoft refers as Blazor WebAssembly.
+
+Blazor WebAssembly uses server and client part as well.
+The main difference is in where the webpage is put together.
+The client side cares about rendering the page.
+This is possible due to Mono and WebAssembly Javascript interop which enables to modify DOM from CSharp using Mono Webassembly.
+For this purpose, there are constructs which can configure the behavoir of the web application.
+The behavoir is meant as which pages to show or services to offer.
+This all settings is done by client project.
+The server is used for serving resources of the wep application.
+Recources are static assets, .dll libraries including web applivation, mono runtime and so on.
+
+Content of the web application is composed from components.
+Component is a class which stands for generating a part of content.
+Balzor presents own virtual DOM to reduce changing DOM directly in browser in order to its demending performance.
+
+\change[inline]{TODO: Diff algorithm of Blazor}
+
+Because interleaving of HTML with other language turns out to be useful, the Razor language was introduced.
+This Razor differs from Razor used in .cshtml files.
+It is adapted to Blazor WebAssebmly enviroment which provides additional features and settings of this application.
+Antoher reason for using this format is to free developer from difficult using of mechanism for rendering a page content.
+
+The process of bootstrapping Blazor app to browser folows these steps. 
+Server gets a request for Blazor app. 
+The server responses with html page, which contains references to Javascript responsible to load the app. The Javascript code fetches remaing resources like .dll libraries and runs Mono module. 
+The runtime initialise the application using user defined .dll libraries.
+
+Remaing interaction is maintained by event handling.
+I divides it into two type of actions.
+\change[inline]{TODO: Navigation}
+\change[inline]{TODO: Components Events}
+
+\section{PeachPie}
+
+\change[inline]{TODO: What is PeachPie}
+\change[inline]{TODO: Compiling PHP to .NET}
+
+\section{PHP}
+
+\change[inline]{TODO: Classic web page in php}

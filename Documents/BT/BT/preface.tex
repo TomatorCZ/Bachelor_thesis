@@ -1,3 +1,15 @@
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
+PHP is the most popular server-side language.
+Websites are more interested in rich graphic interface in nowdays.
+Javascript has been developed for interact with Browser and DOM.
+Since developers have to understand two programming languages, there are more space for  mistakes. 
+One of goals of this thesis is designing a comfortable way, how developers can write a whole web application using only PHP.
+There already exists project \cite{Pib} which uses WebAssembly directly. 
+Since it is a WebAssembly, the code should run like in native enviroment.
+But there is an another way how to be able to write a php script and run it in browser.
+This thesis aims to make integration between PeachPie and Blazor which results in a same goal as previous mentioned project.
+Peachpie is able to compile PHP into CIL and Blazor runs CSharp code on clien-side.
+As a consequence of these technologies is a possibility to use PHP in an existing Blazor project, which can be beneficial for a large amount of PHP libraries. 
+So this approach has an extra feature that PHP and CSharp developers will be able to colaborate with their programming languages with minimum knowing of the integration. Another advantage is CSharp, PHP and JavaScript interop which offers more options for developer.
