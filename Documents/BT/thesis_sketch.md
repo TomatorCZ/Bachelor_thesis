@@ -8,6 +8,7 @@ Contains the most up-to-date outline.
 
    - Short introduction into web applications, give a high level overview of the problem (PHP Blazor interop, PHP client side, two languages for writing a web app)
    - Existing projects (pib, maybe SilverLight??)
+   - Overview of thesis
 
 2. Existing technologies (maybe 15 - 20 pages)
 
