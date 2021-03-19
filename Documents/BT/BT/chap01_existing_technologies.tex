@@ -81,38 +81,31 @@ The last item, which isn' used transparently, is a WebAssemblyHost builder.
 The builder configures the application and prepare the renderer which is used by components to render their content.
 
 Balzor presents own virtual DOM to reduce changing a DOM directly in a browser in order to its demending performance.
-\change[inline]{TODO: Render tree builder}
-\change[inline]{TODO: Renderer}
-\change[inline]{TODO: Diff algorithm}
-\change[inline]{TODO: Page Update}
-Rendering is based on the diff algorithm of Blazor.
-When the page is rendered for the first time, the diff algorithm is not necessary and DOM is updated according to RenderBatch which is generated from RenderTreeBuilder.
-After page update, the diff algorithm is executed before DOM update. This algorithm gereratech RenderBatch which only modifies elements, which was updated.
+Component works with RenderTreeBuilder which provides an interface for adding a content to the virtual DOM.
+An usage of RenderTreeBuilder is complex due to Blazor's diff algorithm which is used afterwards.
+RenderTreeBuilder is just a superstructure over Renderer which is responsible for updating the page.
+After all components used RenderTreeBuilder, the diff algorithm is used to minimize updating of browser's DOM.
+This algorithm used sequence numbers for parts of HTML to identify modified sections.
+Sequence numbers responds to an order of RenderTreeBuilder's instructions in the source code.
+A benefit of this information is detecting loops and conditional statements to generating smaller updates of DOM.  
+It follows browser's DOM update which is executed by Blazor's JavaScript support code called through Mono runtime.
 
-The algorithm uses sequence of numbers to identify which elements was modified.
-
-
-
-
-The process of bootstrapping Blazor app to browser folows these steps. 
-Server gets a request for Blazor app. 
-The server responses with html page, which contains references to Javascript responsible to load the app. The Javascript code fetches remaing resources like .dll libraries and runs Mono module. 
-The runtime initialise the application using user defined .dll libraries.
-
-Remaing interaction is maintained by event handling.
-I divides it into two type of actions.
-
+The process of bootstrapping Blazor App to a browser folows these steps. 
+Kestrel gets a request for a page which is contained in Blazor App. 
+The server responses with the index.html page which contains references to JavaScript support code (This code is refered as blazor.js and mono.js in the figure \ref{img01:wasm}) responsible to load and run the runtime with application part.
+The runtime runs the application using main method in Blazor App.
+Remaing interactions are maintained by event handling.
+I distinguish two types of events.
 The first type is a navigation.
-The \cite{navigation} can be triggered by an anchor, form or filling up the address bar.
-Address bar is handled seperated by browser.
-The remainings ways is handled by Javascript.
-Anchor is the one one which are is handled by Blazor app by default.
-Javascript tries to invoke navigation handler in Blazor app using a Mono WebAssembly gateway.
+The \cite{navigation} can be triggered by an anchor, form or filling up the url bar.
+The url bar is handled seperated by browser.
+The remainings ways can be influenced by JavaScript.
+Anchor is the only one which is handled by Blazor App by default.
+After clicking on an anchor, predefined methods in blazor.js tries to invoke navigation handler in Blazor App using a Mono WebAssembly gateway.
 This handler can be modified by user, but a default behavoir is implemented by a specialized component Router.
-The Router finds out all components, which implements an IComponent interface and tries to render the page according to path matching.
-The navigation can be redirected to server.
-
-The second type is events invoked by UI like onchange. These events are registred by RenderTreeBuilder with their callbacks. When the event is triggered, Javascript call right callback.
+The Router finds out all components, which implements an IComponent interface, by a reflection and tries to render the page according to path matching RouteAttribute of component.
+The navigation can be redirected to server if there is on match.
+The second type is events invoked by UI like onchange. These event's callbacks call right CSharp callbacks thanks to RenderTreeBuilder, which can conect CSharp callback with element's event.
 
 \section{PeachPie}
 
