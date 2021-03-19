@@ -1,32 +1,32 @@
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
-Nowdays, web applications are mostly dynamic in order to offer a convinient user interface.
-Dynamic features of a web application is achived by a programming language JavaScript which is supported by all modern web browsers like Google Chrome, Safari, Opera and Mozzila.
-In despite of advantages which has JavaScript like a manipulation with DOM, WebAPI and an easy syntax, there are also several severe disadvantages.
+Nowadays, web applications are mostly dynamic in order to offer a convenient user interface.
+Dynamic features of a web application are achieved by a programming language JavaScript which is supported by all modern web browsers like Google Chrome, Safari, Opera, and Mozzila.
+Despite advantages that have JavaScript, like manipulation with DOM, WebAPI, and easy syntax, there are also several severe disadvantages.
 
-The first of them is a slow execution and effectivness compered with other languages like C++ and CSharp.
-This became crutial for 3D graphics and another time expensive computations.
-Since December 2019, when the W3 Consortium has begun recommending WebAssembly, this problem is solved, because WebAssembly is almost as fast as native code in modern browsers.
+The first of them is a slow execution and effectiveness compared with other languages like C++ and CSharp.
+It became crucial for 3D graphics and, another time expensive computations.
+Since December 2019, when the W3 Consortium has begun recommending WebAssembly, this problem is solved because WebAssembly is almost as fast as native code in modern browsers.
 Another advantage of WebAssembly is being a target of compilation-friendly low-level languages like C or C++ due to its memory model.
-Althought there are exists ways, how to compile other high-level languages like CSharp or PHP.
+Although there are exists ways, how to compile other high-level languages like CSharp or PHP.
 A concrete project relates to a PHP to WebAssembly compilation is \cite{Pib}.
 
-The second problem of Javascript relates to developing a whole web application in more than one single language even though there is Node.js and the project \cite{Pib} which has some limitations.
+The second problem of Javascript relates to developing a whole web application in more than one single language even though there are Node.js and the project \cite{Pib} which has some limitations.
 PHP is the most popular server-side language.
-Since developers have to understand two programming languages, there are more space for  mistakes.
+Since developers have to understand two programming languages, there is more space for mistakes.
 
-One of goals of this thesis is to design a comfortable way, how developers can write a whole web application using only PHP.
-It can be consider to reinvent a gear, but there is another way how to achieve similar results as the mentioned project and even more to add a new feature.
+One of this thesis's goals is to design a comfortable way how developers can write a whole web application using only PHP.
+It can be considered to reinvent a gear, but there is another way how to achieve similar results as the mentioned project and even more to add a new feature.
 
-This thesis aims to make an integration between Peachpie and Blazor which results in an interesting connection between PHP world of libraries for server-side processing and Blazor world which is an another way how to create dynamic web application without JavaScript.
-Peachpie is able to compile PHP into CIL and Blazor runs CSharp code on a clien-side.
-So this approach has an potencial to offer a posibility to PHP and CSharp developers colaborate with their programming languages using a minimum knowledge of the integration. 
-Another interesting functionality of this approach is full CSharp, PHP and JavaScript interop which offers more options for developers and future extensions.
+This thesis aims to integrate Peachpie and Blazor, which results in an interesting connection between PHP world of libraries for server-side processing and Blazor world, which is another way how to create a dynamic web application without JavaScript.
+Peachpie is able to compile PHP into CIL, and Blazor runs CSharp code on a client-side.
+So this approach has the potential to offer a possibility to PHP and CSharp developers to collaborate with their programming languages using a minimum knowledge of the integration. 
+Another interesting functionality of this approach is full CSharp, PHP, and JavaScript interop which offers more options for developers and future extensions.
 
-The first chapter addresses existing technologies, which are used in the integration, alongside the existing project which uses directly compilation to WebAssembly.
-The second chapter describes the problem of running PHP on client-side and other problems related to used technologies.
-The third gives a detailed solution of the problem.
-There are examples which demonstrates how to use all aspects of the created solution in the chapter 4.
-In the chapter 5 you can see benchmarks which explores the limits of implementation and compares it with the already existing project.
+The first chapter addresses existing technologies used in the integration, alongside the existing project, which uses direct compilation to WebAssembly.
+The second chapter describes the problem of running PHP on the client-side and other problems related to used technologies.
+The third gives a detailed problem's solution.
+There are examples that demonstrate how to use all aspects of the created solution in chapter 4.
+In chapter 5, you can see benchmarks that explore the limits of implementation and compare them with the already existing project.
 And the last chapter relates to a conclusion of this solution. 
