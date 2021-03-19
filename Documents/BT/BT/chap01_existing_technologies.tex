@@ -1,61 +1,61 @@
 \chapter{Existing technologies}
 
-At the begining, I will introduce an existing solution of how to run PHP in a browser. 
-The project \cite{Pib} aims to using compiled php interpreter into WebAssembly which allows to evaluate a PHP code.
+In the beginning, I will introduce an existing solution of how to run PHP in a browser. 
+The project \cite{Pib} aims to use compiled PHP interpreter into WebAssembly, which allows evaluating a PHP code.
 The page has to import a specialized module php-wasm. 
 A PHP code is evaluated by writing a specialized script block or manually by JavaScript and API.
-PHP can afterwards interact with JavaScript using a specialized API.
-At the first glance, that might be good enough solution, but they are several parts which can be problematic due to PHP semantics.
-The solution doesn't solving globals. 
-This is resonable, because this is server's job, but you are not able to get information about a query part or handling forms without writing a JavaScript code.
-Next problem is a navigating. How a script can navigate to another script without an additional support code which has to be JavaScript.
+PHP can afterward interact with JavaScript using a specialized API.
+At first glance, that might be a good enough solution, but they are several parts that can be problematic due to PHP semantics.
+The solution doesn't solve globals. 
+This is reasonable because this is the server's job, but you are not able to get information about a query part or handling forms without writing a JavaScript code.
+The next problem is navigating how a script can navigate to another script without an additional support code which has to be JavaScript.
 These problems can be solved by following technologies and their integration.
 
 \section{WebAssembly}
 
-\cite{WebAssembly} is a new code format which can be run in today's browsers. 
-It has a compact byte format and it's performance is near to a native code. 
-WebAssembly is designed to be a compiling target of popular low-level languages like C or C++ due to it's memory model. 
+\cite{WebAssembly} is a new code format that can be run in today's browsers. 
+It has a compact byte format, and its performance is near to a native code. 
+WebAssembly is designed to be a compiling target of popular low-level languages like C or C++ due to its memory model. 
 It should be able to support languages with carbage collector in the future. 
-Advantage of this format is a similarity with Javascript modules ES2015 after compilation into a machine code. 
+The advantage of this format is a similarity with Javascript modules ES2015 after compilation into a machine code. 
 This enables browsers to execute it by a JavaScript runtime. 
-So it's security is as good as a code written in Javascript. 
+So its security is as good as a code written in Javascript. 
 Because of the same runtime, WebAssembly can call Javascript and vice versa.
 
-Despite of supporting to run WebAssembly in browser, the browser can't load it as a normal ES2015 module yet.
-WebAssembly Javasrcipt API was created in order to be able to load a WebAssembly to browser using JavaScript.
+Despite supporting to run WebAssembly in a browser, the browser cannot load it as a standard ES2015 module yet.
+WebAssembly JavaScript API was created in order to be able to load a WebAssembly to a browser using JavaScript.
 
 \section{Mono}
 
-Mono is a .NET runtime which aims to mobile platforms. 
+Mono is a .NET runtime that aims to mobile platforms. 
 Recently, they started to support \cite{compilation} into WebAssembly.
 This support allows executing CIL inside browsers.
 The compilation has two modes.
-The first one is compilation Mono runtime with all using assemlies.
-The second only compiles Mono runtime which then can executes .dll files without further compilation of them into WebAssembly.
-A consequence of these compilation into WebAssembly is enabling to call Javascript and WebAPI from .NET.
+The first one is compilation Mono runtime with all using assemblies.
+The second only compile Mono runtime, which then can execute .dll files without further compilation of them into WebAssembly.
+A consequence of these compilations into WebAssembly is enabling to call Javascript and WebAPI from .NET.
 
 \section{Blazor}
 
-Blazor is a framework which provides a convinient way how to write dynamic web pages using CSharp.
-Blazor platform is devided into two \cite{Hosting_models} which have different approach how to create web applications. 
-The first one is refered as Blazor Server App and has a similar methology like a common website written in PHP.
-The interesting inovation using SignalR which is a comunication protocol between the server and a client.
-But this thesis uses the second model which Microsoft refers as Blazor WebAssembly App enabling an offline support after loading the app into a browser.
+Blazor is a framework that provides a convenient way how to write dynamic web pages using CSharp.
+Blazor platform is divided into two \cite{Hosting_models} which have different approaches to creating web applications. 
+The first one is referred to as Blazor Server App and has a similar methodology to a standard website written in PHP.
+An interesting innovation is SignalR which is a communication protocol between the server and a client.
+However, this thesis uses the second model, which Microsoft refers to as Blazor WebAssembly App enabling offline support after loading the app into a browser.
 
 \subsection{Blazor WebAssembly App}
-From now on i will use Blazor App to refer Blazor WebAssembly App.
-Blazor App can be devided into two parts.
-The first part serves the main WebAssembly application and its additional resources which can be requested during a runtime.
+From now on, I will use Blazor App to refer Blazor WebAssembly App.
+Blazor App can be divided into two parts.
+The first part serves the main WebAssembly application and its additional resources, which can be requested during runtime.
 The second part is WebAssembly wrapped together with an additional user code.
-The division enables to choose a place for implementation of bussiness logic.
-If there is a bad connection, we can move the mejority of bussiness logic to client and use the server for connection to a database, otherwise we can use client only for rendering the page. It consists of the following components. 
-Kestrel with ASP.NET libraries provide server part of application.
-Mono runtime compiled to WebAssembly runs CSharp code inside browser.
-WebAssembly is important for be able to interact with DOM and JavaScript using CSharp without additional plugin which was necessary for older technologies like Microsoft Silverlight.
-Blazor's libraries provides constructs for manipulation with DOM and WebAPI together with rendering the page and JavaScript interop.
-And there are user code which using the libraries for creating dynamic pages with CSharp.
-A better imagination, how the app is situated on client side, can be represented by  the figure \ref{img01:wasm} copied from \cite{Glick2018}.
+The division enables to choose of a place for the implementation of business logic.
+If there is a bad connection, we can move the majority of business logic to the client and use the server for connection to a database; otherwise, we can use the client only for rendering the page. It consists of the following components. 
+Kestrel with ASP.NET libraries provides the server part of an application.
+Mono runtime compiled to WebAssembly runs CSharp code inside a browser.
+WebAssembly is essential for being able to interact with DOM and JavaScript using CSharp without an additional plugin, which was necessary for older technologies like Microsoft Silverlight.
+Blazor's libraries provide constructs for manipulation with DOM and WebAPI together with rendering the page and JavaScript interop.
+And there is a user's code that using the libraries for creating dynamic pages with CSharp.
+A better imagination, how the app is situated on the client-side, can be represented by the figure \ref{img01:wasm} copied from \cite{Glick2018}.
 
 \begin{figure}[H]\centering
 \includegraphics[width=140mm, height=100mm]{./img/BlazorExecution}
@@ -63,49 +63,49 @@ A better imagination, how the app is situated on client side, can be represented
 \label{img01:wasm}
 \end{figure}
 
-Technical details of interop with a browser is one part of the Blazor App.
-The main part is an architecture of the libraries.
+Technical details of interop with a browser are one part of the Blazor App.
+The main part is the architecture of the libraries.
 A common approach how to create a page is using the markup language Razor.
-There already exists Razor in common ASP.NET website where .cshtml extensions consist of this markup.
-Unfortunately the markup used in BlazorApp has the same name.
-From now on i will use Razor for the markup language which is content of .razor files in Blazor App.
-Because interleaving of HTML with other language turns out to be useful, the Razor uses spacial characters to identify CSharp code in HTML and convert it to rich content pages.
-A significant purpose of Razor is for generating CSharp structures, which represents parts of page, during compilation time.
-These structures have complex interface for rendering a page, so the markup is there in order to free user using complicated machanism for putting page together.
+There already exists Razor in standard ASP.NET website where .cshtml extensions consist of this markup.
+Unfortunately, the markup used in BlazorApp has the same name.
+From now on, I will use Razor for the markup language, which is the content of .razor files in Blazor App.
+Because interleaving HTML with other languages turns out to be helpful, the Razor uses special characters to identify CSharp code in HTML and convert it to rich content pages.
+A significant purpose of Razor is for generating CSharp structures, which represent parts of a page, during compilation time.
+These structures have a complex interface for rendering a page, so the markup is there in order to free users using a complicated mechanism for putting a page together.
 
-Blazor introduces Component which can represent a whole page or the part of it.
-Components can be arbitrarily put together in order to form a desired page.
-They can have different purposes, for example there is Router which takes care of routing the right page whenever the navigation is triggered.
-Alongside components there is a dispatcher which suplies aditional services like logger to components when they are creating.
-The last item, which isn' used transparently, is a WebAssemblyHost builder.
-The builder configures the application and prepare the renderer which is used by components to render their content.
+Blazor introduces a Component that can represent a whole page or the part of it.
+Components can be arbitrarily put together in order to form the desired page.
+They can have different purposes. For example, a Router takes care of routing the right page whenever the navigation is triggered.
+Alongside components, a dispatcher supplies additional services like logger to components when they are creating.
+The last item, which is not used transparently, is a WebAssemblyHost builder.
+The builder configures the application and prepares the renderer used by components to render their content.
 
-Balzor presents own virtual DOM to reduce changing a DOM directly in a browser in order to its demending performance.
-Component works with RenderTreeBuilder which provides an interface for adding a content to the virtual DOM.
-An usage of RenderTreeBuilder is complex due to Blazor's diff algorithm which is used afterwards.
-RenderTreeBuilder is just a superstructure over Renderer which is responsible for updating the page.
-After all components used RenderTreeBuilder, the diff algorithm is used to minimize updating of browser's DOM.
+Balzor presents its own virtual DOM to reduce changing a DOM directly in a browser to its demanding performance.
+A component works with RenderTreeBuilder, which provides an interface for adding content to the virtual DOM.
+The usage of RenderTreeBuilder is complex due to Blazor's diff algorithm, which is used afterward.
+RenderTreeBuilder is just a superstructure over Renderer, which is responsible for updating the page.
+The diff algorithm is used to minimize the browser's DOM  update after all components used RenderTreeBuilder to render their content.
 This algorithm used sequence numbers for parts of HTML to identify modified sections.
-Sequence numbers responds to an order of RenderTreeBuilder's instructions in the source code.
+Sequence numbers respond to an order of RenderTreeBuilder's instructions in the source code.
 A benefit of this information is detecting loops and conditional statements to generating smaller updates of DOM.  
-It follows browser's DOM update which is executed by Blazor's JavaScript support code called through Mono runtime.
+It follows the browser's DOM update, which is executed by Blazor's JavaScript support code called through Mono runtime.
 
-The process of bootstrapping Blazor App to a browser folows these steps. 
-Kestrel gets a request for a page which is contained in Blazor App. 
-The server responses with the index.html page which contains references to JavaScript support code (This code is refered as blazor.js and mono.js in the figure \ref{img01:wasm}) responsible to load and run the runtime with application part.
-The runtime runs the application using main method in Blazor App.
-Remaing interactions are maintained by event handling.
+The process of bootstrapping the Blazor App to a browser follows these steps. 
+Kestrel gets a request for a page that is contained in Blazor App. 
+The server responses with the index.html page, which contains references to JavaScript support code (This code is referred to as blazor.js and mono.js in the figure \ref{img01:wasm}) responsible for loading and running the runtime with the application part.
+The runtime runs the application using the Main method in Blazor App.
+The remaining interactions are maintained by event handling.
 I distinguish two types of events.
-The first type is a navigation.
-The \cite{navigation} can be triggered by an anchor, form or filling up the url bar.
-The url bar is handled seperated by browser.
-The remainings ways can be influenced by JavaScript.
-Anchor is the only one which is handled by Blazor App by default.
-After clicking on an anchor, predefined methods in blazor.js tries to invoke navigation handler in Blazor App using a Mono WebAssembly gateway.
-This handler can be modified by user, but a default behavoir is implemented by a specialized component Router.
-The Router finds out all components, which implements an IComponent interface, by a reflection and tries to render the page according to path matching RouteAttribute of component.
-The navigation can be redirected to server if there is on match.
-The second type is events invoked by UI like onchange. These event's callbacks call right CSharp callbacks thanks to RenderTreeBuilder, which can conect CSharp callback with element's event.
+The first type is navigation.
+The \cite{navigation} can be triggered by an anchor, form, or filling up the URL bar.
+The URL bar is handled separated by a browser.
+JavaScript can influence the remainings elements.
+Blazor App handles only an anchor by.
+After clicking on an anchor, predefined methods in blazor.js try to invoke navigation handler in Blazor App using a Mono WebAssembly gateway.
+A user can modify this handler, but a specialized component Router implements a default behavior.
+The Router finds out all components, which implements an IComponent interface, by a reflection and tries to render the page according to path matching RouteAttribute of a component.
+The navigation can be redirected to the server if there is no match.
+The second type is events invoked by UI like onchange. These event's callbacks call right CSharp callbacks thanks to RenderTreeBuilder, connecting CSharp callback with element's event.
 
 \section{PeachPie}
 
