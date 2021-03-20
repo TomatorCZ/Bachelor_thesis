@@ -29,7 +29,10 @@ Contains the most up-to-date outline.
    4. PeachPie
       - Explain what it is
       - Describe PHP to .NET compilation
+      - interoperability
+      - Creating libraries
       - Structs is not supported
+      - Custom attributes
    5. PHP
       - Give a short overview of language specification (paradigm, dynamic language, HTML interleaving, Globals, No async functions)
       
