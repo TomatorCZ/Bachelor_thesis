@@ -134,5 +134,29 @@ Csharp constructs like structs and asynchronous methods are undefined in PHP.
 
 \section{PHP}
 
-\change[inline]{TODO: Specification(paradigm, dynamic language, HTML interleaving, Globals, No async functions)}
-\change[inline]{TODO: Classic web page in php (Forms, HTML interleaving, Front controller, Database, Sessions, HTTP, JavaScript??)}
+This section describes the language with standard practice for website development.
+PHP was designed for generating a page on the server-side.
+This purpose creates several features that make website development easy.
+PHP has dynamic types in order to concentrate more on intuitive usage.
+The most of PHP application has the semantic of one-way pass.
+A request income to the server, which calls the script.
+The script generates a response and shutdowns.
+The intention of being a server-side language introduces unique global variables representing an incoming request.
+These variables are dictionaries.
+Three variables are relevant to the thesis.
+The GET variable stores parsed query part of the URL.
+The POST variable stores variables which are sent by post method.
+The FILES variable contains uploaded files.
+There is also a SESSION variable, which holds a user session.
+This variable will become needless because of the final solution.
+Global functions are the most notable characteristic of PHP despite wide-spread object-oriented programming.
+It is untypical to use asynchronous methods in PHP.
+
+It is hard to follow web application trends due to fast-changing technologies, but the following concepts are popular for a few years.
+The basic pattern is Front Controller.
+Usually, the main script invokes other parts of the program, based on the request, to deal with it and send the response back.
+An HTML interleaving has appeared to be a helpful method for data binding.
+The feature allows inserting a PHP code between HTML.
+These fragments do not have to form individual independent blocks of code closed in curly brackets.
+The only way how to add user's interaction with the page was web forms before Javascript.
+So most developers should be familiar with this concept.
