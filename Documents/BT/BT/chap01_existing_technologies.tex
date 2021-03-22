@@ -23,9 +23,9 @@ So its security is as good as a code written in Javascript.
 Because of the same runtime, WebAssembly can call Javascript and vice versa.
 
 \cite{Threads} support is currently discussed nowadays and appears to be realistic.
-After all, new versions of Google Chrome experiments with true multi-threading support despite of the chance of vulnerability.
-A replacement of multi-threading can be web workers refered in \cite{WebWorkers} article.
-The workers limitation is comunication with UI thread only by messages.
+After all, new versions of Google Chrome experiments with proper multi-threading support despite the chance of vulnerability.
+A replacement of multi-threading can be web workers mentioned \cite{WebWorkers} article.
+The worker's limitation is communication with UI thread only by messages.
 
 Despite supporting to run WebAssembly in a browser, the browser cannot load it as a standard ES2015 module yet.
 WebAssembly JavaScript API was created in order to be able to load a WebAssembly to a browser using JavaScript.
@@ -114,22 +114,22 @@ The second type is events invoked by UI like onchange. These event's callbacks c
 
 \section{Peachpie}
 
-\cite{Peachpie} is a modern compiler based on Roslyn and Phalenger project.
-It allows to compile PHP into a .NET assemmbly, which can be executed alongside standard .NET libraries.
+\cite{Peachpie} is a modern compiler based on Roslyn and Phalanger project.
+It allows compiling PHP into a .NET assembly, which can be executed alongside standard .NET libraries.
 Peachpie introduces several structures representing states, scripts, and variables of PHP written in Csharp.
-First of them is a context representing one request to PHP code.
-The context consists of super globals, global variables, declared functions, declared and included srcipts.
-A possibility of saving the context and using it later is a major advantage used in the solution.
-The context can be also consider as a configuration of comming script's execution.
-Every information about a request can be arrange to mock every situation on server-side.
-The compiler offers dedicated type of assembly for PHP libraries.
-Using this assembly can add addition functions, which can provides a extra nonstandard functinality as an interaction with a browser.
-Another advantage of the compiler is a great interoperability between PHP and .NET.
-An option to work with Csharp objects, attributes and calling methods will become crutial for achieving advanced interaction between Blazor and PHP.
+The first of them is a context representing one request to PHP code.
+The context consists of superglobals, global variables, declared functions, declared and included scripts.
+The possibility of saving the context and using it later is a significant advantage used in the solution.
+The context can also be considered as a configuration of the incoming script's execution.
+All information about a request can be arranged to mock every situation on the server-side.
+The compiler offers a dedicated type of assembly for PHP libraries.
+Using this assembly can add additional functions, which can provide an extra nonstandard functionality as an interaction with a browser.
+Another advantage of the compiler is the great interoperability between PHP and .NET.
+An option to work with Csharp objects, attributes and calling methods will become crucial for achieving advanced interaction between Blazor and PHP.
 
-However there are limitations following from differences of the languages and the stage of development.
-Availability of PHP extensions depend on binding these function to CSharp code giving equivalent results, even more a time and memory complexity together with supporting this code in Blazor can be tricky.
-The previous mentioned interoperability has limits as well.
+However, there are limitations following from differences in the languages and the stage of development.
+Availability of PHP extensions depends on binding these functions to CSharp code which gives equivalent results. The time and memory complexity of this code can be tricky in Blazor.
+The previously mentioned interoperability has limits as well.
 Csharp constructs like structs and asynchronous methods are undefined in PHP.
 
 \section{PHP}
