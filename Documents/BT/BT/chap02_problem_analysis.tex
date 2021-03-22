@@ -1,1 +1,22 @@
 \chapter{Problem analysis}
+
+The chapter devides the problem of running PHP on the client-side into two parts.
+The first part pays attention to adaptation and changing a PHP paradigm on the client-side.
+The second part describes the integration of Blazor and Peachpie. 
+The advantage of the application's client's part is easy preserving an application state.
+This is achieved by a browser storage, which remains until the application is shutdown.
+The imposibillity of preserving an application state on the server-side causes stateless HTTP protocol. There is an existing way called PHP sessions, but it has some disadvanteges.
+
+The transfer of PHP to the client-side has several problems. 
+The first of them is changing a DOM structure with respect to user's interaction with the page.
+A standard way how to interact is forms.
+The second of them is the server support.
+Superglobals like GET was filled transparently.
+GET variable can be obtained by an URL processing, but POST is a seperate information wrapped in request.
+Another data contained in the request are files.
+
+
+
+
+
+
