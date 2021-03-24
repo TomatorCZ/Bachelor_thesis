@@ -1,15 +1,66 @@
 \chapter{Existing technologies}
 
-In the beginning, I will introduce an existing solution of how to run PHP in a browser. 
-The project \cite{Pib} aims to use compiled PHP interpreter into WebAssembly, which allows evaluating a PHP code.
-The page has to import a specialized module php-wasm. 
-A PHP code is evaluated by writing a specialized script block or manually by JavaScript and API.
-PHP can afterward interact with JavaScript using a specialized API.
-At first glance, that might be a good enough solution, but they are several parts that can be problematic due to PHP semantics.
-The solution doesn't solve globals. 
-This is reasonable because this is the server's job, but you are not able to get information about a query part or handling forms without writing a JavaScript code.
-The next problem is navigating how a script can navigate to another script without an additional support code which has to be JavaScript.
-These problems can be solved by following technologies and their integration.
+This chapter describes a classical web application, written in PHP and Javascript, and its conventions helping us design a convenient mechanism of migrating PHP to a browser.
+It presents a WebAssembly specification, which follows the existing project using the format to achieve running PHP in a browser.
+Give short information about the language CSharp and Mono runtime used in Blazor.
+Introduces Blazor and Peachpie, which is integrated by the proposed solution.
+
+\section{PHP and server-side web application}
+
+The basic principle of web pages is a request-response architecture, where a client sends a request for the web page using an HTTP protocol and receives a response with requested data.
+A PHP language design makes handling these requests on the server easier.
+ 
+\subsection{Server-side web application}
+
+The previously mentioned principle has several consequences, which are important for our solution.
+It is necessary to hold the client's application state on the server because the HTTP is stateless.
+An interaction with a page not using next requests is limited by CSS.
+HTML presents a tag form as a way how to send additional information to the server after the first request.
+The form tag contains other tags representing fields, which are filled by the client. 
+Afterward, the form tag enables to encode these data and send it to the server.
+Get and post methods are relevant methods, how to perform manner of sending the data.
+Get method encodes the data into an URL.
+Post method encodes it in the request body, which does not appear in the URL.
+
+\subsection{Language specification}
+
+PHP \cite{5} is interpreted language maintained by The PHP Group.
+PHP was designed for generating a web page on the server-side.
+Since PHP is a scripting language, its entry-point is the first line of the executing script.
+
+The type system is dynamic.
+Variables represent just references to the heap, where all types of objects reside.
+An unusual thing is superglobals \cite{6}, which are built-in variables accessible from all scopes of the script.
+Following superglobals are relevant to the thesis.
+The GET variable stores parsed query part of the URL.
+The POST variable stores variables which are sent by post method.
+The FILES variable contains uploaded files.
+There is also a SESSION variable, which holds a user session.
+This variable will become needless because of the proposed solution.
+
+We can divide code in several ways.
+Global functions are the most notable characteristic of PHP despite wide-spread object-oriented programming.
+They are defined in the global scope and accessible from anywhere.
+The next option is an object inspired by object-oriented programming.
+There is also namespace support.
+And the highest level of division is the module representing the bag of code related to specific behavior like gd2 extension for graphics.
+
+There is not common to use asynchronous functions in a typical PHP application.
+One-way pass of the application is a standard convention because of request-response semantic.
+The iconic design pattern is Front Controller.
+Usually, the main script invokes other parts of the program, based on the request, to deal with it and send the response back.
+
+An HTML interleaving has appeared to be a helpful method for data binding.
+The feature allows inserting a PHP code between HTML.
+These fragments do not have to form individual independent blocks of code closed in curly brackets.
+
+Uploaded files sent by the client reside in two places.
+The file's information is stored in FILES.
+The uploaded file is saved as a temporary file, and standard reading operations can obtain the content.
+
+\section{Javascript and client-side web application}
+
+
 
 \section{WebAssembly}
 
@@ -30,7 +81,20 @@ The worker's limitation is communication with UI thread only by messages.
 Despite supporting to run WebAssembly in a browser, the browser cannot load it as a standard ES2015 module yet.
 WebAssembly JavaScript API was created in order to be able to load a WebAssembly to a browser using JavaScript.
 
-\section{Mono}
+\section{Project PHP in browser}
+
+In the beginning, I will introduce an existing solution of how to run PHP in a browser. 
+The project \cite{Pib} aims to use compiled PHP interpreter into WebAssembly, which allows evaluating a PHP code.
+The page has to import a specialized module php-wasm. 
+A PHP code is evaluated by writing a specialized script block or manually by JavaScript and API.
+PHP can afterward interact with JavaScript using a specialized API.
+At first glance, that might be a good enough solution, but they are several parts that can be problematic due to PHP semantics.
+The solution doesn't solve globals. 
+This is reasonable because this is the server's job, but you are not able to get information about a query part or handling forms without writing a JavaScript code.
+The next problem is navigating how a script can navigate to another script without an additional support code which has to be JavaScript.
+These problems can be solved by following technologies and their integration.
+
+\section{CSharp and Mono}
 
 Mono is a .NET runtime that aims to mobile platforms. 
 Recently, they started to support \cite{compilation} into WebAssembly.
@@ -132,35 +196,4 @@ Availability of PHP extensions depends on binding these functions to CSharp code
 The previously mentioned interoperability has limits as well.
 Csharp constructs like structs and asynchronous methods are undefined in PHP.
 
-\section{PHP}
 
-This section describes the language with standard practice for website development.
-PHP was designed for generating a page on the server-side.
-This purpose creates several features that make website development easy.
-PHP has dynamic types in order to concentrate more on intuitive usage.
-The most of PHP application has the semantic of one-way pass.
-A request income to the server, which calls the script.
-The script generates a response and shutdowns.
-The intention of being a server-side language introduces unique global variables representing an incoming request.
-These variables are dictionaries.
-Three variables are relevant to the thesis.
-The GET variable stores parsed query part of the URL.
-The POST variable stores variables which are sent by post method.
-The FILES variable contains uploaded files.
-There is also a SESSION variable, which holds a user session.
-This variable will become needless because of the final solution.
-Global functions are the most notable characteristic of PHP despite wide-spread object-oriented programming.
-It is untypical to use asynchronous methods in PHP.
-
-It is hard to follow web application trends due to fast-changing technologies, but the following concepts are popular for a few years.
-The basic pattern is Front Controller.
-Usually, the main script invokes other parts of the program, based on the request, to deal with it and send the response back.
-An HTML interleaving has appeared to be a helpful method for data binding.
-The feature allows inserting a PHP code between HTML.
-These fragments do not have to form individual independent blocks of code closed in curly brackets.
-The only way how to add user's interaction with the page was web forms before Javascript.
-So most developers should be familiar with this concept.
-
-Files uploading consists of two steps.
-The first step is save the file's information to object representing file. 
-The file is saved as temporary file and the content can be get by standard reading operations.
