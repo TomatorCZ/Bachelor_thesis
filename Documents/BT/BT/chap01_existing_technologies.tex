@@ -60,7 +60,49 @@ The uploaded file is saved as a temporary file, and standard reading operations 
 
 \section{Javascript and client-side web application}
 
+Control over the rendered page and WebAPI provided by a browser is a point of interest on the client-side.
+This functionality usually uses Javascript functions as wrappers. 
 
+\subsection{Client-side web application}
+
+The process of generating a web page follows several steps.
+A browser parses the HTML line by line. If a script occurs, the browser starts to execute the code.
+The order of processing is important for manipulation with an HTML structure.
+This limitation can be solved by web events mentioned later, but
+it is a convention to add scripts to the end of the body part after all HTML tags.
+
+We can image a web page as an XML tree.
+Its nodes are tags or text fragments, and its edges connect nodes with their children.
+One representation of this tree is Document Object Model (abbreviated DOM).
+Each node is represented by an object with special parameters relating to HTML and CSS. 
+The nodes can contain other nodes representing their children.
+Afterward, the document node represents the whole document together with its root node.
+
+Events are the most common method of how to react to changing a web page state.
+Every event can have some handlers(listeners).
+Whenever an event occurs, it calls all its listeners.
+There are many event types, but we will mention the ones that are important for us.
+HTML tags are the most common entities, which can have some events.
+For example, a button has an event onclick which triggers when a client clicks on the button. 
+Other events can represent a state of a page like onload which fires when the whole HTML document is parsed.
+
+A browser provides more APIs valuable for the application, like fetching extra data from a server or local storage.
+These APIs are mentioned as Web API \cite{7}.
+
+\subsection{Language specification}
+
+Javascript is a high-level language usually executed by a browser's dedicated Javascript engine but can also be run on a desktop by Node.
+It has dynamic typing.
+It is often used as a wrapper of Web APIs due to Javascript's essentiality in dynamic web pages.
+These APIs are accessible in global scope as an object or global functions.
+An example of API available in Javascript can be DOM API mentioned in the previous section.
+Javascript supports an event-driven style that helps to react to events conveniently.
+
+Javascript is single-threaded, which can be confusing with its constructs for promises.
+Promise is a structure representing an unfinished process.
+These processes can be chained.
+However, the structure can give an illusion of multi-threading. It uses the scheduler for planning the next task executed by the main thread.
+The single thread is critical for blocking operations which causes thread freezing.
 
 \section{WebAssembly}
 
