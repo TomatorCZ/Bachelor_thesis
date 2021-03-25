@@ -54,6 +54,8 @@ An HTML interleaving has appeared to be a helpful method for data binding.
 The feature allows inserting a PHP code between HTML.
 These fragments do not have to form individual independent blocks of code closed in curly brackets.
 
+\change[inline]{Example of PHP interleaving}
+
 Uploaded files sent by the client reside in two places.
 The file's information is stored in FILES.
 The uploaded file is saved as a temporary file, and standard reading operations can obtain the content.
@@ -106,7 +108,7 @@ The single thread is critical for blocking operations which causes thread freezi
 
 \section{WebAssembly}
 
-\cite{WebAssembly} is a new code format that can be run in today's browsers. 
+WebAssembly \cite{9} is a new code format that can be run in today's browsers. 
 It has a compact byte format, and its performance is near to a native code. 
 WebAssembly is designed to be a compiling target of popular low-level languages like C or C++ due to its memory model. 
 It should be able to support languages with carbage collector in the future. 
@@ -115,9 +117,9 @@ This enables browsers to execute it by a JavaScript runtime.
 So its security is as good as a code written in Javascript. 
 Because of the same runtime, WebAssembly can call Javascript and vice versa.
 
-\cite{Threads} support is currently discussed nowadays and appears to be realistic.
+Threads \cite{10} support is currently discussed nowadays and appears to be realistic.
 After all, new versions of Google Chrome experiments with proper multi-threading support despite the chance of vulnerability.
-A replacement of multi-threading can be web workers mentioned \cite{WebWorkers} article.
+A replacement of multi-threading can be web workers \cite{11}.
 The worker's limitation is communication with UI thread only by messages.
 
 Despite supporting to run WebAssembly in a browser, the browser cannot load it as a standard ES2015 module yet.
@@ -126,30 +128,38 @@ WebAssembly JavaScript API was created in order to be able to load a WebAssembly
 \section{Project PHP in browser}
 
 In the beginning, I will introduce an existing solution of how to run PHP in a browser. 
-The project \cite{Pib} aims to use compiled PHP interpreter into WebAssembly, which allows evaluating a PHP code.
+The project \cite{2} aims to use compiled PHP interpreter into WebAssembly, which allows evaluating a PHP code.
 The page has to import a specialized module php-wasm. 
 A PHP code is evaluated by writing a specialized script block or manually by JavaScript and API.
 PHP can afterward interact with JavaScript using a specialized API.
 At first glance, that might be a good enough solution, but they are several parts that can be problematic due to PHP semantics.
-The solution doesn't solve globals. 
+The solution doesn't solve superglobals. 
 This is reasonable because this is the server's job, but you are not able to get information about a query part or handling forms without writing a JavaScript code.
 The next problem is navigating how a script can navigate to another script without an additional support code which has to be JavaScript.
 These problems can be solved by following technologies and their integration.
 
 \section{CSharp and Mono}
 
+\change[inline]{.NET platform}
+
+\subsection{Mono}
+
 Mono is a .NET runtime that aims to mobile platforms. 
-Recently, they started to support \cite{compilation} into WebAssembly.
+Recently, they started to support compilation \cite{12} into WebAssembly.
 This support allows executing CIL inside browsers.
 The compilation has two modes.
 The first one is compilation Mono runtime with all using assemblies.
 The second only compile Mono runtime, which then can execute .dll files without further compilation of them into WebAssembly.
 A consequence of these compilations into WebAssembly is enabling to call Javascript and WebAPI from .NET.
 
+\subsection{Language specification}
+
+\change[inline]{Assembly and type system}
+
 \section{Blazor}
 
 Blazor is a framework that provides a convenient way how to write dynamic web pages using CSharp.
-Blazor platform is divided into two \cite{Hosting_models} which have different approaches to creating web applications. 
+Blazor platform is divided into two hosting models \cite{13} which have different approaches to creating web applications. 
 The first one is referred to as Blazor Server App and has a similar methodology to a standard website written in PHP.
 An interesting innovation is SignalR which is a communication protocol between the server and a client.
 However, this thesis uses the second model, which Microsoft refers to as Blazor WebAssembly App enabling offline support after loading the app into a browser.
@@ -166,7 +176,7 @@ Mono runtime compiled to WebAssembly runs CSharp code inside a browser.
 WebAssembly is essential for being able to interact with DOM and JavaScript using CSharp without an additional plugin, which was necessary for older technologies like Microsoft Silverlight.
 Blazor's libraries provide constructs for manipulation with DOM and WebAPI together with rendering the page and JavaScript interop.
 And there is a user's code that using the libraries for creating dynamic pages with CSharp.
-A better imagination, how the app is situated on the client-side, can be represented by the figure \ref{img01:wasm} copied from \cite{Glick2018}.
+A better imagination, how the app is situated on the client-side, can be represented by the figure \ref{img01:wasm} copied from the article \cite{15}.
 
 \begin{figure}[H]\centering
 \includegraphics[width=140mm, height=100mm]{./img/BlazorExecution}
@@ -191,6 +201,8 @@ Alongside components, a dispatcher supplies additional services like logger to c
 The last item, which is not used transparently, is a WebAssemblyHost builder.
 The builder configures the application and prepares the renderer used by components to render their content.
 
+\change[inline]{Example of component class generated from Razor}
+
 Balzor presents its own virtual DOM to reduce changing a DOM directly in a browser to its demanding performance.
 A component works with RenderTreeBuilder, which provides an interface for adding content to the virtual DOM.
 The usage of RenderTreeBuilder is complex due to Blazor's diff algorithm, which is used afterward.
@@ -208,7 +220,7 @@ The runtime runs the application using the Main method in Blazor App.
 The remaining interactions are maintained by event handling.
 I distinguish two types of events.
 The first type is navigation.
-The \cite{navigation} can be triggered by an anchor, form, or filling up the URL bar.
+The navigation \cite{14} can be triggered by an anchor, form, or filling up the URL bar.
 The URL bar is handled separated by a browser.
 JavaScript can influence the remainings elements.
 Blazor App handles only an anchor by.
@@ -220,7 +232,7 @@ The second type is events invoked by UI like onchange. These event's callbacks c
 
 \section{Peachpie}
 
-\cite{Peachpie} is a modern compiler based on Roslyn and Phalanger project.
+Peachpie \cite{16} is a modern compiler based on Roslyn and Phalanger project.
 It allows compiling PHP into a .NET assembly, which can be executed alongside standard .NET libraries.
 Peachpie introduces several structures representing states, scripts, and variables of PHP written in Csharp.
 The first of them is a context representing one request to PHP code.
