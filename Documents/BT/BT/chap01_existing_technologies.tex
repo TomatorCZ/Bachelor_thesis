@@ -137,7 +137,6 @@ WebAssembly JavaScript API was created in order to be able to load a WebAssembly
 
 \section{Project PHP in browser}
 
-In the beginning, I will introduce an existing solution of how to run PHP in a browser. 
 The project \cite{2} aims to use compiled PHP interpreter into WebAssembly, which allows evaluating a PHP code.
 The page has to import a specialized module php-wasm. 
 A PHP code is evaluated by writing a specialized script block or manually by JavaScript and API.
@@ -150,7 +149,14 @@ These problems can be solved by following technologies and their integration.
 
 \section{CSharp and Mono}
 
-\change[inline]{.NET platform}
+We have to introduce .NET \cite{17} in other to understand the following sections fully.
+.NET is a free and open-source project primarily developed by Microsoft.
+It is a cross-platform successor to .NET Framework.
+It consists of core libraries and runtime, which runs a unique code format CIL standing for Common Intermediate language on various environments.
+The runtime is often named CLR (Common Language Runtime) and represents a virtual machine interpreting the code into the machine code.
+The libraries can represent whole frameworks like ASP.NET, which aims to web development.
+The CIL is a compilation target of languages like CSharp, Visual Basic, or FSharp.
+The most common granularity of .NET projects is an assembly formed from a bunch of code representing a library or an executable program.
 
 \subsection{Mono}
 
@@ -164,7 +170,10 @@ A consequence of these compilations into WebAssembly is enabling to call Javascr
 
 \subsection{Language specification}
 
-\change[inline]{Assembly and type system}
+CSharp is a high-level language using strong typing and a garbage collector.
+It has a multi-paradigm, but its common characteristic is the objected-oriented style.
+These features cause that CSharp is a good language for a huge project which needs discipline from developers to hold the code understandable and manageable.
+CSharp is used on the server-side as well as PHP.
 
 \section{Blazor}
 
