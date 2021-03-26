@@ -211,16 +211,83 @@ Unfortunately, the markup used in BlazorApp has the same name.
 From now on, I will use Razor for the markup language, which is the content of .razor files in Blazor App.
 Because interleaving HTML with other languages turns out to be helpful, the Razor uses special characters to identify CSharp code in HTML and convert it to rich content pages.
 A significant purpose of Razor is for generating CSharp structures, which represent parts of a page, during compilation time.
-These structures have a complex interface for rendering a page, so the markup is there in order to free users using a complicated mechanism for putting a page together.
+These structures have a complex interface for rendering a page, so the markup is there in order to free users using a complicated mechanism for putting a page together. 
+We can see an example of web page in listing \ref{lst:razorpage}.
 
-Blazor introduces a Component that can represent a whole page or the part of it.
+\begin{lstlisting}[basicstyle=\small, caption=Example of Razor page., label={lst:razorpage}]
+@page "/example"
+@inject HttpClient Http
+
+<h1>Example</h1>
+@if (!loaded)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <p>Ticks: @ticks</p>
+}
+
+@code {
+    private bool loaded = false;
+    private int ticks = 0;
+
+    protected override async Task OnInitializedAsync() {
+        ticks = await Http.GetFromJsonAsync<int>("ticks.json");
+        loaded = true;
+    }
+}
+\end{lstlisting}
+
+Razor provides a special sign at which follows with dedicated keywords.
+We can see a page keyword determining the path of the page. An inject keyword represents a service injection. An if keyword determines a standard condition, and a code keyword contains a regular CSharp code.
+These features are afterward transformed into CSharp entities forming a special class.
+
+Blazor introduces a Component class that can represent a whole page or the part of it.
 Components can be arbitrarily put together in order to form the desired page.
-They can have different purposes. For example, a Router takes care of routing the right page whenever the navigation is triggered.
+We can see the generated Component from listing \ref{lst:razorpage} in listing \ref{lst:component}.
+
+\begin{lstlisting}[basicstyle=\small, caption=Razor page generated to the CSharp class., label={lst:component}]
+[Route("/example")]
+public class Index : ComponentBase {
+	private bool loaded = false;
+	private int ticks = 0;
+	
+	[Inject] private HttpClient Http { get; set; }
+
+	protected override void BuildRenderTree(RenderTreeBuilder __builder) {
+		__builder.AddMarkupContent(0, "<h1>Example</h1>");
+		if (!loaded)
+		{
+			__builder.AddMarkupContent(1, "<p>Loading...</p>");
+			return;
+		}
+		__builder.OpenElement(2, "p");
+		__builder.AddContent(3, "Ticks: ");
+		__builder.AddContent(4, ticks);
+		__builder.CloseElement();
+	}
+
+	protected override async Task OnInitializedAsync() {
+		ticks = await Http.GetFromJsonAsync<int>("ticks.json");
+		loaded = true;
+	}
+}
+\end{lstlisting}
+
+We can assign the Razor keywords to parts of the code in the listing.
+Page keyword stands for Route attribute.
+Inject keyword stands for parameter attribute. The parameter is assigned by a dispatcher, mentioned later, during the initialization.
+Code keyword is a part of class content.
+Another markup is transformed into calling a specialized method in the BuildRenderTree function, which renders the page. 
+There will be more information about rendering later in this section.
+
+The components can have different purposes. For example, a Router takes care of routing the right page whenever the navigation is triggered.
 Alongside components, a dispatcher supplies additional services like logger to components when they are creating.
+The dispather is a specialized class initialized in the begining of the application.
+
 The last item, which is not used transparently, is a WebAssemblyHost builder.
 The builder configures the application and prepares the renderer used by components to render their content.
-
-\change[inline]{Example of component class generated from Razor}
 
 Balzor presents its own virtual DOM to reduce changing a DOM directly in a browser to its demanding performance.
 A component works with RenderTreeBuilder, which provides an interface for adding content to the virtual DOM.
