@@ -24,13 +24,13 @@ Post method encodes it in the request body, which does not appear in the URL.
 
 \subsection{Language specification}
 
-PHP \cite{5} is interpreted language maintained by The PHP Group.
+PHP \squarecite{5} is interpreted language maintained by The PHP Group.
 PHP was designed for generating a web page on the server-side.
 Since PHP is a scripting language, its entry-point is the first line of the executing script.
 
 The type system is dynamic.
 Variables represent just references to the heap, where all types of objects reside.
-An unusual thing is superglobals \cite{6}, which are built-in variables accessible from all scopes of the script.
+An unusual thing is superglobals \squarecite{6}, which are built-in variables accessible from all scopes of the script.
 Following superglobals are relevant to the thesis.
 The GET variable stores parsed query part of the URL.
 The POST variable stores variables which are sent by post method.
@@ -99,7 +99,7 @@ For example, a button has an event onclick which triggers when a client clicks o
 Other events can represent a state of a page like onload which fires when the whole HTML document is parsed.
 
 A browser provides more APIs valuable for the application, like fetching extra data from a server or local storage.
-These APIs are mentioned as Web API \cite{7}.
+These APIs are mentioned as Web API \squarecite{7}.
 
 \subsection{Language specification}
 
@@ -118,7 +118,7 @@ The single thread is critical for blocking operations which causes thread freezi
 
 \section{WebAssembly}
 
-WebAssembly \cite{9} is a new code format that can be run in today's browsers. 
+WebAssembly \squarecite{9} is a new code format that can be run in today's browsers. 
 It has a compact byte format, and its performance is near to a native code. 
 WebAssembly is designed to be a compiling target of popular low-level languages like C or C++ due to its memory model. 
 It should be able to support languages with carbage collector in the future. 
@@ -127,9 +127,9 @@ This enables browsers to execute it by a JavaScript runtime.
 So its security is as good as a code written in Javascript. 
 Because of the same runtime, WebAssembly can call Javascript and vice versa.
 
-Threads \cite{10} support is currently discussed nowadays and appears to be realistic.
+Threads \squarecite{10} support is currently discussed nowadays and appears to be realistic.
 After all, new versions of Google Chrome experiments with proper multi-threading support despite the chance of vulnerability.
-A replacement of multi-threading can be web workers \cite{11}.
+A replacement of multi-threading can be web workers \squarecite{11}.
 The worker's limitation is communication with UI thread only by messages.
 
 Despite supporting to run WebAssembly in a browser, the browser cannot load it as a standard ES2015 module yet.
@@ -137,7 +137,7 @@ WebAssembly JavaScript API was created in order to be able to load a WebAssembly
 
 \section{Project PHP in browser}
 
-The project \cite{2} aims to use compiled PHP interpreter into WebAssembly, which allows evaluating a PHP code.
+The project \squarecite{2} aims to use compiled PHP interpreter into WebAssembly, which allows evaluating a PHP code.
 The page has to import a specialized module php-wasm. 
 A PHP code is evaluated by writing a specialized script block or manually by JavaScript and API.
 PHP can afterward interact with JavaScript using a specialized API.
@@ -149,7 +149,7 @@ These problems can be solved by following technologies and their integration.
 
 \section{CSharp and Mono}
 
-We have to introduce .NET \cite{17} in other to understand the following sections fully.
+We have to introduce .NET \squarecite{17} in other to understand the following sections fully.
 .NET is a free and open-source project primarily developed by Microsoft.
 It is a cross-platform successor to .NET Framework.
 It consists of core libraries and runtime, which runs a unique code format CIL standing for Common Intermediate language on various environments.
@@ -161,7 +161,7 @@ The most common granularity of .NET projects is an assembly formed from a bunch 
 \subsection{Mono}
 
 Mono is a .NET runtime that aims to mobile platforms. 
-Recently, they started to support compilation \cite{12} into WebAssembly.
+Recently, they started to support compilation \squarecite{12} into WebAssembly.
 This support allows executing CIL inside browsers.
 The compilation has two modes.
 The first one is compilation Mono runtime with all using assemblies.
@@ -306,7 +306,7 @@ The runtime runs the application using the Main method in Blazor App.
 The remaining interactions are maintained by event handling.
 I distinguish two types of events.
 The first type is navigation.
-The navigation \cite{14} can be triggered by an anchor, form, or filling up the URL bar.
+The navigation \squarecite{14} can be triggered by an anchor, form, or filling up the URL bar.
 The URL bar is handled separated by a browser.
 JavaScript can influence the remainings elements.
 Blazor App handles only an anchor by.
@@ -318,7 +318,7 @@ The second type is events invoked by UI like onchange. These event's callbacks c
 
 \section{Peachpie}
 
-Peachpie \cite{16} is a modern compiler based on Roslyn and Phalanger project.
+Peachpie \squarecite{16} is a modern compiler based on Roslyn and Phalanger project.
 It allows compiling PHP into a .NET assembly, which can be executed alongside standard .NET libraries.
 Peachpie introduces several structures representing states, scripts, and variables of PHP written in Csharp.
 The first of them is a context representing one request to PHP code.
