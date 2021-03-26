@@ -88,8 +88,19 @@
 
 %%% User defined macors
 
+%%% Coding packages for pseudocode 
+\usepackage{listings}
+\lstset
+{
+	frame=tlrb,
+	numbers=left,
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=2,
+	literate={\ \ }{{\ }}1
+}
+
 %%% Todo notes
-%%% From Denis Leskovar
 \usepackage{xargs}	% Use more than one optional parameter in a new commands
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 \newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}

@@ -52,9 +52,19 @@ Usually, the main script invokes other parts of the program, based on the reques
 
 An HTML interleaving has appeared to be a helpful method for data binding.
 The feature allows inserting a PHP code between HTML.
-These fragments do not have to form individual independent blocks of code closed in curly brackets.
+These fragments do not have to form individual independent blocks of code closed in curly brackets. We can see usage of the interleaving in listing \ref{lst:HTMLinterleaving}.
 
-\change[inline]{Example of PHP interleaving}
+\begin{lstlisting}[basicstyle=\small, caption=HTML interleaving.,
+  language=HTML, label={lst:HTMLinterleaving}]
+<body>
+<h1>Superglobal GET</h1>
+<?php
+	foreach($_GET as $key => $value) {
+?>
+	<p><?php echo $key; ?> => <?php echo $value; ?></p>
+<?php } ?>
+</body>
+\end{lstlisting}
 
 Uploaded files sent by the client reside in two places.
 The file's information is stored in FILES.
