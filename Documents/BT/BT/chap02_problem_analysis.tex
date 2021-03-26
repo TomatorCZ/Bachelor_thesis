@@ -1,19 +1,57 @@
 \chapter{Problem analysis}
 
-The chapter devides the problem of running PHP on the client-side into two parts.
-The first part pays attention to adaptation and changing a PHP paradigm on the client-side.
-The second part describes the integration of Blazor and Peachpie. 
-The advantage of the application's client's part is easy preserving an application state.
-This is achieved by a browser storage, which remains until the application is shutdown.
-The imposibillity of preserving an application state on the server-side causes stateless HTTP protocol. There is an existing way called PHP sessions, but it has some disadvanteges.
+This chapter describes the main problems together with using technologies to help to solve them.
+In the end, we will introduce the proposed solution to the problem.
 
-The transfer of PHP to the client-side has several problems. 
-The first of them is changing a DOM structure with respect to user's interaction with the page.
-A standard way how to interact is forms.
-The second of them is the server support.
-Superglobals like GET was filled transparently.
-GET variable can be obtained by an URL processing, but POST is a seperate information wrapped in request.
-Another data contained in the request are files.
+Current problems of migrating PHP to a browser divides into different types of tasks that have to be done.
+In the beginning, we have to load scripts alongside the Blazor app into a browser. 
+Afterward, navigation to the scripts is essential for making the PHP website client-side.
+The ability to find the desired script should be adopted to Blazor's environment in order to combine PHP scripts with Razor pages.
+Mocking the server role on the client-side will be another important feature to make this migration familiar with standard PHP usage.
+It consists of managing superglobals like GET or POST, file management.
+Because we can save the application state, we bring a new feature of choosing the preservation of the script's context to the next evaluation.
+The interaction with a user is a challenge for PHP due to its server role.
+And the last problem will be with evaluating the PHP code.
+Rendering the whole page is a demanding computation.
+It can be critical for sections, which tend to change their content often.
+ 
+\subsection{Proposed solution}
+The main idea of migrating PHP to a browser is to integrate Peachpie with Blazor.
+In the beginning, we have to think of how we can put the scripts into a browser.
+Peachpie can solve it.
+It compiles our scripts into .NET assembly, which consists of all information about the scripts.
+We can reference it from a Blazor app as a standard CSharp code when we have the assembly.
+We have to ensure that compiler will think the application uses the assembly due to cutting unnecessarily assemblies mentioned in the Blazor section.
+The process results in loading the assembly alongside the Blazor application into a browser.
+However, this could be considered as the major part of the problem.
+How to reference and evaluate the scripts is not clear, and there will be many decisions that will not be silver bullets.
+
+We can use a Blazor component class in order to represent a particular script in the Blazor application.
+This component should be able to find and evaluate a specified script from the assembly.
+This approach can benefit from the component's reusability.
+Afterward, we will be able to compose the component with others to make the desired layout.
+Before that, we have to make finding and evaluation the script clear.
+
+From this time, we have to distinguish between the purposes of the PHP code.
+We will create two components for each of them.
+We make the reason clear later in the section and describe detail in the following chapter.
+
+The first purpose is to free the script from Blazor.
+It is done by finding the script by the name obtained from a component's parameter or the URL.
+The script's evaluation is done via caching its output and adding it as markup text to the RenderTreeBuilder.
+It is is a good approach for transparent use of Blazor, but it is ineffective for often rendering.
+
+\change[inline]{User interaction -> forms}
+\change[inline]{Superglobals get, post, files}
+
+The second purpose is to offer the complete interface of Blazor.
+An inheritance can achieve this.
+The PHP class can inherit the CSharp component class due to Peachpie.
+The consequence of this is accessible Blazor functions for rendering the content.
+
+However, these purposes are different. They can be combined due to a Component interface.
+
+\change[inline]{Full control over the rendering}
 
 
 

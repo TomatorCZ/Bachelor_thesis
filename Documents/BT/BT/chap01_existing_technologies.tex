@@ -316,6 +316,8 @@ The Router finds out all components, which implements an IComponent interface, b
 The navigation can be redirected to the server if there is no match.
 The second type is events invoked by UI like onchange. These event's callbacks call right CSharp callbacks thanks to RenderTreeBuilder, connecting CSharp callback with element's event.
 
+\change[inline]{Add cutting unneccessarly references to make the app smaller.}
+
 \section{Peachpie}
 
 Peachpie \squarecite{16} is a modern compiler based on Roslyn and Phalanger project.
@@ -330,6 +332,9 @@ The compiler offers a dedicated type of assembly for PHP libraries.
 Using this assembly can add additional functions, which can provide an extra nonstandard functionality as an interaction with a browser.
 Another advantage of the compiler is the great interoperability between PHP and .NET.
 An option to work with Csharp objects, attributes and calling methods will become crucial for achieving advanced interaction between Blazor and PHP.
+
+\change[inline]{Saving script information in the assembly}
+\change[inline]{Inheriting the CSharp classes}
 
 However, there are limitations following from differences in the languages and the stage of development.
 Availability of PHP extensions depends on binding these functions to CSharp code which gives equivalent results. The time and memory complexity of this code can be tricky in Blazor.
