@@ -1,49 +1,65 @@
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
-Nowadays, web applications are mostly dynamic in order to offer a convenient user interface.
-Classical static pages depend on a markup language HTML, which describes a text's structure in a browser and a rendering algorithm interpreting this language.
+We can divide web applications into two types by roles of server and client.
+However, they use different technologies for their purpose.
+We will start with common parts.
+An internet protocol, HTTP, usually carries out the communication between a server and a client.
+A client uses a web browser for requesting a server.
+A markup language HTML is essential for describing a page's structure.
+A browser is responsible for interpreting and rendering the page's content.
+It is a web application's environment for further interaction.
 The need to adjust content by different styles initiates standardizing CSS language, which enriches pages with a wide graphical content.
-However, this combination of CSS and HTML is sometimes sufficient. An opportunity to have full control over a page is necessary to make the page looking similar to a desktop application.
-This type of application needs dedicated technology, which allows manipulation with a page structure, reacts to on-page events and controls the browser's behavior.
-However, many attempts to create rich Internet applications using technologies like obsoleted Silverlight, developed by Microsoft or Adobe Flash Player, were functional. 
-The major disadvantage was the need to add a plugin to a browser.
-This reality causes problems with an installation, versions, and other complications connected with plugins.
-The solution came with a scripting language, Javascript, which became a standard in most browsers like Google Chrome, Safari, Opera, and Mozzila.
-Despite a first looking ineffective, a community devotes a huge amount of resources to make the language optimal for complex tasks.
-However, Javascript is a powerful language, there are language-specific features, which are harder replaceable by the language.
+\par
+The first type is server-based web applications.
+A server prepares the page, makes additional computations related to the request, and sends it back to the client.
+Having a business logic on a server-side is the main objective.
+The most popular language for server-side scripting becomes PHP.
+\change[inline]{Add a statistic for the popularity of PHP}
+\par
+The second type is client-based web applications, where major business logic is moved to a client's browser.
+However, the combination of CSS and HTML is sometimes sufficient.
+This type of application needs dedicated technologies, which allow manipulation with a page structure, reacts to on-page events, and controls the browser's behavior.
+Many languages were enabling the manipulation, but they were not usually supported by most browsers like Google Chrome, Safari, Opera, and Mozzila.
+The scripting language Javascript became a browser standard from these supports.
+\par
+However, Javascript is a powerful language.
+There are language-specific features, which are harder replaceable by the language.
+Despite the urge, many technologies like Silverlight, which runs C\# code in a browser, or Adobe Flash Player with Actionscript were deprecated due to insufficient support across the browsers.
 There appeared a portable binary-code format for executing programs, WebAssembly (abbreviated WASM) \squarecite{1} in 2015.
-WebAssembly aims to high-performance applications on web pages.
-The advantage of WebAssembly is a target of compilation-friendly low-level languages like C or C++ due to its memory model.
-Although there are exists ways, how to compile other high-level languages like CSharp or PHP.
-Since December 2019, when the W3 Consortium has begun recommending WebAssembly, it is easy to migrate standard desktop languages to modern browsers supporting this recommendation.
-
-The most popular language becomes PHP, talking about a server-side world.
+WebAssembly aims to secure high-performance applications on web pages.
+Interop with Javascript makes the format as powerful as the language.
+The advantage of WebAssembly is a being compilation target for many programming languages.
+Since December 2019, when the W3 Consortium has begun recommending WebAssembly, it is easy to migrate other languages to the browsers supporting this recommendation.
+\par
+Many projects use the WASM as a target of compilation.
+For example, the project PHP in browser \squarecite{2}.
+It enables running PHP script inside our browser using predefined Javascript API or standard tag for HTML script.
+Another project is an open-source framework Blazor \squarecite{3} developed by Microsoft.
+It provides a runtime, libraries, and interop with Javascript for creating dynamic web pages using C\#.
+\par
+\change[inline]{Add a statistic for popularity of .NET}
+The .NET and PHP popularity led to the creation of the Peachpie compiler.
+Peachpie \squarecite{4} tries to make use of the .NET platform and offers PHP compilation to .NET.
+It is a modern compiler enabling interop between PHP and C\#.
+\par
+The project opens the PHP door to Blazor.
+An integration between Peachie and Blazor can yield to following benefits.
 A community of PHP developers is significant.
-Thus, there are many PHP libraries for working with client's data, cooperation with databases, and other server tasks.
-The possibility two migrate the language PHP together with its conventions to a browser will impact developing dynamic web applications due to the PHP community and the libraries.
-
-An idea of migration PHP to a browser is achievable by a compilation to the previously mentioned WebAssembly.
-The project PHP in browser \squarecite{2} enables running PHP script inside your browser using predefined Javascript API or standard tag for script in HTML.
-Although this project enables using PHP on the client-side, there is necessary to have additional knowledge about Javascript to use it in common scenarios.
-One of the thesis's goals is to remove this shortage.
-
-The consequence of WASM is an introduction of Blazor \squarecite{3}.
-Blazor is a part of the ASP.NET platform developed by Microsoft.
-It provides a runtime and templates for creating dynamic web pages using CSharp with no or at least minimal Javascript support.
-
-Another interesting technology connecting .NET and PHP world is Peachpie \squarecite{4}.
-Peachpie is a modern compiler enabling a transformation of PHP scripts to .NET assembly, which results in running PHP code in .NET runtime.
-
-The last two technologies' connection can be an interesting integration enabling to use PHP in a browser.
-The thought of making the integration successful is to chain the compilation of PHP scripts to .NET and using the existing .NET platform to executes the compilated scripts in a browser.
-The idea has the potential of joining PHP and CSharp developers to collaborate with their programming languages using a minimum knowledge of the integration.
-Another interesting functionality of this approach is a full CSharp, PHP, and JavaScript interop which offers more options for developers and future extensions.
-
-This thesis aims to integrate Peachpie and Blazor to achieve a comfortable way of writing a client-side web application using PHP.
+Thus, many PHP libraries apply to working with client's data, cooperation with databases, and other server tasks.
+The possibility to migrate the language PHP together with its conventions to a browser will impact developing dynamic web applications due to the PHP community and the libraries.
+It can join PHP and C\# developers to collaborate with their programming languages using a minimum knowledge of the integration.
+Another interesting functionality of this idea is a full C\#, PHP, and JavaScript interop which offers more options for developers and future extensions.
+\par
+This thesis uses the compilation of PHP scripts to .NET in order to execute PHP in a browser powered by Blazor.
+The approach tries to achieve two goals.
+The first goal is to enable web development on a client-side with PHP.
+There are not libraries supporting this integration.
+The second goal is to design the support to offer a convenient way to combine a PHP code with a Blazor.   
+\par
 The first chapter addresses the analysis of related work, alongside descriptions of the technologies used in the integration.
-The second chapter analyses the problem of running PHP on the client-side and other problems related to used technologies.
+The second chapter analyses running PHP on the client-side and other problems related to used technologies.
 The third gives a detailed problem's solution.
 There are examples that demonstrate how to use all aspects of the created solution in chapter 4.
-In chapter 5, you can see benchmarks that explore the limits of the implementation and compare them with the already existing project.
+In chapter 5, we can see benchmarks that explore the limits of the implementation and compare them with the already existing project.
 And the last chapter relates to a conclusion of this solution.
