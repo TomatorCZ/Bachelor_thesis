@@ -6,7 +6,7 @@ Afterward, it will present a WebAssembly, which will be followed by the existing
 It will give short information about the .NET platform and C\# language.
 In the end, it will introduce Blazor and Peachpie, which will be integrated.
 
-\section{PHP and server-side web application}
+\section{PHP and server-based web application}
 
 The basic principle of obtaining a web page is a request-response protocol, where a client sends a request for the web page using an HTTP protocol and receives a response with requested data.
 An HTTP protocol uses a dedicated format of messages for communication.
@@ -44,6 +44,8 @@ PHP \squarecite{5} was designed for user page templating on the server-side.
 It has been adjusted gradually to enable writing application logic.
 PHP is an interpreted language maintained by The PHP Group.
 We will describe the language by using listing \ref{lst:PHP} as an example.
+\par
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[basicstyle=\small, caption=A PHP code.,
   language=PHP, label={lst:PHP}]
 <?php
@@ -78,6 +80,8 @@ We will describe the language by using listing \ref{lst:PHP} as an example.
     inlude("footer.php");
 ?>
 \end{lstlisting}
+\end{minipage}
+\par
 An HTML interleaving has appeared to be a helpful method for data binding.
 The feature allows inserting a PHP code between HTML.
 These fragments do not have to form individual independent blocks of code closed in curly brackets.
@@ -116,51 +120,97 @@ The file's information is stored in \$\_FILES.
 The uploaded file is saved as a temporary file, and standard reading operations can obtain the content.
 This is demonstrated in the previously mentioned example.
 
-\section{Javascript and client-side web application}
+\section{Javascript and client-based web application}
 
-Control over the rendered page and WebAPI provided by a browser is a point of interest on the client-side.
-This functionality usually uses Javascript functions as wrappers. 
-
-\subsection{Client-side web application}
-
+Since a client-based web application aims to do a major business logic in a browser, it needs to control the rendered page and access a web interface providing additional services.
+The interface is usually available from Javascript.
+We will start with a description of loading Javascript in a browser.
+We will introduce a page representation in a browser alongside page events.
+In the end, we will present Javascript as a scripting language for the creation of a responsive web page.
+\par
 The process of generating a web page follows several steps.
 A browser parses the HTML line by line. If a script occurs, the browser starts to execute the code.
 The order of processing is important for manipulation with an HTML structure.
 This limitation can be solved by web events mentioned later, but
-it is a convention to add scripts to the end of the body part after all HTML tags.
-
+it is a convention to add scripts to the end of the body part after all HTML tags are parsed.
+\par
 We can image a web page as an XML tree.
 Its nodes are tags or text fragments, and its edges connect nodes with their children.
 One representation of this tree is Document Object Model (abbreviated DOM).
 Each node is represented by an object with special parameters relating to HTML and CSS. 
 The nodes can contain other nodes representing their children.
-Afterward, the document node represents the whole document together with its root node.
-
+Afterward, there is a document node representing the whole document together with its root node.
+\par
 Events are the most common method of how to react to changing a web page state.
 Every event can have some handlers(listeners).
 Whenever an event occurs, it calls all its listeners.
 There are many event types, but we will mention the ones that are important for us.
 HTML tags are the most common entities, which can have some events.
-For example, a button has an event onclick which triggers when a client clicks on the button. 
+For example, a button has an event onclick which triggers when a client clicks on the button as we ca see in listing \ref{lst:Javascript}. 
 Other events can represent a state of a page like onload which fires when the whole HTML document is parsed.
-
+\par
 A browser provides more APIs valuable for the application, like fetching extra data from a server or local storage.
 These APIs are mentioned as Web API \squarecite{7}.
+\par
+Javascript is a high-level language usually executed by a browser's dedicated Javascript engine but can also be run on a desktop.
+Node.js is an example of a Javascript runtime running outside a browser.
+Listing \ref{lst:Javascript} will be used to show the language in the simple scenario.
+The page contains a button that invokes an alert with a second delay when a client clicks on it.
+\par
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[basicstyle=\small, caption=A Javascript code., label={lst:Javascript}]
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+		<button id="alert">Click to alert</button>
+		<script>
+			var handler = function (arg) {
+				var timer = new Promise((resolve) => {
+					setTimeout(resolve, 1000);
+				}); 
+        
+				timer.then(() => window.alert("Hello world."));
+			};  
 
-\subsection{Language specification}
-
-Javascript is a high-level language usually executed by a browser's dedicated Javascript engine but can also be run on a desktop by Node.
-It has dynamic typing.
-It is often used as a wrapper of Web APIs due to Javascript's essentiality in dynamic web pages.
-These APIs are accessible in global scope as an object or global functions.
-An example of API available in Javascript can be DOM API mentioned in the previous section.
+			var button = window.document.getElementById("alert");
+			button.addEventListener("click", handler);
+		</script>
+	</body>
+</html>
+\end{lstlisting}
+\end{minipage}
+\par
+At first glance, we can see the type system is dynamic as well as PHP.
+A window is an essential global variable, which is an object representing the browser window of the running script.
+The window object consists of all defined global variables.
+It also contains a document property, which is an API for manipulating the DOM tree.
+We can see the usage of the document property in the example.
+Javascript object is often used as a wrapper of Web APIs.
+\par
+Functions are first-class citizens in Javascript.
+We can treat them as common variables.
 Javascript supports an event-driven style that helps to react to events conveniently.
-
+There is a handler assigned to the click event in the listing.
+\par
+\change[inline]{Maybe add a section about async functions. Compare it with PHP}
 Javascript is single-threaded, which can be confusing with its constructs for promises.
-Promise is a structure representing an unfinished process.
+The promise is a structure representing an unfinished process.
 These processes can be chained.
 However, the structure can give an illusion of multi-threading. It uses the scheduler for planning the next task executed by the main thread.
 The single thread is critical for blocking operations which causes thread freezing.
+\par
+Web workers \squarecite{11} are a browser feature enabling to run the script in the background.
+There are wrapped as Worker objects.
+The worker limitation is communication with UI thread only by handling message events. 
+Messages have to be serialized and deserialized.
+\par
+Javascript module is the last thing, which we will need to present.
+It gathers a collection of code.
+Global entities of this code can be exported to another script.
+These exports make an API of the module.
+The module's advantage is to define an API and hide an internal code, which is not relevant for the user.
 
 \section{WebAssembly}
 
@@ -175,8 +225,8 @@ Because of the same runtime, WebAssembly can call Javascript and vice versa.
 
 Threads \squarecite{10} support is currently discussed nowadays and appears to be realistic.
 After all, new versions of Google Chrome experiments with proper multi-threading support despite the chance of vulnerability.
-A replacement of multi-threading can be web workers \squarecite{11}.
-The worker's limitation is communication with UI thread only by messages.
+A replacement of multi-threading can be Web workers mentioned in Javascript section.
+
 
 Despite supporting to run WebAssembly in a browser, the browser cannot load it as a standard ES2015 module yet.
 WebAssembly JavaScript API was created in order to be able to load a WebAssembly to a browser using JavaScript.
