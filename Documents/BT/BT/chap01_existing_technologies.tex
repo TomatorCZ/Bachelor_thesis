@@ -1,74 +1,120 @@
 \chapter{Existing technologies}
 
-This chapter describes a classical web application, written in PHP and Javascript, and its conventions helping us design a convenient mechanism of migrating PHP to a browser.
-It presents a WebAssembly specification, which follows the existing project using the format to achieve running PHP in a browser.
-Give short information about the language CSharp and Mono runtime used in Blazor.
-Introduces Blazor and Peachpie, which is integrated by the proposed solution.
+In the beginning, we will observe conventions in web applications, and we will map ways of user interaction with the applications to utilize it later in the proposed solution.
+We will explore a server-side web application using PHP language and a client-side web application using Javascript language in other to obtain these observations.
+Afterward, it will present a WebAssembly, which will be followed by the existing project relating to run PHP in a browser.
+It will give short information about the .NET platform and C\# language.
+In the end, it will introduce Blazor and Peachpie, which will be integrated.
 
 \section{PHP and server-side web application}
 
-The basic principle of web pages is a request-response architecture, where a client sends a request for the web page using an HTTP protocol and receives a response with requested data.
-A PHP language design makes handling these requests on the server easier.
- 
-\subsection{Server-side web application}
+The basic principle of obtaining a web page is a request-response protocol, where a client sends a request for the web page using an HTTP protocol and receives a response with requested data.
+An HTTP protocol uses a dedicated format of messages for communication.
+The protocol does not require any authentication at all.
+Statelessness is a typical characteristic of the protocol.
+A server has to retain information about clients and add additional information to the messages in order to distinguish between the clients.
+\par
+Since the server contains all business logic, a browser has to send necessary data for required actions by an HTTP message.
+The data are usually encoded as a part of an URL address or in the HTTP message body.
+HTML presents a tag Form that makes sending the data easier for a client.
+Listing \ref{lst:PHP} contains an example of a Form tag.
+The form can contain other tags, which are displayed as various types of fields.
+A client fills these fields, and the browser sends the data as a new HTTP request to the server.
+We can specify how the data will be encoded.
+Get method is one of the basic ways.
+It encodes the data as a pair of keys and its values to the query part of the URL.
+There is a example of an URL
+\url{http://www.example.com/index.php?par1=hello\&par2=2\&arr=hello\&arr=2}.
+A query part begins with a question mark.
+Parameters of the query part are described in the table \ref{tab01:query}.
+\begin{table}[h]
+\centering
+\begin{tabular}{l@{\hspace{1.5cm}}D{.}{,}{3.2}D{.}{,}{1.2}D{.}{,}{2.3}}
+\pulrad{\textbf{Key}} & \pulrad{\textbf{Value}}\\
+par1 & hello\\
+par2 & 2\\
+arr  & [hello, 2]\\
+\end{tabular}
+\caption{Parameters of the query part.}
+\label{tab01:query}
+\end{table}
+Another method is called post, which encodes it in the request body, which does not appear in the URL.
+\par
+PHP \squarecite{5} was designed for user page templating on the server-side.
+It has been adjusted gradually to enable writing application logic.
+PHP is an interpreted language maintained by The PHP Group.
+We will describe the language by using listing \ref{lst:PHP} as an example.
+\begin{lstlisting}[basicstyle=\small, caption=A PHP code.,
+  language=PHP, label={lst:PHP}]
+<?php
+    inlude("header.php");
+?>
 
-The previously mentioned principle has several consequences, which are important for our solution.
-It is necessary to hold the client's application state on the server because the HTTP is stateless.
-An interaction with a page not using next requests is limited by CSS.
-HTML presents a tag form as a way how to send additional information to the server after the first request.
-The form tag contains other tags representing fields, which are filled by the client. 
-Afterward, the form tag enables to encode these data and send it to the server.
-Get and post methods are relevant methods, how to perform manner of sending the data.
-Get method encodes the data into an URL.
-Post method encodes it in the request body, which does not appear in the URL.
+<h1>Superglobal POST</h1>
+<?php
+	foreach($_POST as $key => $value) { ?>
+	<p><?php echo $key; ?> => <?php echo $value; ?></p>
+<?php } ?>
 
-\subsection{Language specification}
+<h1>File content:</h1>
+<p>
+<?php 
+	if($_FILES["file"])
+	{
+		echo file_get_contents($_FILES["file"]["tmp_name"]);
+	}	
+?>
+</p>
 
-PHP \squarecite{5} is interpreted language maintained by The PHP Group.
-PHP was designed for generating a web page on the server-side.
-Since PHP is a scripting language, its entry-point is the first line of the executing script.
+<form action="/index.php" method="post">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name"><br>
+  <label for="file">File:</label>
+  <input type="file" id="file" name="file"><br>
+  <input type="submit" value="Submit">
+</form>
 
-The type system is dynamic.
-Variables represent just references to the heap, where all types of objects reside.
-An unusual thing is superglobals \squarecite{6}, which are built-in variables accessible from all scopes of the script.
+<?php
+    inlude("footer.php");
+?>
+\end{lstlisting}
+An HTML interleaving has appeared to be a helpful method for data binding.
+The feature allows inserting a PHP code between HTML.
+These fragments do not have to form individual independent blocks of code closed in curly brackets.
+The interleaving is related to code execution when an interpreter executes a script from top to bottom. Everything outside a PHP section is copied into the body of the request.
+\par
+We do not see any specification of type next to variables.
+This is because the type system is dynamic.
+A variable represents just a reference to the heap.
+Its type is determined during runtime. 
+\par
+PHP has superglobals \squarecite{6}, which are built-in variables accessible from all scopes of the script.
 Following superglobals are relevant to the thesis.
-The GET variable stores parsed query part of the URL.
-The POST variable stores variables which are sent by post method.
-The FILES variable contains uploaded files.
-There is also a SESSION variable, which holds a user session.
-This variable will become needless because of the proposed solution.
-
+The \$\_GET variable stores parsed query part of the URL.
+The \$\_POST variable stores variables which are sent by post method.
+The \$\_FILES variable contains uploaded files.
+\par
+\change[inline]{Maybe add information about SESSION.}
 We can divide code in several ways.
 Global functions are the most notable characteristic of PHP despite wide-spread object-oriented programming.
 They are defined in the global scope and accessible from anywhere.
 The next option is an object inspired by object-oriented programming.
 There is also namespace support.
-And the highest level of division is the module representing the bag of code related to specific behavior like gd2 extension for graphics.
-
-There is not common to use asynchronous functions in a typical PHP application.
-One-way pass of the application is a standard convention because of request-response semantic.
-The iconic design pattern is Front Controller.
+We can include a PHP code from other scripts. 
+The execution continues after the inclusion, which is a common execution of the defined script.
+\par
+The nature of the request-response semantic usually results in a one-way pass of the application.
+After dealing with a request, the whole application state is terminated.
+One of the well-known design patterns relating to PHP is the Front controller.
 Usually, the main script invokes other parts of the program, based on the request, to deal with it and send the response back.
-
-An HTML interleaving has appeared to be a helpful method for data binding.
-The feature allows inserting a PHP code between HTML.
-These fragments do not have to form individual independent blocks of code closed in curly brackets. We can see usage of the interleaving in listing \ref{lst:HTMLinterleaving}.
-
-\begin{lstlisting}[basicstyle=\small, caption=HTML interleaving.,
-  language=HTML, label={lst:HTMLinterleaving}]
-<body>
-<h1>Superglobal GET</h1>
-<?php
-	foreach($_GET as $key => $value) {
-?>
-	<p><?php echo $key; ?> => <?php echo $value; ?></p>
-<?php } ?>
-</body>
-\end{lstlisting}
-
+The idea of this pattern can be shown in listing \ref{lst:PHP}.
+In the beginning, we delegate header rendering to header.php script.
+Then we render the body and include footer.php, which cares about the proper ending of the HTML page.
+\par
 Uploaded files sent by the client reside in two places.
-The file's information is stored in FILES.
+The file's information is stored in \$\_FILES.
 The uploaded file is saved as a temporary file, and standard reading operations can obtain the content.
+This is demonstrated in the previously mentioned example.
 
 \section{Javascript and client-side web application}
 
