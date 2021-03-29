@@ -152,6 +152,9 @@ Other events can represent a state of a page like onload which fires when the wh
 A browser provides more APIs valuable for the application, like fetching extra data from a server or local storage.
 These APIs are mentioned as Web API \squarecite{7}.
 \par
+ECMAScript is a Javascript standard recommending across browsers.
+It is abravieted as ES.
+We can see later an abbreviation ES2015 which relates to the ECMAscript version.
 Javascript is a high-level language usually executed by a browser's dedicated Javascript engine but can also be run on a desktop.
 Node.js is an example of a Javascript runtime running outside a browser.
 Listing \ref{lst:Javascript} will be used to show the language in the simple scenario.
@@ -210,24 +213,23 @@ Javascript module is the last thing, which we will need to present.
 It gathers a collection of code.
 Global entities of this code can be exported to another script.
 These exports make an API of the module.
-The module's advantage is to define an API and hide an internal code, which is not relevant for the user.
+The module's advantage is defining the API and hiding the internal code, which is not relevant for the user.
 
 \section{WebAssembly}
 
 WebAssembly \squarecite{9} is a new code format that can be run in today's browsers. 
 It has a compact byte format, and its performance is near to a native code. 
-WebAssembly is designed to be a compiling target of popular low-level languages like C or C++ due to its memory model. 
-It should be able to support languages with carbage collector in the future. 
+WebAssembly is designed to be a compiling target of popular low-level languages like C or C++ due to its memory model.
+It results in the possibility to run other languages in a browser because its runtime is often written in C or C++. 
 The advantage of this format is a similarity with Javascript modules ES2015 after compilation into a machine code. 
 This enables browsers to execute it by a JavaScript runtime. 
 So its security is as good as a code written in Javascript. 
 Because of the same runtime, WebAssembly can call Javascript and vice versa.
-
-Threads \squarecite{10} support is currently discussed nowadays and appears to be realistic.
+\par
+Threads \squarecite{10} support is currently discussed nowadays and appears to be promising.
 After all, new versions of Google Chrome experiments with proper multi-threading support despite the chance of vulnerability.
 A replacement of multi-threading can be Web workers mentioned in Javascript section.
-
-
+\par
 Despite supporting to run WebAssembly in a browser, the browser cannot load it as a standard ES2015 module yet.
 WebAssembly JavaScript API was created in order to be able to load a WebAssembly to a browser using JavaScript.
 
@@ -241,7 +243,6 @@ At first glance, that might be a good enough solution, but they are several part
 The solution doesn't solve superglobals. 
 This is reasonable because this is the server's job, but you are not able to get information about a query part or handling forms without writing a JavaScript code.
 The next problem is navigating how a script can navigate to another script without an additional support code which has to be JavaScript.
-These problems can be solved by following technologies and their integration.
 
 \section{CSharp and Mono}
 
