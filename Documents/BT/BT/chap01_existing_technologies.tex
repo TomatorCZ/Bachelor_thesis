@@ -384,7 +384,13 @@ public class Index : ComponentBase {
 \end{minipage}
 \end{figure}
 \par
-\change[inline]{Add asynchronous functinons and component's lifecycle.}
+A Component has several stages, which can be used for initialization or action.
+Virtual methods of ComponentBase represent these stages.
+We can see the OnInitializedAsync method, which is invoked after setting the component's parameters.
+\par
+We should mention asynchronous processing because it helps render a page with long-loading content.
+Blazor allows using Tasks and async methods.
+Blocking operations in Blazor are projected into UI because it is single-threaded due to Javascript and Web Assembly.
 \par
 We return to the project description. 
 Folders Pages and Shared contains parts of Blazor pages written in Razor.
