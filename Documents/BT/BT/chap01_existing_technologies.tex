@@ -276,43 +276,58 @@ C\# is used on the server-side as well as PHP.
 
 \section{Blazor}
 
-Blazor is a framework that provides a convenient way how to write dynamic web pages using CSharp.
-Blazor platform is divided into two hosting models \cite{13} which have different approaches to creating web applications. 
-The first one is referred to as Blazor Server App and has a similar methodology to a standard website written in PHP.
+Blazor is a part of the open-source ASP.NET framework.
+Blazor allows creating client-side web applications written in C\# language.
+Blazor framework offers two hosting models \squarecite{13} which have different approaches to creating web applications. 
+The first one is referred to as Blazor Server App and represents a server-side web application using specific communication between a client for better functionality.
 An interesting innovation is SignalR which is a communication protocol between the server and a client.
-However, this thesis uses the second model, which Microsoft refers to as Blazor WebAssembly App enabling offline support after loading the app into a browser.
-
-\subsection{Blazor WebAssembly App}
+The thesis uses the second model, which Microsoft refers to as Blazor WebAssembly App, enabling moving business logic to a client-side without using Javascript.
+\par
 From now on, I will use Blazor App to refer Blazor WebAssembly App.
-Blazor App can be divided into two parts.
-The first part serves the main WebAssembly application and its additional resources, which can be requested during runtime.
-The second part is WebAssembly wrapped together with an additional user code.
-The division enables to choose of a place for the implementation of business logic.
+The application can be hosted by a standalone project representing a standard ASP.NET web server.
+It will become useful for further server settings, and the proposed solution utilizes it.
+The division enables a choice of a place for the implementation of business logic.
 If there is a bad connection, we can move the majority of business logic to the client and use the server for connection to a database; otherwise, we can use the client only for rendering the page. It consists of the following components. 
-Kestrel with ASP.NET libraries provides the server part of an application.
-Mono runtime compiled to WebAssembly runs CSharp code inside a browser.
-WebAssembly is essential for being able to interact with DOM and JavaScript using CSharp without an additional plugin, which was necessary for older technologies like Microsoft Silverlight.
-Blazor's libraries provide constructs for manipulation with DOM and WebAPI together with rendering the page and JavaScript interop.
-And there is a user's code that using the libraries for creating dynamic pages with CSharp.
-A better imagination, how the app is situated on the client-side, can be represented by the figure \ref{img01:wasm} copied from the article \cite{15}.
-
+When we choose the template, there are two main projects to describe.
+\par
+The first one is a server, which serves the Blazor App to a client.
+There is nothing special about the project expects a middleware, which provides the Blazor files.
+A middleware is a segment of an HTTP request pipeline, which cares about some functionality related to processing the request.
+\par
+We will describe the second project (Blazor App) in figure \ref{img01:project} to explain basic entities and their interaction with each other.
+\par
 \begin{figure}[H]\centering
-\includegraphics[width=140mm, height=100mm]{./img/BlazorExecution}
-\caption{Running a Blazor WebAssembly App on client-side.}
-\label{img01:wasm}
-\end{figure}
-
-The interop with a browser are one part of the Blazor App.
-The main part is the architecture of the libraries.
-A common approach how to create a page is using the markup language Razor.
-There already exists Razor in standard ASP.NET website where .cshtml extensions consist of this markup.
-Unfortunately, the markup used in BlazorApp has the same name.
-From now on, I will use Razor for the markup language, which is the content of .razor files in Blazor App.
-Because interleaving HTML with other languages turns out to be helpful, the Razor uses special characters to identify CSharp code in HTML and convert it to rich content pages.
-A significant purpose of Razor is for generating CSharp structures, which represent parts of a page, during compilation time.
-These structures have a complex interface for rendering a page, so the markup is there in order to free users using a complicated mechanism for putting a page together. 
-We can see an example of web page in listing \ref{lst:razorpage}.
-
+\includegraphics{./img/ProjectStructure}
+\caption{A basic Web Assemby App project.}
+\label{img01:project}
+\end{figure} 
+\par
+We will start with a new format Razor to get familiar with it.
+Razor is a markup language interleaving HTML with C\#.
+Razor uses special sign at with keywords to identify C\# code in HTML.
+Razor's compilation results in a pure C\# code representing the web page fragment.
+We can see an example of Razor in listing \ref{lst:razorpage}.
+\par
+Although the format is self-explaining, we point to the keywords.
+The first line begins with a page keyword determining a part of the page's URL.
+The next keyword is inject, representing a HttpClient service injection. 
+An if keyword determines a standard condition.
+A code keyword contains a regular C\# code, which can be used in the whole razor file.
+\par
+A Razor file is transformed into a C\# dedicated class.
+The class inherits from ComponentBase or implements IComponent, which provides necessary methods for rendering the page.
+Components can be arbitrarily put together in order to form the desired page.
+We can see the generated Component from listing \ref{lst:razorpage} in listing \ref{lst:component}.
+\par
+We can assign the Razor keywords to parts of the code in the listing.
+Page keyword stands for Route attribute.
+Inject keyword stands for parameter attribute. The parameter is assigned by a dispatcher, mentioned later, during the initialization.
+Code keyword is a part of class content.
+Another markup is transformed into calling a specialized method in the BuildRenderTree function, which describes the page content for rendering. 
+There will be more information about rendering later in this section.
+\par
+\begin{figure}
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[basicstyle=\small, caption=Example of Razor page., label={lst:razorpage}]
 @page "/example"
 @inject HttpClient Http
@@ -337,16 +352,9 @@ else
     }
 }
 \end{lstlisting}
-
-Razor provides a special sign at which follows with dedicated keywords.
-We can see a page keyword determining the path of the page. An inject keyword represents a service injection. An if keyword determines a standard condition, and a code keyword contains a regular CSharp code.
-These features are afterward transformed into CSharp entities forming a special class.
-
-Blazor introduces a Component class that can represent a whole page or the part of it.
-Components can be arbitrarily put together in order to form the desired page.
-We can see the generated Component from listing \ref{lst:razorpage} in listing \ref{lst:component}.
-
-\begin{lstlisting}[basicstyle=\small, caption=Razor page generated to the CSharp class., label={lst:component}]
+\end{minipage}
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[basicstyle=\small, caption=Razor page generated to the C\# class., label={lst:component}]
 [Route("/example")]
 public class Index : ComponentBase {
 	private bool loaded = false;
@@ -373,49 +381,90 @@ public class Index : ComponentBase {
 	}
 }
 \end{lstlisting}
+\end{minipage}
+\end{figure}
+\par
+We return to the project description. 
+Folders Pages and Shared contains parts of Blazor pages written in Razor.
+\_Imposts.razor contains namespaces, which are automatically included in others .razor files.
+The next folder is wwwroot, containing static data of the application.
+We can see index.html, which cares about loading parts of the Blazor application to the browser.
+\par
+We will describe the loading of Blazor into the browser to fully understand the interaction between Blazor and the browser.
+We have the server, the Blazor App, and other optional user's defined projects. 
+When we start the server and tries to navigate the web application, the following process is done.
+The server maps the navigation to index.html and sends it back.
+\par
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[basicstyle=\small, caption=A Javascript code., label={lst:Javascript}]
+<body>
+    <div id="app">Loading...</div>
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+		...
+    </div>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
 
-We can assign the Razor keywords to parts of the code in the listing.
-Page keyword stands for Route attribute.
-Inject keyword stands for parameter attribute. The parameter is assigned by a dispatcher, mentioned later, during the initialization.
-Code keyword is a part of class content.
-Another markup is transformed into calling a specialized method in the BuildRenderTree function, which renders the page. 
-There will be more information about rendering later in this section.
-
-The components can have different purposes. For example, a Router takes care of routing the right page whenever the navigation is triggered.
-Alongside components, a dispatcher supplies additional services like logger to components when they are creating.
-The dispather is a specialized class initialized in the begining of the application.
-
-The last item, which is not used transparently, is a WebAssemblyHost builder.
-The builder configures the application and prepares the renderer used by components to render their content.
-
-Balzor presents its own virtual DOM to reduce changing a DOM directly in a browser to its demanding performance.
-A component works with RenderTreeBuilder, which provides an interface for adding content to the virtual DOM.
-The usage of RenderTreeBuilder is complex due to Blazor's diff algorithm, which is used afterward.
-RenderTreeBuilder is just a superstructure over Renderer, which is responsible for updating the page.
+\end{lstlisting}
+\end{minipage}
+\par 
+The index.html contains a script initializing Blazor.
+The first step is to load all resources, which are defined in a separate file.
+Blazor cuts all unnecessary .dll to reduce the size.
+For this reason, all .dll has to be used in the Blazor App code in order to be contained in the file. 
+These resources contain Mono runtime compiled into WASM, additional supporting scripts, and all .dll files containing the whole application (Blazor App with referenced libraries).
+The supporting scripts initiate the runtime a run it.
+The runtime includes the .dll into the application and calls the Main method in Program.cs defined in Blazor App project.
+We can see the process in figure \ref{img02:wasm}.
+\par
+\begin{figure}[H]\centering
+\includegraphics[width=140mm, height=100mm]{./img/BlazorExecution}
+\caption{Running a Blazor WebAssembly App on client-side.}
+\label{img02:wasm}
+\end{figure}
+\par
+Main method uses WebAssemblyHostBuilder to set the application.
+It defines services, which will be able through the dispatcher.
+It set a root component, which will be rendered as the first.
+The host is run.
+Afterward, the application provides the dispatcher, cares about rendering, and communicates with the runtime to offer interop with Javascript.
+\par
+App.razor is the last file for clarification.
+It is the root component in default.
+It contains a specialized component, a Router, enabling to navigate the pages.
+\par
+In the end, we will describe page navigation and rendering and handling events.
+The navigation \squarecite{14} can be triggered by an anchor, form, or filling up the URL bar.
+The URL bar is handled separated by a browser.
+JavaScript can influence the remainings elements.
+Blazor App handles only an anchor.
+After clicking on an anchor, a navigation event is fired.
+One of the handlers is a javascript function, which invokes C\# method through Mono WASM. 
+The method represents a navigation handler in Blazor App.
+A user can add listeners to the handler, but the Router implements default behavior for navigating.
+The Router finds out all components, which implements an IComponent interface, by a reflection, and tries to render the page according to path matching RouteAttribute of a component whenever the navigation is triggered.
+The navigation can be redirected to the server if there is no match.
+\par
+The rendering process begins with the Renderer initialized in the application's builder.
+Render cares about representing a virtual DOM of the page, creating a page's updates, and updating it with the runtime interop's support.
+Renderer provides RenderTreeBuider for describing page contents.
+The builder provides an API for adding various types of content to Batch, which is a specialized structure for describing previous and present virtual DOM changes.
+The changes are recognized by a diff algorithm, which is used to reduce changing a DOM directly in a browser to its demanding performance.
+The usage of RenderTreeBuilder is complicated due to the algorithm.
+The purpose of Razor is to make an implementation C\# method BuildRenderTree easier.
+When the Renderer prepares the Batch, it calls specialized Javascript API for changing the page through Mono runtime.
+\par
 The diff algorithm is used to minimize the browser's DOM  update after all components used RenderTreeBuilder to render their content.
 This algorithm used sequence numbers for parts of HTML to identify modified sections.
 Sequence numbers respond to an order of RenderTreeBuilder's instructions in the source code.
 A benefit of this information is detecting loops and conditional statements to generating smaller updates of DOM.  
-It follows the browser's DOM update, which is executed by Blazor's JavaScript support code called through Mono runtime.
-
-The process of bootstrapping the Blazor App to a browser follows these steps. 
-Kestrel gets a request for a page that is contained in Blazor App. 
-The server responses with the index.html page, which contains references to JavaScript support code (This code is referred to as blazor.js and mono.js in the figure \ref{img01:wasm}) responsible for loading and running the runtime with the application part.
-The runtime runs the application using the Main method in Blazor App.
-The remaining interactions are maintained by event handling.
-I distinguish two types of events.
-The first type is navigation.
-The navigation \squarecite{14} can be triggered by an anchor, form, or filling up the URL bar.
-The URL bar is handled separated by a browser.
-JavaScript can influence the remainings elements.
-Blazor App handles only an anchor by.
-After clicking on an anchor, predefined methods in blazor.js try to invoke navigation handler in Blazor App using a Mono WebAssembly gateway.
-A user can modify this handler, but a specialized component Router implements a default behavior.
-The Router finds out all components, which implements an IComponent interface, by a reflection and tries to render the page according to path matching RouteAttribute of a component.
-The navigation can be redirected to the server if there is no match.
-The second type is events invoked by UI like onchange. These event's callbacks call right CSharp callbacks thanks to RenderTreeBuilder, connecting CSharp callback with element's event.
-
-\change[inline]{Add cutting unneccessarly references to make the app smaller.}
+\par
+Event handling is just clever usage of the Renderer with dedicated Javascript API for updating, where the API registers the listener.
+When the event is fired, the listener invokes C\# method representing the handler through the WASM runtime.
+\par
+Blazor provides API for invoking Javascript functions and vice-versa.
+\par
 
 \section{Peachpie}
 
