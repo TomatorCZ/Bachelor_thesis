@@ -244,33 +244,35 @@ The solution doesn't solve superglobals.
 This is reasonable because this is the server's job, but you are not able to get information about a query part or handling forms without writing a JavaScript code.
 The next problem is navigating how a script can navigate to another script without an additional support code which has to be JavaScript.
 
-\section{CSharp and Mono}
+\section{C\# and .NET 5}
 
-We have to introduce .NET \squarecite{17} in other to understand the following sections fully.
+We have to introduce the Common Language Infrastructure (abbreviated CLI) \squarecite{18} before diving into .NET.
+CLI is a specification describing executable code and runtime for running it on different architectures.
+CLI contains descriptions of a type system, rules, and the virtual machine (runtime), which executes specified Common Intermediate Language (abbreviated CIL) by translating it to a machine code. 
+The virtual machine is often named CLR (Common Language Runtime).
+CIL's advantage is a compilation target of languages like C\#, F\#, and C++\\CLI, which gives us great interoperability.
+.NET Framework, .NET 5, and Mono are implementations of CLI.
+\par
+.NET 5 \squarecite{17} is the last version of .NET Core, which is a cross-platform successor to .NET Framework.
+From now on, we will refer .NET 5 as .NET, since it should be the only supported framework in the future.
 .NET is a free and open-source project primarily developed by Microsoft.
-It is a cross-platform successor to .NET Framework.
-It consists of core libraries and runtime, which runs a unique code format CIL standing for Common Intermediate language on various environments.
-The runtime is often named CLR (Common Language Runtime) and represents a virtual machine interpreting the code into the machine code.
+It consists of many libraries, runtime for executing CIL.
 The libraries can represent whole frameworks like ASP.NET, which aims to web development.
-The CIL is a compilation target of languages like CSharp, Visual Basic, or FSharp.
-The most common granularity of .NET projects is an assembly formed from a bunch of code representing a library or an executable program.
-
-\subsection{Mono}
-
-Mono is a .NET runtime that aims to mobile platforms. 
+A large collection of code is usually compiled into an assembly containing the code and additional metadata.
+As assembly can represent either library or an executable program.
+\par
+Mono aims to mobile platforms. 
 Recently, they started to support compilation \squarecite{12} into WebAssembly.
 This support allows executing CIL inside browsers.
 The compilation has two modes.
 The first one is compilation Mono runtime with all using assemblies.
 The second only compile Mono runtime, which then can execute .dll files without further compilation of them into WebAssembly.
-A consequence of these compilations into WebAssembly is enabling to call Javascript and WebAPI from .NET.
-
-\subsection{Language specification}
-
-CSharp is a high-level language using strong typing and a garbage collector.
+A consequence of these compilations into WebAssembly is enabling to call Javascript and WebAPI from C\#.
+\par
+C\# is a high-level language using strong typing and a garbage collector.
 It has a multi-paradigm, but its common characteristic is the objected-oriented style.
-These features cause that CSharp is a good language for a huge project which needs discipline from developers to hold the code understandable and manageable.
-CSharp is used on the server-side as well as PHP.
+These features cause that C\# is a good language for a huge project which needs discipline from developers to hold the code understandable and manageable.
+C\# is used on the server-side as well as PHP.
 
 \section{Blazor}
 
