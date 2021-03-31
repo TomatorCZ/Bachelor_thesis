@@ -472,29 +472,35 @@ Event handling is just clever usage of the Renderer with dedicated Javascript AP
 When the event is fired, the listener invokes C\# method representing the handler through the WASM runtime.
 \par
 Blazor provides API for invoking Javascript functions and vice-versa.
-\par
 
 \section{Peachpie}
 
 Peachpie \squarecite{16} is a modern compiler based on Roslyn and Phalanger project.
-It allows compiling PHP into a .NET assembly, which can be executed alongside standard .NET libraries.
-Peachpie introduces several structures representing states, scripts, and variables of PHP written in Csharp.
-The first of them is a context representing one request to PHP code.
-The context consists of superglobals, global variables, declared functions, declared and included scripts.
-The possibility of saving the context and using it later is a significant advantage used in the solution.
-The context can also be considered as a configuration of the incoming script's execution.
+It allows compiling PHP scripts into a .NET assembly, which can be executed alongside standard .NET libraries.
+We will describe the basics.
+\par
+Because the languages have a different type system, Peachpie brings dedicated types for representing PHP variables in .NET.
+Some of these types are PhpValue representing a standard PHP variable, PhpArray, or PhpAlias which is a reference to PhpValue.
+\par
+Another abstraction is the Context class.
+We can imagine Context as a state of the script while it runs.
+The Context consists of superglobals, global variables, declared functions, declared and included scripts.
+It also manages input and output, where we can choose a resource.
+The Context can also be considered as a configuration of the incoming script's execution.
 All information about a request can be arranged to mock every situation on the server-side.
-The compiler offers a dedicated type of assembly for PHP libraries.
+The possibility of saving the Context and using it later is a significant advantage used in the solution.
+\par
+Because some PHP libraries are written in C or C++, Peachpie tries to implement them using .NET libraries.
+These libraries are created as a dedicated type of assembly presented by Peachpie.
 Using this assembly can add additional functions, which can provide an extra nonstandard functionality as an interaction with a browser.
+\par
 Another advantage of the compiler is the great interoperability between PHP and .NET.
-An option to work with Csharp objects, attributes and calling methods will become crucial for achieving advanced interaction between Blazor and PHP.
-
+An option to work with C\# objects, attributes, and calling methods will become crucial for achieving advanced interaction between Blazor and PHP.
 \change[inline]{Saving script information in the assembly}
 \change[inline]{Inheriting the CSharp classes}
-
+\par
 However, there are limitations following from differences in the languages and the stage of development.
 Availability of PHP extensions depends on binding these functions to CSharp code which gives equivalent results. The time and memory complexity of this code can be tricky in Blazor.
 The previously mentioned interoperability has limits as well.
 Csharp constructs like structs and asynchronous methods are undefined in PHP.
-
 
