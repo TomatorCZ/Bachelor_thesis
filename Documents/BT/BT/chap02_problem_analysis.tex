@@ -1,5 +1,60 @@
 \chapter{Problem analysis}
 
+We will divide the analysis into two sections.
+The first section relates to defining requirements, which the proposed solution will solve.
+Four scenarios will describe these requirements, and they will point to the resulting benefits achieved by the scenarios.
+The second section will observe available architectures in view of used technologies, and it will describe the solution's architecture.
+
+\section{Scenarios}
+We will introduce potential scenarios which will aim to use the integration in different ways.
+These scenarios will be essential for our proposed solution.
+We will analyze them, and we will suggest ways how to solve them with mentioned technologies.
+We will point to related limitations of the ways.
+\par
+The first scenario moves a website written in PHP to a client-side.
+It can help save the server's resources by loading the website's major to a client using one request.
+We can imagine a standard PHP website using a Front controller pattern.
+We want to handle all navigation by the Main script, distributing an additional workload to other scripts.
+The URL information should be accessible in the super global \$\_GET alongside the query.
+Scripts should render a page by the interleaving or echo.
+Rendering should be triggered once per navigation, which means clicking at an anchor tag.
+We should choose a Context duration If we want to use the same context for a whole component life or change it after navigation.
+This extension brings a new look at PHP programing when we can utilize saving the context among navigations.
+A problem comes with external resources like images.
+These resources are needed, while a particular part of the page references them.
+This complication has to make another request to the server for obtaining the resource.
+\par
+The second scenario aims to inject a PHP code to the Blazor page.
+The page will do some data processing.
+There exist a dedicated PHP library solving this processing, and we are familiar with it.
+We should write a PHP script using the library and inject it as a part of the page.
+The PHP script should interact with a client by a Form tag to avoid Javascript and advanced interaction with Blazor.
+Get and post methods should be enabled and should use the correct superglobals.
+There should be file support that will enable loading and saving files from the script.
+A PHP script should be rendered as in the previous example.
+\par
+The third scenario aims to fully utilize aspects of Blazor and move it into the PHP world.
+We should be able to inherit from C\# ComponentBase and call C\# Blazor interfaces from PHP.
+The scenario is intended for users, which have a notion about Blazor functionality and want to make faster the rendering time for demanding web applications.
+The solution should offer to help constructs to improve interaction with Blazor in PHP.
+In the end, we should be able to place the web application into the desired place in the Blazor application.
+\par
+The fourth scenario combines previous scenarios.
+We should be able to add a PHP website as a part of the Blazor website.
+The PHP website should be able to navigate the component created in the third scenario.
+
+\section{Architecture analysis}
+\change[inline]{From now on, everthing are just parts of previous text.}
+
+
+
+
+
+
+
+
+
+
 This chapter describes the main problems together with using technologies to help to solve them.
 In the end, we will introduce the proposed solution to the problem.
 

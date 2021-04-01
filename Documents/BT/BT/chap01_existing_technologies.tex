@@ -452,6 +452,9 @@ One of the handlers is a javascript function, which invokes C\# method through M
 The method represents a navigation handler in Blazor App.
 A user can add listeners to the handler, but the Router implements default behavior for navigating.
 The Router finds out all components, which implements an IComponent interface, by a reflection, and tries to render the page according to path matching RouteAttribute of a component whenever the navigation is triggered.
+It creates an instance of the class and fills in its parameters.
+The Router calls BuildeRenderTree, which enables running the rendering process.
+Previous created intences of components are disposed.
 The navigation can be redirected to the server if there is no match.
 \par
 The rendering process begins with the Renderer initialized in the application's builder.
