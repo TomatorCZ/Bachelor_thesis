@@ -252,6 +252,11 @@ CLI contains descriptions of a type system, rules, and the virtual machine (runt
 The virtual machine is often named CLR (Common Language Runtime).
 CIL's advantage is a compilation target of languages like C\#, F\#, and C++\\CLI, which gives us great interoperability.
 .NET Framework, .NET 5, and Mono are implementations of CLI.
+Although there are many CLI implementations, they are usually referred to as .NET, which represents some implementation of CLI.
+\par
+We can see in a C\# project settings a target framework field that contains .NET Standard.
+.NET Standard represents API's specifications of .NET libraries across different implementations.
+.NET Standard offers to specify minimum requirements for the code.
 \par
 .NET 5 \squarecite{17} is the last version of .NET Core, which is a cross-platform successor to .NET Framework.
 From now on, we will refer .NET 5 as .NET, since it should be the only supported framework in the future.
