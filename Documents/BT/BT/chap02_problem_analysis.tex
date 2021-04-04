@@ -54,7 +54,10 @@ Afterward, the Peachpie can compile them and execute them.
 This approach allows us to add a PHP script during the runtime.
 The second option is to compile the scripts ahead of time and reference the assembly from Blazor App.
 It saves the compilation time during the runtime.
+A disadvantage could be the larger size of the initial response.
 The solution selects the second option.
+It benefits from the compilation check on the server-side.
+We suppose that the benefit is more helpful than the smaller size of the initial response.
 The assembly contains the same information about the scripts, and Peachpie is intended for a static compilation.
 \par
 We have to figure out how to attach a PHP code, which is compiled into the assembly, to the Blazor App.
@@ -89,7 +92,7 @@ Its purpose is to keep the user away from knowing about the detailed structure o
 Another important thing is a provider's role in a Blazor App.
 The provider can behave either as the Router or as a navigatable component, which enables the navigation of PHP scripts.
 The conflict yields to create more types of components.
-These types will provide the abstraction for the particular scenario.
+These types will provide the abstraction for the particular scenarios.
 The solution will reach two types of components.
 The first one wants to bring Blazor to PHP in order to utilize the whole environment.
 The second one aims to present transparent executing of standard PHP script without strangeness of connection between Blazor and PHP.
@@ -108,7 +111,7 @@ The reason can be a hard or impossible representation of C\# entities in PHP.
 It should be developed some PHP support for making the usage of the interface easier.
 The support will replace the missing usage of the interface.
 \par
-We will call the second type of component by PhpScriptProvider expressing an environment for executing standard PHP scripts.
+We will call the second type of component PhpScriptProvider expressing an environment for executing standard PHP scripts.
 PhpScriptProvider aggregates the requirements of the rest scenarios by a single component.
 Although, the provider has more than one purpose.
 The main idea of serving a PHP code is the same.
