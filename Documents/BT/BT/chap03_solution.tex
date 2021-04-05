@@ -25,12 +25,26 @@ Blazor App injects the scripts using the components.
 We can see an instance of the Blazor App on the client-side.
 Arrows indicate an interaction between the sides. 
 \par
-The first part of the description will relate to the server's settings.
-The second part will aim at PhpComponent.
+The first part will aim at PhpComponent.
 It will introduce the implementation problems connected to creating render demanding applications, and it will present the proposed solution.
-The last part will talk about PhpScriptProvider.
+The second part will talk about PhpScriptProvider.
 It will suggest a convenient way how to include the scripts into a browser, and it will present the component's design.
-\par
-\section{Server}
+The last part of the description will relate to the server's settings.
+
 \section{PhpComponent}
+
+\change[inline]{Problem struct creation in BuildRenderTree}
+\change[inline]{PhpComponent structure}
+\change[inline]{Additional API for tag, attributes, + rendering + timer}
+\change[inline]{Javascript interop}
+
 \section{PhpScriptProvider}
+
+\change[inline]{Division into functionalities (Router, ScriptProvider, Script)}
+\change[inline]{Common things(Script finding,rendering, context, Context save, Using forms, files, parsing url)}
+\change[inline]{Router navigating}
+\change[inline]{ScriptProvider navigating}
+\change[inline]{Script navigating}
+
+\section{Server}
+\change[inline]{serving web static assets}
