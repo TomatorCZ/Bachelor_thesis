@@ -50,6 +50,7 @@
 \usepackage{booktabs}       % improved horizontal lines in tables
 \usepackage{paralist}       % improved enumerate and itemize
 \usepackage{xcolor}         % typesetting in color
+\usepackage{acronym}		% abbreviations
 
 \usepackage{float}			% allows to position images mor preciously.
 %%% Basic information on the thesis
@@ -137,6 +138,14 @@ Dedication.
 %%% Abbreviations used in the thesis, if any, including their explanation
 %%% In mathematical theses, it could be better to move the list of abbreviations to the beginning of the thesis.
 \chapwithtoc{List of Abbreviations}
+
+\begin{acronym}
+ \acro{HTTP}{Hypertext Transfer Protocol}
+ \acro{HTML}{HyperText Markup Language}
+ \acro{CSS}{Cascading Style Sheets}
+ \acro{WASM}{WebAssembly}
+ \acro{W3C}{World Wide Web Consortium}
+\end{acronym}
 
 %%% Attachments to the bachelor thesis, if any. Each attachment must be
 %%% referred to at least once from the text of the thesis. Attachments

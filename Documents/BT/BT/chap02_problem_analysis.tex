@@ -1,5 +1,6 @@
 \chapter{Problem analysis}
-
+\change[inline]{describes misto relate}
+\change[inline]{aim at}
 We will divide the analysis into two sections.
 The first section relates to defining requirements, which the proposed solution will solve.
 Four scenarios will describe these requirements, and they will point to the resulting benefits achieved by them.
@@ -7,11 +8,16 @@ These scenarios will aim to use the integration in different ways.
 The second section will observe available architectures in view of used technologies, and it will describe the solution's architecture.
 
 \section{Scenarios}
-
-The first scenario moves a website written in PHP to a client-side.
+\change[inline]{Use cases pouzit}
+\change[inline]{describes misto relate}
+The first scenario moves a website written in PHP to a client side.
+\change[inline]{majority }
 It can help saving the server's resources by loading the website's major to a client using one request.
-We can imagine a standard PHP website using a Front controller pattern.
+\change[inline]{Front controller neni}
+We can imagine a PHP website using a Front controller pattern.
 We want to handle all navigation by the Main script, distributing an additional workload to other scripts.
+\change[inline]{Pozadavky co to ma umet a pro jake prilezitosti}
+\change[inline]{zminit pro jake uzivate cilim, knim priradit usecasy}
 The URL information should be accessible in the super global \$\_GET alongside the query.
 Scripts should render a page by the interleaving or echo.
 Rendering should be triggered once per navigation, which means clicking at an anchor tag.
