@@ -210,74 +210,71 @@ The module advantage is to define the API and to hide the internal code, which i
 
 \section{WebAssembly}
 
-\change[inline]{current's}
-WebAssembly \squarecite{9} is a new code format that can be run in today's browsers. 
+WASM \squarecite{9} is a new code format that can be run in current browsers. 
 It has a compact byte format, and its performance is near to a native code. 
-WebAssembly is designed to be a compiling target of popular low-level languages like C or C++ due to its memory model.
-It results in the possibility to run other languages in a browser because its runtime is often written in C or C++. 
-The advantage of this format is a similarity with Javascript modules ES2015 after compilation into a machine code. 
-\change[inline]{within misto by}
-This enables browsers to execute it by a JavaScript runtime. 
-\change[inline]{its se vztahuje k browsers}
-So its security is as good as a code written in Javascript. 
-Because of the same runtime, WebAssembly can call Javascript and vice versa.
+WASM is designed to be a compiling target of popular low-level languages like C or C++ due to its memory model.
+It results in the possibility to run other languages in a browser because its runtime is often written in C or C++.
+Browsers enable to run Javascript alongside WebAssembly, and even more, their code can call each other.
+WASM code is secure as same as a code written in Javascript because of the sandbox. 
 \par
-\change[inline]{Nappsat ze to bude pravdepodobne pridana}
-Thread \squarecite{10} support is currently discussed nowadays and appears to be promising.
+Thread \squarecite{10} support is currently discussed nowadays, and it will probably be added in future browser versions.
 After all, new versions of Google Chrome experiments with proper multi-threading support.
 A replacement of multi-threading can be Web workers mentioned in Javascript section.
 \par
-Despite supporting to run WebAssembly in a browser, the browser cannot load it as a standard ES2015 module yet.
+Despite supporting to run WASM in a browser, the browser cannot load it as a standard ES2015 module yet.
 WebAssembly JavaScript API was created in order to be able to load a WebAssembly to a browser using JavaScript.
 
 \section{PHP in Browser}
 
 The project \squarecite{2} aims to use compiled PHP interpreter into WebAssembly, which allows evaluating a PHP code.
-\change[inline]{Kurziva txtt}
-\change[inline]{Obrazek specialized script block}
-The page has to import a specialized module php-wasm. 
-A PHP code is evaluated by writing a specialized script block or manually by JavaScript and API.
+The page has to import a specialized module \texttt{php-wasm}. 
+A PHP code is evaluated by using JavaScript API or writing a specialized script block as we can see in figure \ref{img03:vrzno}.
 PHP can afterward interact with JavaScript using a specialized API.
-At first glance, that might be a good enough solution, but they are several parts that can be problematic due to PHP semantics.
-\change[inline]{Ze tam neni abstrakce serveru...}
-The solution doesn't solve superglobals. 
-This is reasonable because this is the server's job, but you are not able to get information about a query part or handling forms without writing a JavaScript code.
-\change[inline]{Dvakrat navigate}
-The next problem is navigating how a script can navigate to another script without an additional support code which has to be JavaScript.
+In the figure, the code calls Javascript \texttt{alert} function with the parameter.
+\par
+\begin{figure}
+\begin{lstlisting}
+<script type = "text/php">
+	<?php vrzno_run('alert', ['Hello, world!']);
+</script>
+\end{lstlisting}
+\caption{An example of PHP script block.}
+\label{img03:vrzno}
+\end{figure}
+\par
+At first glance, that might be a good enough solution, but several parts can be problematic due to PHP semantics.
+The solution does not offer additional support for using PHP scripts on the client side.
+For example, superglobals are unused due to a missing server.
+This issue is reasonable because this is the server task, but we cannot get information about a query part or handling forms without writing a JavaScript code.
+The next problem relates to how a script can navigate to another script without an additional support code, JavaScript.
 
 \section{C\# and .NET 5}
 
-\change[inline]{have to odstranit}
-\change[inline]{.NET je zastitujici nazev pro skupinu technologii...}
-We have to introduce the Common Language Infrastructure (abbreviated CLI) \squarecite{18} before diving into .NET.
+We will introduce the Common Language Infrastructure (abbreviated CLI) \squarecite{18} before diving into .NET, which is an overused name for several technologies.
 CLI is a specification describing executable code and runtime for running it on different architectures.
 CLI contains descriptions of a type system, rules, and the virtual machine (runtime), which executes specified Common Intermediate Language (abbreviated CIL) by translating it to a machine code. 
 The virtual machine is named CLR (Common Language Runtime).
 CIL's advantage is a compilation target of languages like C\#, F\#, and VisualBlasic, which gives us great interoperability.
-\change[inline]{.NET standard zminit nakonec}
 .NET Framework, .NET 5, and Mono are implementations of CLI.
-Although there are many CLI implementations, they are usually referred to as .NET.
-\par
-.NET Standard represents API's specifications of .NET libraries across different implementations.
-.NET Standard offers to specify minimum requirements for the code.
+These implementations are usually uniformly called .NET.
 \par
 .NET 5 \squarecite{17} is the lastest version of .NET Core, which is a cross-platform successor to .NET Framework.
 From now on, we will refer .NET 5 as .NET, since it should be the only supported framework in the future.
 .NET is an open-source project primarily developed by Microsoft.
-It consists of many libraries, runtime for executing CIL.
-\change[inline]{runtime a knihovny}
-The libraries can represent whole frameworks like ASP.NET, which aims to web development.
+It consists of runtime for executing CIL and many libraries that can represent whole frameworks like ASP.NET, which aims to web development.
 A large collection of code is usually compiled into an assembly containing the code and additional metadata.
 As assembly can represent either a library or an executable program.
 \par
-\change[inline]{runtime pro dalsi platformy}
-Mono aims to mobile platforms. 
+Mono aims at cross platform exection of CIL. 
 Recently, they started to support compilation \squarecite{12} into WebAssembly.
 This support allows executing CIL inside browsers.
 The compilation has two modes.
 The first one is compilation Mono runtime with all using assemblies.
 The second one only compile Mono runtime, which then can execute .dll files without further compilation of them into WebAssembly.
 A consequence of these compilations into WebAssembly is enabling to call Javascript and WebAPI from C\#.
+\par
+.NET Standard represents API specifications of .NET libraries across different implementations.
+.NET Standard offers to specify minimum requirements for the code.
 \par
 C\# is a high-level language using strong typing and a garbage collector.
 It has a multi-paradigm, but its common characteristic is the objected-oriented style.
