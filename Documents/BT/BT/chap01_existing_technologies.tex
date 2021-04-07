@@ -434,7 +434,7 @@ The first step is to load all resources, which are defined in a separate file.
 Blazor cuts all unnecessary \texttt{.dll} files to reduce the size.
 For this reason, all \texttt{.dll} files have to be used in the Blazor App code in order to be contained in the file. 
 These resources comprise Mono runtime compiled into WASM, additional supporting scripts, and all \texttt{.dll} files containing the whole application (Blazor App with referenced libraries).
-The supporting scripts initiate the runtime a execute it.
+The supporting scripts initiate the runtime and execute it.
 The runtime includes the \texttt{.dll} into the application and calls the \texttt{Main} method in \texttt{Program.cs} defined in Blazor App project.
 We can see the process in figure \ref{img08:wasm}.
 \par
@@ -460,19 +460,19 @@ The URL bar is handled separatly by a browser.
 JavaScript can influence the remainings elements by adding a listener to their events.
 Blazor App handles only an anchor by default.
 After clicking on an anchor, a navigation event is fired.
-One of the handlers is a javascript function, which invokes C\# method through Mono WASM. 
+One of the handlers is a javascript function, which invokes C\# method through Mono WASM and prevents a browser navigation, when Blazor App handles it. 
 The method represents a navigation handler in Blazor App.
 A user can add listeners to the handler, but the Router implements default behavior for navigating.
 \texttt{Router} finds out all components which implement an \texttt{IComponent} interface and tries to render the page according to path matching \texttt{RouteAttribute} of a component whenever the navigation is triggered.
 It creates an instance of the class and fills in its parameters.
-\texttt{Router} calls \texttt{BuildeRenderTree}, which enables running the rendering process.
+\texttt{Router} calls \texttt{BuildRenderTree}, which enables running the rendering process.
 Previous created intences of components are disposed.
 The navigation can be redirected to the server if there is no match.
 \par
 The rendering process begins with the Renderer initialized in the application builder.
 Renderer keeps a copy of DOM in memory, creates page updates, and calls Javascript API for changing the web page DOM in a browser, using the runtime interop support.
 Blazor provides API for invoking Javascript functions and vice-versa.
-Renderer provides \texttt{RenderTreeBuider} for describing page contents.
+Renderer provides \texttt{RenderTreeBuilder} for describing page contents.
 The builder provides an API for adding various types of content to \texttt{Batch}, which is a specialized structure for describing previous and present DOM.
 Although DOM changes is performance-expensive, a diff algorithm recognizes and tries to reduce the updates in \texttt{Batch}.
 The usage of \texttt{RenderTreeBuilder} is complecated, because it has to be adapted to the algorithm.
@@ -491,34 +491,33 @@ When the event is fired, the listener invokes C\# method representing the handle
 
 Peachpie \squarecite{16} is a modern compiler based on Roslyn and Phalanger project.
 It allows compiling PHP scripts into a .NET assembly, which can be executed alongside standard .NET libraries.
+All information about the scripts are saved in the assembly.
 We will describe the basics.
 \par
 Because the languages have a different type system, Peachpie brings dedicated types for representing PHP variables in .NET.
-Some of these types are PhpValue representing a standard PHP variable, PhpArray, or PhpAlias which is a reference to PhpValue.
+Some of these types are \texttt{PhpValue} representing a standard PHP variable, \texttt{PhpArray}, or \texttt{PhpAlias} which is a reference to \texttt{PhpValue}.
 \par
-Another abstraction is the Context class.
-We can imagine Context as a state of the script while it runs.
-The Context consists of superglobals, global variables, declared functions, declared and included scripts.
-It also manages input and output, where we can choose a resource.
-The Context can also be considered as a configuration of the incoming script's execution.
+Another abstraction is the \texttt{Context} class.
+We can imagine \texttt{Context} as a state of the script while it runs.
+\texttt{Context} consists of superglobals, global variables, declared functions, declared and included scripts.
+It also manages an input and output, where we can choose a resource.
+\texttt{Context} can also be considered as a configuration of the incoming script's execution.
 All information about a request can be arranged to mock every situation on the server-side.
-The possibility of saving the Context and using it later is a significant advantage used in the solution.
+The possibility of saving \texttt{Context} and using it later is a significant advantage.
+We can use the class API to obtain information about compiled scripts.
 \par
-\change[inline]{nesnazi, delat... tries}
-Because some PHP libraries are written in C or C++, Peachpie tries to implement them using .NET libraries.
-These libraries are created as a dedicated type of assembly presented by Peachpie.
-Using this assembly can add additional functions, which can provide an extra nonstandard functionality such as an interaction with a browser.
+Because some PHP extensions are written in C or C++, Peachpie implements them using .NET libraries, which can add additional functions providing an extra nonstandard functionality such as an interaction with a browser.
 \par
-\change[inline]{jsou to normalni assemly, }
 The main advantage of the compiler is the great interoperability between PHP and .NET.
 An option to work with C\# objects, attributes, and calling methods will become crucial for achieving advanced interaction between Blazor and PHP.
-\change[inline]{Saving script information in the assembly}
-\change[inline]{Inheriting the CSharp classes}
+\par
+The compiler successfully compiled well-known web frameworks like WordPress or Laravel.
+Thus many companies use it for combining the existing frameworks with a C\# backend.
 \par
 However, there are limitations following from differences in the languages and the stage of development.
-Availability of PHP extensions depends on binding these functions to CSharp code which gives equivalent results. 
-\change[inline]{Rozepsat. Oboustrane vyhoda, .NET knihovny nezavisle na prostredi bezi ve WabAssembly ale nemusi byt odladeny vykonostne}
-The time and memory complexity of this code can be tricky in Blazor.
+Availability of PHP extensions depends on binding these functions to C\# code which gives equivalent results. 
+The .NET libraries can be executed in an independent environment. 
+However, the code can have performance issues in WebAssembly.
 The previously mentioned interoperability has limits as well.
 Csharp constructs like structs and asynchronous methods are undefined in PHP.
 \change[inline]{V dobe psani prace tady byly nejake komplikace}
