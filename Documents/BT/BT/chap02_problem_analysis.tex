@@ -1,13 +1,42 @@
 \chapter{Problem analysis}
-\change[inline]{describes misto relate}
-\change[inline]{aim at}
+
 We will divide the analysis into two sections.
-The first section relates to defining requirements, which the proposed solution will solve.
-Four scenarios will describe these requirements, and they will point to the resulting benefits achieved by them.
-These scenarios will aim to use the integration in different ways.
+The first section will define the requirements, which the proposed solution will solve.
+Four use cases will describe these requirements, and they will aim at using the integration in different ways.
 The second section will observe available architectures in view of used technologies, and it will describe the solution's architecture.
 
-\section{Scenarios}
+\section{Use Cases}
+We will start by considering our stakeholders.
+We can say there are two types of future users.
+The first type is a PHP programmer who has no experience with Blazor.
+We will call him the user A.
+The programmer creates standard websites using PHP.
+The programmer's usage level of PHP is similar to what we could see in the PHP section. 
+One day the programmer wants to contribute to a website powered by Blazor.
+He has a great idea of adding a new feature, which can be implemented by a few PHP scripts, which use some libraries.
+Unfortunetly, he has never seen the technology, and he does not want to learn the whole framework.
+His point of interest is to use a solution helping him to inject his scripts into the website.
+The solution should provide an effortless manual on how to inject them.
+The manual should support most of the PHP conventions, which we can saw in the PHP section.
+\par
+The second type is an enthusiastic PHP programmer who has some experience with Blazor.
+We will call him the user B.
+He does not defend himself before exploring new technology to utilize all their aspects.
+Again, there is an existing Blazor project, and he wants to add a new feature to it.
+The PHP language offers the best way to implement it, but the feature is so render demanding that he wants to make use of a clever diff algorithm to make it more effective.
+His point of interest is to use a solution offering him to collaborate with Blazor by PHP.
+\par
+These descriptions should help us determine use cases, which are realistic to both potential users.
+The first use case relates to programmer A.
+We can say he has a PHP website, which contains some information about his company.
+The website consists of pages containing images and references interconnect them.
+Some pages are adjustable by specifying a query part of the URL, and they include other scripts to add some basic layout.
+One day the website becomes famous, and the programmer wants to migrate the website to a client side in order to save server resources.
+The migration should download most of the website to a browser.
+Afterward, the following navigations between scripts and a script execution should be maintained on the client side.
+Even more, the programmer doesn't want to adjust the website too much for the client side, and he wishes for a simple solution that is understandable by a novice.
+\par
+\change[inline]{udelat ostatni use casy ve stejnem duchu, pak shrnout pozadavky}
 \change[inline]{Use cases pouzit}
 \change[inline]{describes misto relate}
 The first scenario moves a website written in PHP to a client side.
