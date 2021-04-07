@@ -113,52 +113,45 @@ They can be recursively included during runtime, where variables remain across t
 Scripts can be composed into a package, which another code can reuse.
 
 \section{Javascript}
-\change[inline]{Zmena jako v uvodu}
 
-A client-side code needs to control the rendered page and access a web interface providing additional services in order to interact with a user.
-\change[inline]{Zjistit jestli to je jisty, protahnout predchozi vetu.}
-The interface is usually available from Javascript.
+A client-side code needs to control the rendered page and access a web interface providing additional services, which is usually accessible via Javascript, in order to interact with a user.
 We will start with a description of loading Javascript in a browser.
 We will introduce a page representation in a browser alongside page events.
 In the end, we will present Javascript as a scripting language for the creation of a responsive web page.
 \par
-\change[inline]{Zminit Dom pred parsovanim. Prohlizec uchovava strukturu DOMu, DOM je stromecek... Skript muze pracovat jen s tim co je nad nim. }
-The process of generating a web page follows several steps.
-A browser parses the HTML line by line. If a script occurs, the browser starts to execute the code.
-The order of processing is important for manipulation with an HTML structure.
-This limitation can be solved by web events mentioned later, but
-it is a convention to add scripts to the end of the body part after all HTML tags are parsed.
-\par
-We can image a web page as an XML tree.
+We can image a web page structure as an tree.
 Its nodes are tags or text fragments, and its edges connect nodes with their children.
-One representation of this tree is Document Object Model (abbreviated DOM).
+One representation of this tree is \ac{DOM}.
 Each node is represented by an object with special parameters relating to HTML and CSS. 
 The nodes can contain other nodes representing their children.
 Afterwards, there is a document node representing the whole document together with its root node.
+\par
+The process of generating a web page follows several steps.
+A browser parses the HTML page line by line. If a script occurs, the browser starts to execute the code, which can access already parsed tags.
+The order of processing is important for manipulation with an HTML structure.
+This limitation can be solved by web events mentioned later, but
+it is a convention to add scripts to the end of the body part after all HTML tags are parsed.
 \par
 Events are the most common method of how to react to changing a web page state.
 Every event can have some handlers(listeners).
 Whenever an event occurs, it calls all its listeners.
 There are many event types, but we will mention the ones that are important for us.
 HTML tags are the most common entities which can have some events.
-\change[inline]{xtt onclick, onload}
-For example, a button has an event onclick which triggers when a client clicks on the button as we can see in listing \ref{img02:javascript}. 
-Other events can represent a state of a page like onload which fires when the whole HTML document is parsed.
+For example, a button has an \texttt{onclick} event which triggers when a client clicks on the button as we can see in figure \ref{img02:javascript}. 
+Other events can represent a state of a page like \texttt{onload} which fires when the whole HTML document is parsed.
 \par
 A browser provides more APIs valuable for the application, like fetching extra data from a server or local storage.
 These APIs are mentioned as Web API \squarecite{7}.
 \par
-ECMAScript is a Javascript standard recommending across browsers.
-It is abravieted as ES.
-\change[inline]{relates -> vic urcujiciho}
-We can see later an abbreviation ES2015 which relates to the ECMAscript version.
-Javascript is a high-level language usually executed by a browser's dedicated Javascript engine but can also be run on a desktop.
-\change[inline]{Node.js je jediny ?}
-Node.js is an example of a Javascript runtime running outside a browser.
-Listing \ref{img02:javascript} will be used to show the language in the simple scenario.
+\ac{ES} is a Javascript standard recommending across browsers.
+We can see later an abbreviation ES2015 which determines the ECMAScript version.
+Javascript is a high-level language usually executed by a browser's dedicated Javascript engine.
+Browsers run scripts in a sandbox to prevent potential threats of harmful code.
+However, it can also be run on a desktop by Node.js, a Javascript runtime running outside a browser.
+Figure \ref{img02:javascript} will be used to show the language in the simple scenario.
 The page contains a button that invokes an alert with a second delay when a client clicks on it.
 \par
-\begin{figure}[H]
+\begin{figure}
 \begin{lstlisting}
 <!DOCTYPE html>
 <html>
@@ -185,10 +178,8 @@ The page contains a button that invokes an alert with a second delay when a clie
 \label{img02:javascript}
 \end{figure}
 \par
-\change[inline]{as well as zmenit k nejak jako like PhP}
-At first glance, we can see the type system is dynamic as well as PHP.
-\change[inline]{xtt window}
-A window is an essential global variable, which is an object representing the browser window of the running script.
+At first glance, we can see the type system is dynamic, which is similar to PHP.
+\texttt{window} is an essential global variable, which is an object representing the browser window of the running script.
 The window object consists of all defined global variables.
 It also contains a document property, which is an API for manipulating the DOM tree.
 We can see the usage of the document property in the example.
@@ -197,32 +188,26 @@ Javascript object is often used as a wrapper of Web APIs.
 Functions are first-class citizens in Javascript.
 We can treat them as common variables.
 Javascript supports an event-driven style that helps to react to events conveniently.
-\change[inline]{listing ref pridat}
-There is a handler assigned to the click event in the listing.
+There is a handler assigned to the click event in figure \ref{img02:javascript}.
 \par
 \change[inline]{Maybe add a section about async functions. Compare it with PHP}
-\change[inline]{ale umoznuje efektivni sychnroni spracovani}
-Javascript is single-threaded, which can be confusing with its constructs for promises.
-The promise is a structure representing an unfinished process.
+Javascript is single-threaded, but allows effective synchronous execution.
+This can be achieved by \texttt{Promise}, which is a structure representing an unfinished process.
+We can separate a large task into smaller ones in other to offer the processing time for other parts of the application.
 These processes can be chained.
-However, the structure can give an illusion of multi-threading. It uses the scheduler for planning the next task executed by the main thread.
-\change[inline]{Popsat blokujici operaci long running tasks}
-The single thread is critical for blocking operations which causes thread freezing.
+Although the structure can give an illusion of multi-threading, it uses the scheduler for planning the next task executed by the main thread after the previous task is completed or an event triggered it.
+The single thread is critical for blocking operations like time demanding computatitons which causes thread freezing.
 \par
-Web workers \squarecite{11} are a browser feature enabling to run the script in the background.
-\change[inline]{Spojit dve vety}
-There are wrapped as Worker objects.
+\texttt{Worker} object represents a web worker \squarecite{11}, provided by a browser, enabling to run the script in the background.
 The worker limitation is communication with UI thread only by handling message events. 
 Messages have to be serialized and deserialized.
 \par
-\change[inline]{presssent vyhodit which will need. Spojit prvni vetu s druhou. Organizace kodu}
-Javascript module is the last thing, which we will need to present.
-It gathers a collection of code.
-Global entities of this code can be exported to another script.
+Javascript can organize a code by function and objects similar to PHP.
+A module can gather a larger collection of code.
+Global entities of the code can be exported to another script.
 These exports make an API of the module.
-The module's advantage is defining the API and hiding the internal code, which is not relevant for the user.
-\change[inline]{kompiluje se modul ?}
-\change[inline]{zminit ze se to pousti v sandboxu}
+The module advantage is to define the API and to hide the internal code, which is not relevant for the user.
+
 \section{WebAssembly}
 
 \change[inline]{current's}
