@@ -9,7 +9,7 @@ The second section will observe available architectures in view of used technolo
 We will start by considering our stakeholders.
 We can say there are two types of future users.
 The first type is a PHP programmer who has no experience with Blazor.
-We will call him the user A.
+We will call him the programmer A.
 The programmer creates standard websites using PHP.
 The programmer's usage level of PHP is similar to what we could see in the PHP section. 
 One day the programmer wants to contribute to a website powered by Blazor.
@@ -20,13 +20,13 @@ The solution should provide an effortless manual on how to inject them.
 The manual should support most of the PHP conventions, which we can saw in the PHP section.
 \par
 The second type is an enthusiastic PHP programmer who has some experience with Blazor.
-We will call him the user B.
+We will call him the programmer B.
 He does not defend himself before exploring new technology to utilize all their aspects.
 Again, there is an existing Blazor project, and he wants to add a new feature to it.
 The PHP language offers the best way to implement it, but the feature is so render demanding that he wants to make use of a clever diff algorithm to make it more effective.
 His point of interest is to use a solution offering him to collaborate with Blazor by PHP.
 \par
-These descriptions should help us determine use cases, which are realistic to both potential users.
+These descriptions should help us determine following use cases, which are realistic to both potential users.
 The first use case relates to programmer A.
 We can say he has a PHP website, which contains some information about his company.
 The website consists of pages containing images and references interconnect them.
@@ -36,12 +36,48 @@ The migration should download most of the website to a browser.
 Afterward, the following navigations between scripts and a script execution should be maintained on the client side.
 Even more, the programmer doesn't want to adjust the website too much for the client side, and he wishes for a simple solution that is understandable by a novice.
 \par
+The second use case aims at programmer A, who has a little experience with Blazor.
+There is an existing Blazor website, and he has an idea of a brilliant feature adding new functionality written in PHP.
+The programmer wants to save the other developer time and also implement a UI.
+Unfortunately, the feature needs to interact with a user, meaning that filling additional data, clicking, loading, and saving files.
+He is lazy to learn Javascript or interoperability between PHP and Blazor.
+Thus, he needs a solution, which offers interaction with a user and uses standard PHP conventions mentioned earlier.
+\par
+The third use case relates to programmer B.
+He wants to create a real-time web game similar to Asteroids written in PHP.
+The game is render demanding due to redrawing the scenes.
+So he decides to target on a client side and utilizes Web API for changing the DOM tree.
+This approach should prevent network latency by loading the game in the beginning.
+After that, the game will be independent of the network connection due to running the game and saving the game state by a browser. 
+Because he has previous experience with Blazor infrastructure, he will appreciate applying it to run this game on a client side.
+Thus, he needs some representation of Blazor in PHP, which he will use for interacting with a browser.
+\par
+\begin{figure}[b]\centering
+\includegraphics[scale=0.8]{./img/UseCaseAllTogether}
+\caption{The fourth use case describing the combination of the rest.}
+\label{img09:usecase}
+\end{figure} 
+\par
+We can see an illustration of the fourth use case in figure \ref{img09:usecase}.
+A goal of the use case is to allow collaboration between PHP and Blazor programmers, where a difference of languages is not a barrier.  
+We can image two teams creating a web application. 
+They agreed on developing a client-side web application, where both teams aim at different parts of the website.
+For example, one team wants to create a fun zone where a user can play some web games and the second team wants to create some online documentation about these games.
+Because Blazor targets client-side web applications, they want to utilize Blazor.
+Unfortunately, these teams use a different favorite language, where the first team likes PHP and the second team likes C\#.
+Even more, these teams want to arbitrarily choose what part they want to develop.
+They need some environment where the PHP team can code alongside the Blazor team, and they can focus on an arbitrary part of the web application.
+We can see the intention in figure \ref{img09:usecase} where each team can create a part aiming to render demanding applications, website infrastructure, and additional features.
+Also, the PHP team consists of programmers having different skills with Blazor, so the environment should reflect it.
+
+\section{Requirements}
+
+The first scenario moves a website written in PHP to a client side.
+It can help saving the server's resources by loading the website's major to a client using one request.
 \change[inline]{udelat ostatni use casy ve stejnem duchu, pak shrnout pozadavky}
 \change[inline]{Use cases pouzit}
 \change[inline]{describes misto relate}
-The first scenario moves a website written in PHP to a client side.
 \change[inline]{majority }
-It can help saving the server's resources by loading the website's major to a client using one request.
 \change[inline]{Front controller neni}
 We can imagine a PHP website using a Front controller pattern.
 We want to handle all navigation by the Main script, distributing an additional workload to other scripts.
