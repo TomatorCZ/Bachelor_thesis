@@ -1,42 +1,43 @@
 \chapter{Problem analysis}
 
-We will divide the analysis into two sections.
-The first section will define the requirements, which the proposed solution will solve.
-Four use cases will describe these requirements, and they will aim at using the integration in different ways.
-The second section will observe available architectures in view of used technologies, and it will describe the solution's architecture.
+We will divide the analysis into three steps.
+We will think of potential users of the integration in order to define realistic use cases for them.
+Four use cases will describe the user's intentions.
+Then, we will specify requirements, which are demanded by the use cases.
+In the last section, we will propose a high-level architecture of our solution, where we will aim at utilizing Blazor and Peachpie to content the requirements.
 
 \section{Use Cases}
 We will start by considering our stakeholders.
 We can say there are two types of future users.
 The first type is a PHP programmer who has no experience with Blazor.
-We will call him the programmer A.
+We will call him programmer A.
 The programmer creates standard websites using PHP.
 The programmer's usage level of PHP is similar to what we could see in the PHP section. 
 One day the programmer wants to contribute to a website powered by Blazor.
 He has a great idea of adding a new feature, which can be implemented by a few PHP scripts, which use some libraries.
-Unfortunetly, he has never seen the technology, and he does not want to learn the whole framework.
+Unfortunately, he has never seen Blazor, and he does not want to learn the whole framework.
 His point of interest is to use a solution helping him to inject his scripts into the website.
 The solution should provide an effortless manual on how to inject them.
-The manual should support most of the PHP conventions, which we can saw in the PHP section.
+The manual should support most of the PHP conventions, which we could see in the PHP section.
 \par
 The second type is an enthusiastic PHP programmer who has some experience with Blazor.
-We will call him the programmer B.
+We will call him programmer B.
 He does not defend himself before exploring new technology to utilize all their aspects.
 Again, there is an existing Blazor project, and he wants to add a new feature to it.
 The PHP language offers the best way to implement it, but the feature is so render demanding that he wants to make use of a clever diff algorithm to make it more effective.
 His point of interest is to use a solution offering him to collaborate with Blazor by PHP.
 \par
-These descriptions should help us determine following use cases, which are realistic to both potential users.
+These descriptions should help us determine the following use cases, which are realistic to both potential users.
 The first use case relates to programmer A.
 We can say he has a PHP website, which contains some information about his company.
 The website consists of pages containing images and references interconnect them.
 Some pages are adjustable by specifying a query part of the URL, and they include other scripts to add some basic layout.
 One day the website becomes famous, and the programmer wants to migrate the website to a client side in order to save server resources.
 The migration should download most of the website to a browser.
-Afterward, the following navigations between scripts and a script execution should be maintained on the client side.
-Even more, the programmer doesn't want to adjust the website too much for the client side, and he wishes for a simple solution that is understandable by a novice.
+Afterward, navigations between scripts and a script execution should be maintained on the client side.
+Even more, the programmer doesn't want to adjust the website for a client side too much, and he wishes for a simple solution that is understandable by a novice.
 \par
-The second use case aims at programmer A, who has a little experience with Blazor.
+The second use case aims at programmer A, who already has a little experience with Blazor.
 There is an existing Blazor website, and he has an idea of a brilliant feature adding new functionality written in PHP.
 The programmer wants to save the other developer time and also implement a UI.
 Unfortunately, the feature needs to interact with a user, meaning that filling additional data, clicking, loading, and saving files.
@@ -73,31 +74,43 @@ Also, the PHP team consists of programmers having different skills with Blazor, 
 \section{Requirements}
 
 We will define requirements based on mentioned use cases.
-The question is what things should be maintained by the solution to make PHP scripts a beneficial part of a Blazor website.
+The question is what things should be maintained by the solution to make PHP scripts a valuable part of a Blazor website.
 \par
-The solution should provide two ways how to use it because we have two types of users.
-The first way aims at straightforward integration, where the user should know the only necessary knowledge about Blazor.
-That means minimal work with the platform, where he just reference his scripts.
-The programmer is used to utilize PHP conventions introduced earlier. 
-Thus, the solution should render a page written in PHP transparently without knowing about the integration, meaning to draw script output as HTML document in a browser.
-Another important thing is information about navigation.
-The scripts should be executed every time when they are navigated, and make a decision based on a URL part.
-It aims at a simulation of the server, allowing to use of superglobals for obtaining the information.
-We should adopt forms to a client side, meaning that the simulated server handles the submit and execute the script again to pretend the request sending.
-The form support consists of providing submitted fields like text or files to the script via superglobals.
+\textbf{Navigation} is the first requirement that our solution should maintain.
+We demonstrate navigation posibilities in the figure \ref{img10:scripts}.
+Basic functionality should provide script routing, which finds a script by its name and executes it.
+The solution should offer a straightforward router making a Php website accessible, as we can see in the figure.
+A script should be injectable to a standard Blazor component due to the use case two, where the programmer injects a feature, written in PHP, to a Blazor page.
+The simplicity is a necessary condition for programmer A and should be reflected.
+The last option is a Blazor component in \texttt{script.php} enabling to use of already created components in PHP code.
 \par
-The second way aims at advanced interaction with Blazor, where the solution allows PHP to utilize Blazor infrastructure.
-It results in full control over the rendering.
-Thus, the solution should provide an interface for the Blazor environment in a PHP code.
-The interface should make the rendering with RenderTreeBuilder easier.
-Interoperability between Javascript and C\# apears to be helpful in some situations. 
-Thus, the same thing could be true between PHP and Javascript, and the solution should maintain it.
+\begin{figure}[!b]\centering
+\includegraphics{./img/Requirement}
+\caption{Scripts should be flexible.}
+\label{img10:scripts}
+\end{figure} 
 \par
-The scripts, intended as a part of Blazor, should be injectable in many parts of a web application.
-It means an opportunity of adding a subset of a website written in PHP to an existing Blazor website.
-For example, we have a page enabling us to display a user graph defined in a file.
-The page is written in PHP and uses a form to submit the file.
-We want to inject the page into a Blazor website as a normal page or page fragment.
+\textbf{Rendering} should be maintained in two ways.
+The first way aims at programmer A when a script output is transparently displayed as a web page or its fragment.
+The approach hides Blazor infrastructure for rendering a markup and makes creating a UI easier for PHP programmers.
+The second way aims at programmer B when the solution provides an interface for interacting with Blazor.
+It is also necessary when we want to use already defined components in a PHP code.
+\par
+\textbf{State preservation} is a new feature, which should be available for creating a web application saving its state.
+The example we can see in the use case 3 when we have to save the game state.
+However, we should be able to choose whether it is intended behavior because scripts lose their state after every request on a server side.
+\par
+\textbf{Server abstraction} should be the main advantage of the solution.
+We could see superglobals are commonly used methods how to obtain information about navigation or submitted data.
+The solution should supports superglobals for examples like the use case 1, where the website uses information about URL query part, via \texttt{\$\_GET} variable, to make decisions.
+\par
+\textbf{Forms} should be maintained by the solution. 
+They should not be sent to a server but parsed and provided in superglobals. 
+After navigation to a script defined in the \texttt{action} attribute, the script should access the form data.
+Data processing also relates to files, when it should be possible to upload and download files.
+\par
+\textbf{Interoperability} between PHP and Javascript should be supported for situations when forms, the server abstraction, or Blazor are not sufficient.
+We should be able to call Javascript functions from PHP and vice-versa.
 
 \section{Architecture analysis}
 
