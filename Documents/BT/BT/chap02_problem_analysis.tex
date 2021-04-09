@@ -72,44 +72,32 @@ Also, the PHP team consists of programmers having different skills with Blazor, 
 
 \section{Requirements}
 
-The first scenario moves a website written in PHP to a client side.
-It can help saving the server's resources by loading the website's major to a client using one request.
-\change[inline]{udelat ostatni use casy ve stejnem duchu, pak shrnout pozadavky}
-\change[inline]{Use cases pouzit}
-\change[inline]{describes misto relate}
-\change[inline]{majority }
-\change[inline]{Front controller neni}
-We can imagine a PHP website using a Front controller pattern.
-We want to handle all navigation by the Main script, distributing an additional workload to other scripts.
-\change[inline]{Pozadavky co to ma umet a pro jake prilezitosti}
-\change[inline]{zminit pro jake uzivate cilim, knim priradit usecasy}
-The URL information should be accessible in the super global \$\_GET alongside the query.
-Scripts should render a page by the interleaving or echo.
-Rendering should be triggered once per navigation, which means clicking at an anchor tag.
-We should choose a Context duration If we want to use the same context for a whole component life or change it after navigation.
-This extension brings a new look at PHP programing when we can utilize saving the context among navigations.
-A problem comes with external resources like images.
-These resources are needed, while a particular part of the page references them.
-This complication has to make another request to the server for obtaining the resource.
+We will define requirements based on mentioned use cases.
+The question is what things should be maintained by the solution to make PHP scripts a beneficial part of a Blazor website.
 \par
-The second scenario aims to inject a PHP code to the Blazor page.
-The page will do some data processing.
-There exist a dedicated PHP library solving this processing, and we are familiar with it.
-We should write a PHP script using the library and inject it as a part of the page.
-The PHP script should interact with a client by a Form tag to avoid Javascript and advanced interaction with Blazor.
-Get and post methods should be enabled and should use the correct superglobals.
-There should be file support that will enable loading and saving files from the script.
-A PHP script should be rendered as in the previous example.
+The solution should provide two ways how to use it because we have two types of users.
+The first way aims at straightforward integration, where the user should know the only necessary knowledge about Blazor.
+That means minimal work with the platform, where he just reference his scripts.
+The programmer is used to utilize PHP conventions introduced earlier. 
+Thus, the solution should render a page written in PHP transparently without knowing about the integration, meaning to draw script output as HTML document in a browser.
+Another important thing is information about navigation.
+The scripts should be executed every time when they are navigated, and make a decision based on a URL part.
+It aims at a simulation of the server, allowing to use of superglobals for obtaining the information.
+We should adopt forms to a client side, meaning that the simulated server handles the submit and execute the script again to pretend the request sending.
+The form support consists of providing submitted fields like text or files to the script via superglobals.
 \par
-The third scenario aims to fully utilize aspects of Blazor and move it into the PHP world.
-We should be able to use all Blazor interfaces from PHP
-The scenario is intended for users, which have a notion about Blazor functionality and want to make the rendering time faster for demanding web applications.
-The solution should offer constructs to improve interaction with Blazor in PHP.
-In the end, we should be able to place the web application into the desired place in the Blazor application.
+The second way aims at advanced interaction with Blazor, where the solution allows PHP to utilize Blazor infrastructure.
+It results in full control over the rendering.
+Thus, the solution should provide an interface for the Blazor environment in a PHP code.
+The interface should make the rendering with RenderTreeBuilder easier.
+Interoperability between Javascript and C\# apears to be helpful in some situations. 
+Thus, the same thing could be true between PHP and Javascript, and the solution should maintain it.
 \par
-The fourth scenario combines previous scenarios.
-We should be able to add a PHP website as a part of the Blazor website.
-The PHP website should be able to navigate the component created in the third scenario.
+The scripts, intended as a part of Blazor, should be injectable in many parts of a web application.
+It means an opportunity of adding a subset of a website written in PHP to an existing Blazor website.
+For example, we have a page enabling us to display a user graph defined in a file.
+The page is written in PHP and uses a form to submit the file.
+We want to inject the page into a Blazor website as a normal page or page fragment.
 
 \section{Architecture analysis}
 
