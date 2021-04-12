@@ -6,7 +6,6 @@ Then, we specify requirements, which are demanded by the use cases.
 In the last section, we propose a high-level architecture of our solution, where we aim at utilizing Blazor and Peachpie to cover the requirements.
 
 \section{Use Cases}
-\change[inline]{Pojmenovat use casy}
 We remind technologies of interest to introduce a context of our use cases.
 PHP is used for server scripting, where it is designed to process a request, create the website, and send it back.
 Blazor is a web framework for creating a client-side UI using C\#.
@@ -91,47 +90,49 @@ Even more, Blake should be able to manipulate their part of the application to c
 
 \section{Requirements}
 
-We will define requirements based on mentioned use cases.
-\change[inline]{Cilem teto sekce je popsat pozadavky ktere kdyz budou naplnene tak..}
-The question is what things should be enabled by the solution to make PHP scripts a valuable part of a Blazor website.
+The goal of this section is to describe requirements based on mentioned use cases.
+If the proposed solution covers the requirements, then PHP scripts will become a valuable part of a Blazor website.
 \par
-\textbf{Navigation} is the first requirement that our solution should maintain.
-We demonstrate navigation posibilities in the figure \ref{img10:scripts}.
+\textbf{Navigation} is the first requirement that our solution should provide.
+We demonstrate navigation posibilities in Figure \ref{img10:scripts}.
 Basic functionality should provide script routing, which finds a script by its name and executes it.
 The solution should offer a straightforward router making a Php website accessible, as we can see in the figure.
-A script should be injectable to a standard Blazor component due to the use case two, where the programmer injects a feature, written in PHP, to a Blazor page.
-The simplicity is a necessary condition for programmer A and should be reflected.
-The last option is a Blazor component in \texttt{script.php} enabling to use of already created components in PHP code.
+The simplicity is a necessary condition for Alice and should be reflected.
+Blazor should navigate the component defined in \texttt{script.php}, because Peachpie enables inheriting \texttt{ComponentBase}, which results in a routable component.
 \par
-\change[inline]{Popsat ten obrazek a otocit jak to popisuju a nechat tam jen Vyhodit Blazor compnent ve script.php}
-\begin{figure}[!b]\centering
+\textbf{Injectability} of script is an important feature to make \textit{OneScript} use case reusable.
+Thus, Bob can inject the widget in different contexts, meaning that he can create a new web page containing some content and inject the widget into it, as we can see in Figure \ref{img10:scripts} where the Blazor component is generated from a PHP script and a Razor file.
+\par
+\begin{figure}[t]\centering
 \includegraphics{./img/Requirement}
-\caption{Scripts should be flexible.}
+\caption{The requirement describing navigation between different types of entities. 
+The first one represents a collection of script routable by default \texttt{Router}.
+The second represents a standard component contenting a PHP code, and the last contains a defined Blazor component in the script.
+The proposed solution with Blazor connects these types into a single website, where they can live together.
+}
 \label{img10:scripts}
 \end{figure} 
 \par
 \textbf{Rendering} should be maintained in two ways.
-The first way aims at programmer A when a script output is transparently displayed as a web page or its fragment.
+The first way aims at Alice when a script output is transparently displayed as a web page or its fragment.
 The approach hides Blazor infrastructure for rendering a markup and makes creating a UI easier for PHP programmers.
-The second way aims at programmer B when the solution provides an interface for the interaction with Blazor.
+The second way aims at Chuck when the solution provides an interface for the interaction with Blazor.
 It is also necessary when we want to use already defined components in a PHP code.
 \par
-\change[inline]{Popsat co je ten state}
-\change[inline]{Rozepsat jsou zvykli zanik requestu po kazdym requestu ale pro interakci s uzivatelem ji potrebujou zachovavat}
-\textbf{State preservation} is a new feature, which should be available for creating a web application saving its state.
-The example we can see in the use case 3 when we have to save the game state.
+\textbf{State preservation} is a new feature, which should be available for creating a web application by a collection of scripts saving their variables after the execution.
+This feature is not a standard because of HTTP policy and conventions, where programmers are used to deletion of variables and function definitions after the request termination.
+However, the state described by the variables needs to be preserved in order to interact with a user.
+The feature is a new way, how to save the application state and can be seen in the \textit{PhpComponent} use case where we have to save the game state.
 However, we should be able to choose whether it is intended behavior because scripts lose their state after every request on a server side.
 \par
-\change[inline]{Server simulation}
-\textbf{Server abstraction} should be the main advantage of the solution.
+\textbf{Server simulation} should be the main advantage of the solution.
 We could see superglobals are commonly used methods how to obtain information about navigation or submitted data.
-The solution should supports superglobals for examples like the use case 1, where the website uses information about URL query part, via \texttt{\$\_GET} variable, to make decisions.
+The solution should support superglobals for examples like the use case 1, where the website uses information about URL query part, via \texttt{\$\_GET} variable, to make decisions.
 \par
 \textbf{Forms} should be maintained by the solution. 
 They should not be sent to a server but parsed and provided in superglobals. 
 After navigation to a script defined in the \texttt{action} attribute, the script should access the form data.
-\change[inline]{relates ne tyka se }
-Data processing also relates to files, when it should be possible to upload and download files.
+Data processing also contains a file managment, where it should be possible to upload and download files.
 \par
 \textbf{Interoperability} between PHP and Javascript should be supported for situations when forms, the server abstraction, or Blazor are not sufficient.
 We should be able to call Javascript functions from PHP and vice-versa.
