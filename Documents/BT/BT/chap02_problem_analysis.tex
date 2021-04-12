@@ -127,7 +127,7 @@ However, we should be able to choose whether it is intended behavior because scr
 \par
 \textbf{Server simulation} should be the main advantage of the solution.
 We could see superglobals are commonly used methods how to obtain information about navigation or submitted data.
-The solution should support superglobals for examples like the use case 1, where the website uses information about URL query part, via \texttt{\$\_GET} variable, to make decisions.
+The solution should support superglobals for examples like the \textit{Web} use case, where the website uses information about URL query part, via \texttt{\$\_GET} variable, to make decisions.
 \par
 \textbf{Forms} should be maintained by the solution. 
 They should not be sent to a server but parsed and provided in superglobals. 
@@ -139,120 +139,100 @@ We should be able to call Javascript functions from PHP and vice-versa.
 
 \section{Architecture}
 
-\change[inline]{Colekce scriptu}
-The basic principle of our solution consists of a PHP script compilation into .NET assembly by Peachpie.
-After that, a Blazor App references the assembly with a support library, providing a mechanism for navigating and executing the scripts.
-\change[inline]{Zminit rovnou jeji jmeno v predchozi vete}
-From now on, we will call the library \texttt{Peachpie.Blazor}.
+The basic principle of our solution consists of PHP scripts compilation into .NET assembly by Peachpie.
+After that, a Blazor App references the assembly with \texttt{Peachpie.Blazor}, which is a support library providing a mechanism for navigating and executing the scripts.
 Then, a server serves the application to a browser, where Mono runtime executes it.
 We will describe the architecture from the view point of compilation time and runtime.
 \par
 When we think about PHP script compilation, there are two possibilities.
-We can compile the scripts ahead of time and reference them from a Blazor App, as we can see in figure \ref{img11:compilation}. 
+We can compile the scripts ahead of time and reference them from a Blazor App. 
 The second way is to regard the scripts as Static Web Assets and load them into a browser as scripts.
 Afterward, the Peachpie compiles and executes them.
 Both approaches have different advantages. 
 Thus, there is no silver bullet.
 The first approach saves time by ahead compilation and compilation check.
 However, the second approach can save browser memory when the web application is larger, and a client uses only a part of it.
-Since we have to choose, we are inclined to the first approach.
-\change[inline]{Je to stabdartni zpusob jak se to v peachpie dela}
-\par
-\change[inline]{Dat to pric}
-\begin{figure}[!b]\centering
-\includegraphics[scale=0.8]{./img/Compilation}
-\caption{Compilation.}
-\label{img11:compilation}
-\end{figure} 
+We are inclined to the first approach because the static compilation is a standard way in Peachie.
+We think that the first approach is valuable for the use cases mentioned earlier.
+The \textit{Web} use case wants to save additional requests. The rest of the use cases intends to utilize PHP scripts as a part of the website, so we suppose that the advantage of using smaller browser memory is unimportant. 
 \par
 We have to figure out how to attach a PHP code, which is compiled into the assembly, to the Blazor App.
-\change[inline]{Peachpie to deafaultne podporuje}
-Although, we can now call functions written in PHP from Blazor, we want to create an abstraction over the Blazor environment in order to simplify the interface.
+Although Peachpie supports calling functions written in PHP from Blazor by default, we want to create an abstraction over the Blazor environment in order to simplify the interface.
 The abstraction should offer a representation of PHP scripts in Blazor.
 It should allow an option for accessing the Blazor interface for advanced features.
 It should be compatible with the Blazor environment in other to allowing a smooth collaboration between the abstraction and the Blazor pages.
-A Blazor page consists of components.
-We can achieve collaboration by utilizing the component to represent PHP scripts.\change[inline]{Odstranit nasledujici}
-We can benefit from a component architecture.
-Componets can be arbitrarily put together, which offers to place our PHP section in the desired place in the Razor code.
-\change[inline]{Priblizit}
-Even more, we can replace \texttt{Router} with the component representing PHP scripts.
+A Blazor page consists of components, which can collaborate with each other.
+Thus, we can utilize them to represent PHP scripts.
+Componets can be arbitrarily put together, which offers to place our PHP code in the desired place in the Razor code.
+Even more, we can replace a root component, \texttt{Router} by default, with the component representing PHP scripts.
 Afterward, scripts will care about the whole Blazor website content.
 The component provides a sufficient Blazor interface for rendering control and interaction with a browser. 
-We can illustrate the options of usage in figure \ref{img12:component}.
-\change[inline]{Odkaz an nej drive}
-\par
-\begin{figure}[t]\centering
-\includegraphics{./img/component}
-\caption{The component representing a PHP script.}
-\label{img12:component}
-\end{figure} 
-\change[inline]{Uprasnit v obrazku vice scriptu}
-\change[inline]{dovysvetlit sipky}
 \par
 We can think about how to represent PHP scripts as components.
 There can be one type of component, which will provide the abstraction for all the PHP code in scenarios.
 A problem with this approach is that the use cases need different levels of abstraction.
-The third use case wants to use the component for offering the Blazor interface accessible from PHP code.
+The \textit{PhpComponent} use case wants to use the component for offering the Blazor interface accessible from PHP code.
 The offer should contain identical or similar options, which are given in a C\# code.
-The second use case wants to use the component as an adjustable provider.
-The provider finds and executes PHP scripts.
+The \textit{OneScript} use case wants to free a programmer from Blazor.
+Thus, we want to use the component as an adjustable provider finding and executing PHP scripts.
 Its purpose is to keep the user away from knowing about the detailed structure of Blazor and the integration.
 Another important thing is a provider role in a Blazor App.
-The provider can behave either as the Router or as a navigatable component, which enables the navigation of PHP scripts.
-\change[inline]{As a result...for different proposes}
-The conflict yields to create more types of components.
-These types will provide the abstraction for the particular scenarios.
+The provider can behave either as the Router or as a routable component, which enables the navigation of PHP scripts.
+As a consequence, we need to create more types of components for different proposes.
+These types will provide the abstraction for the particular use cases.
 The solution will reach two types of components.
 The first one wants to bring Blazor to PHP in order to utilize the whole environment.
-The second one aims at presenting a transparent execution of standard PHP script without strangeness of connection between Blazor and PHP.
-\change[inline]{Jinak zformulovat, bez toho aby se o to musel zajimat}
+The second one aims at presenting a transparent execution of standard PHP script without knowing about the connection between Blazor and PHP.
+We can illustrate out intention in Figure \ref{img12:component}.
 \par
-We will focus on the first component.
-We will call the component \texttt{PhpComponent} due to the effort of moving the component concept to PHP.
+\begin{figure}[!b]\centering
+\includegraphics[scale=0.9]{./img/Components}
+\caption{Components representing PHP scripts. Arrows represent navigation. 
+Dot lines connect a runtime object with the implementation.
+}
+\label{img12:component}
+\end{figure} 
+\par
+We will focus on the first component, which we will call \texttt{PhpComponent} due to the effort of moving the component concept to PHP.
 \texttt{PhpComponent} aims at the third use case.
-Despite language's differences, we can utilize the common concept of classes and inheritance.
-Peachpie allows inheriting C\# class in a PHP code.
-This feature results in full support of component interface without creating new structures for managing component's behavior from PHP.
+Despite language differences, we can utilize the common concept of classes and inheritance when Peachpie allows inheriting C\# class in a PHP code.
+This feature results in full support of component interface without creating new structures for managing component behavior from PHP.
 We can inherit \texttt{ComponentBase} class in PHP and use its methods in the same way as C\# class.
-The inheritance offers the required interface for creating effective rendering in scenario 3.
-There are also subproblems with the differences.
+The inheritance offers the required interface in the \textit{PhpComponent} use case.
+At the time of writing, there are also subproblems with the differences of languages.
 The current Peachpie version does not support some C\# specifics fully.
 The reason can be a hard or impossible representation of C\# entities in PHP.
 It should be developed some PHP support for making the usage of the interface easier.
 The support will replace the missing usage of the interface.
 \par
 We will call the second type of component \texttt{PhpScriptProvider} expressing an environment for executing standard PHP scripts.
-\texttt{PhpScriptProvider} aggregates the requirements of the rest scenarios by a single component.
-Although, the provider has more than one purpose.
-The main idea of serving a PHP code is the same.
+\texttt{PhpScriptProvider} solves the requirements of the remaining use cases as a single component.
 The provider should be able to navigate and execute PHP scripts.
-Because the rest scenarios try to hide the integration, the provider should support the following features.
-It should pretend a server behavior.
-The behavior contains rendering everything, which is outside the PHP section or written by echo.
+Because the remaining use cases try to hide the integration between PHP and Blazor, the provider should support the following features.
+It should pretend a server behavior, which copies everything in the output of PHP script to an HTTP response body rendered by a browser.
 Superglobals are often used for obtaining additional information given by the user.
-An ability to fill \texttt{\$\_GET} variable with the URL query part should be presented.
-It should change a standard form functionality to saving the form information into superglobals and execute the script again.
+Thus, an ability to fill \texttt{\$\_GET} variable with the URL query part should be presented.
+It should change a standard form functionality, which is sending the form to a server, to saving the form information into superglobals and execute the script again.
 Loading and saving files submitted by form is essential for avoiding using Javascript.
-There is an interesting thing about saving the script context to the next execution.
-These abilities are the same for the rest scenarios.
+A possibility of saving the script context to the next execution is a new opportunity how to keep an application state in PHP script.
+These abilities are the same for the remaining use cases except \textit{PhpComponent}.
 We will describe the provider modes.
 These modes are intended to solve the rest use cases. 
 \par
-The first mode relates to the first use case.
+The first mode aims at the \textit{Web} use case.
 It enables to set the provider as a root component.
 It handles all navigation events, determines the script name, finds it, and executes the script.
 PhpComponents can also be a navigation's target.
 \par
-The second mode relates to the second use case.
+The second mode aims at the \textit{OneScript} use case.
 It enables the provider insertion into a Razor page.
 Afterward, the provider executes the specified script.
 \par
-The third mode relates to the last use case.
+The third mode aims at the \textit{AllTogether} use case.
 It enables to navigate the set of scripts with respect to URL.
 The navigation is generally maintained by the default \texttt{Router}.
 The component only provides navigation to scripts.
 \par
-We can see that two different components are rational ways how to separate the problems and offer an understandable difference between the components.
+These observations lead us to make sure having two different components are rational ways how to separate the problems and offer an understandable difference between the components.
 
 
