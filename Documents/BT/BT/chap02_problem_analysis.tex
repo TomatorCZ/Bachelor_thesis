@@ -1,80 +1,99 @@
 \chapter{Problem analysis}
-
-We will divide the analysis into three steps.
-We will think of potential users of the integration in order to define realistic use cases for them.
-Four use cases will describe the user's intentions.
-Then, we will specify requirements, which are demanded by the use cases.
-In the last section, we will propose a high-level architecture of our solution, where we will aim at utilizing Blazor and Peachpie to content the requirements.
+We divide the analysis into three steps.
+In the first section, we think of potential users of the integration in order to define realistic use cases for them.
+Four use cases describe the user's intentions.
+Then, we specify requirements, which are demanded by the use cases.
+In the last section, we propose a high-level architecture of our solution, where we aim at utilizing Blazor and Peachpie to cover the requirements.
 
 \section{Use Cases}
-We will start by considering our stakeholders.
-We can say there are two types of future users.
-The first type is a PHP programmer who has no experience with Blazor.
-We will call him programmer A.
-The programmer creates standard websites using PHP.
-The programmer's usage level of PHP is similar to what we could see in the PHP section. 
-One day the programmer wants to contribute to a website powered by Blazor.
-He has a great idea of adding a new feature, which can be implemented by a few PHP scripts, which use some libraries.
-Unfortunately, he has never seen Blazor, and he does not want to learn the whole framework.
-His point of interest is to use a solution helping him to inject his scripts into the website.
-The solution should provide an effortless manual on how to inject them.
+\change[inline]{Pojmenovat use casy}
+We remind technologies of interest to introduce a context of our use cases.
+PHP is used for server scripting, where it is designed to process a request, create the website, and send it back.
+Blazor is a web framework for creating a client-side UI using C\#.
+Peachpie is a PHP compiler, which compiles a collection of PHP scripts, representing a standalone project, to a .NET assembly.
+\par
+We consider four types of potential users.
+The first type is a C\# programmer, Blake, excited to Blazor and read our thesis.
+\par
+The second type is a PHP programmer, Alice, who has no experience with Blazor but knows Peachpie basics.
+Alice creates standard websites written in PHP, whereas she uses techniques introduces in the PHP section.
+One day she wants to move the website to a client side.
+Blake tells her about our thesis proposing a solution to migrate the scripts to a browser using Blazor and Peachpie.
+She is excited by the solution and looks forward to using it.
+However, she does not want to learn the Blazor framework.
+Her point of interest is to use the solution for helping her to migrate her website to a browser.
+The solution should provide an effortless manual on how to deploy it.
 The manual should support most of the PHP conventions, which we could see in the PHP section.
 \par
-The second type is an enthusiastic PHP programmer who has some experience with Blazor.
-We will call him programmer B.
-He does not defend himself before exploring new technology to utilize all their aspects.
+The third type is a PHP programmer, Bob, who has already tried to write a simple website using Blazor and knows Peachpie basics.
+He creates standard websites similar to Alice's.
+One day he wants to contribute to a website powered by Blazor.
+He has a great idea of adding a new widget, which can be implemented by a few PHP scripts, which use some libraries.
+Blake tells him about our thesis, and his wish is to use the solution to help him inject his scripts into the website.
+The solution should be adopted to his skills.
+\par
+The fourth type is an enthusiastic PHP programmer, Chuck, who has advanced experience with Blazor and knows Peachpie basics.
+He does not avoid exploring new technology to utilize all their aspects.
 Again, there is an existing Blazor project, and he wants to add a new feature to it.
-The PHP language offers the best way to implement it, but the feature is so render demanding that he wants to make use of a clever diff algorithm to make it more effective.
-His point of interest is to use a solution offering him to collaborate with Blazor by PHP.
+The PHP language offers the best way to implement it, but the feature is so render demanding that he wants to make use of Blazor to make the UI rendering more effective.
+Blake tells him about our thesis, and Chuck wishes that the solution offers him to collaborate with Blazor by PHP.
 \par
 These descriptions should help us determine the following use cases, which are realistic to both potential users.
-The first use case relates to programmer A.
-We can say he has a PHP website, which contains some information about his company.
-The website consists of pages containing images and references interconnect them.
-Some pages are adjustable by specifying a query part of the URL, and they include other scripts to add some basic layout.
-One day the website becomes famous, and the programmer wants to migrate the website to a client side in order to save server resources.
+We call the first use case \textbf{Web} relating to Alice.
+We suppose she has a simple PHP website, which contains some information about her company.
+The website does not work with a database and consists of pages containing images and references interconnect them.
+Some pages are adjustable by specifying the query part of the URL, and they include other scripts to add some basic layout.
+One day the website notices many accesses, and Alice wants to migrate the website in order to a client side to save server resources.
 The migration should download most of the website to a browser.
-Afterward, navigations between scripts and a script execution should be maintained on the client side.
-Even more, the programmer doesn't want to adjust the website for a client side too much, and he wishes for a simple solution that is understandable by a novice.
+Afterward, navigation between scripts and script execution should be maintained on the client side.
+Even more, Alice does not want to adjust the website for a client side too much, and she wishes for a simple solution that is understandable by a novice.
 \par
-The second use case aims at programmer A, who already has a little experience with Blazor.
-There is an existing Blazor website, and he has an idea of a brilliant feature adding new functionality written in PHP.
-The programmer wants to save the other developer time and also implement a UI.
-Unfortunately, the feature needs to interact with a user, meaning that filling additional data, clicking, loading, and saving files.
-He is lazy to learn Javascript or interoperability between PHP and Blazor.
+We call the second use case \textbf{OneScript} aiming at Bob, who already has some experience with Blazor.
+There is an existing Blazor website, and he has an idea of a brilliant widget displaying the user's graph by HTML.
+Because he is used to PHP, the HTML is rendered by PHP scripts.
+The idea consists of let the user choose to load graph data from a file or generate a predefined graph as a demo.
+After that, the widget renders HTML markup representing the graph.
+Bob uses forms to interact with a user.
+Unfortunately, Bob uses forms to interact with a user, and he is not willing to learn Javascript or interoperability between PHP and Blazor.
 Thus, he needs a solution, which offers interaction with a user and uses standard PHP conventions mentioned earlier.
 \par
-The third use case relates to programmer B.
+We call the third use case \textbf{PhpComponent} relating to Chuck.
 He wants to create a real-time web game similar to Asteroids written in PHP.
+PHP programmers have not been used to saving variables or defined functions across scripts because of the HTTP policy mentioned in the PHP section.
+Now, Chuck wants to try a new approach, where he relies on state persistent and saves a state of all game entities in variables.
+One script execution should render one game scene as an HTML markup.
+There is a timer, which executes the scripts every defined period of time.
 The game is render demanding due to redrawing the scenes.
-So he decides to target on a client side and utilizes Web API for changing the DOM tree.
-This approach should prevent network latency by loading the game in the beginning.
+So he decides to target on a client side and utilizes Blazor, Peachpie, and our solution.
+A client side execution should prevent network latency by loading the game in the beginning.
 After that, the game will be independent of the network connection due to running the game and saving the game state by a browser. 
-Because he has previous experience with Blazor infrastructure, he will appreciate applying it to run this game on a client side.
+Because he has previous experience with Blazor infrastructure, he will appreciate utilizing all Blazor aspects to run this game.
 Thus, he needs some representation of Blazor in PHP, which he will use for interacting with a browser.
 \par
-\begin{figure}[b]\centering
+\begin{figure}[t]\centering
 \includegraphics[scale=0.8]{./img/UseCaseAllTogether}
-\caption{The fourth use case describing the combination of the rest.}
+\caption{The AllTogether use case describing the combination of the rest. Double-headed arrows represent the person's used language. Dashed arrows represent a possible usage, where the head aims to an implementation written in the language.}
 \label{img09:usecase}
 \end{figure} 
 \par
-We can see an illustration of the fourth use case in figure \ref{img09:usecase}.
-A goal of the use case is to allow collaboration between PHP and Blazor programmers, where a difference of languages is not a barrier.  
+We can see an illustration of the fourth use case, which we call \textbf{AllTogether}, in Figure \ref{img09:usecase}.
+The goal of the use case is to allow collaboration between PHP and Blazor programmers, where a difference of languages is not a barrier.  
 We can image two teams creating a web application. 
 They agreed on developing a client-side web application, where both teams aim at different parts of the website.
-For example, one team wants to create a fun zone where a user can play some web games and the second team wants to create some online documentation about these games.
+For example, one team wants to create a fun zone where a user can play some web game, we can imagine something like Asteroids, and the second team wants to create some online documentation about the game and the widget for the graph representation mentioned in \textit{OneScript}.
 Because Blazor targets client-side web applications, they want to utilize Blazor.
-Unfortunately, these teams use a different favorite language, where the first team likes PHP and the second team likes C\#.
+Unfortunately, these teams use a different favorite language, where the first team uses PHP and the second team uses C\#.
 Even more, these teams want to arbitrarily choose what part they want to develop.
 They need some environment where the PHP team can code alongside the Blazor team, and they can focus on an arbitrary part of the web application.
-We can see the intention in figure \ref{img09:usecase} where each team can create a part aiming to render demanding applications, website infrastructure, and additional features.
-Also, the PHP team consists of programmers having different skills with Blazor, so the environment should reflect it.
+We can see the intention in Figure \ref{img09:usecase} where each team can create a part aiming at the web game, the online documentation, and widget.
+We can see the PHP team consists of Alice, Bob, and Chuck, having different skills with Blazor, so the environment should reflect it.
+Even more, Blake should be able to manipulate their part of the application to customize it using C\#. For example, he should change the layout of the website without complex refactoring. 
 
 \section{Requirements}
 
 We will define requirements based on mentioned use cases.
-The question is what things should be maintained by the solution to make PHP scripts a valuable part of a Blazor website.
+\change[inline]{Cilem teto sekce je popsat pozadavky ktere kdyz budou naplnene tak..}
+The question is what things should be enabled by the solution to make PHP scripts a valuable part of a Blazor website.
 \par
 \textbf{Navigation} is the first requirement that our solution should maintain.
 We demonstrate navigation posibilities in the figure \ref{img10:scripts}.
@@ -84,6 +103,7 @@ A script should be injectable to a standard Blazor component due to the use case
 The simplicity is a necessary condition for programmer A and should be reflected.
 The last option is a Blazor component in \texttt{script.php} enabling to use of already created components in PHP code.
 \par
+\change[inline]{Popsat ten obrazek a otocit jak to popisuju a nechat tam jen Vyhodit Blazor compnent ve script.php}
 \begin{figure}[!b]\centering
 \includegraphics{./img/Requirement}
 \caption{Scripts should be flexible.}
@@ -93,13 +113,16 @@ The last option is a Blazor component in \texttt{script.php} enabling to use of 
 \textbf{Rendering} should be maintained in two ways.
 The first way aims at programmer A when a script output is transparently displayed as a web page or its fragment.
 The approach hides Blazor infrastructure for rendering a markup and makes creating a UI easier for PHP programmers.
-The second way aims at programmer B when the solution provides an interface for interacting with Blazor.
+The second way aims at programmer B when the solution provides an interface for the interaction with Blazor.
 It is also necessary when we want to use already defined components in a PHP code.
 \par
+\change[inline]{Popsat co je ten state}
+\change[inline]{Rozepsat jsou zvykli zanik requestu po kazdym requestu ale pro interakci s uzivatelem ji potrebujou zachovavat}
 \textbf{State preservation} is a new feature, which should be available for creating a web application saving its state.
 The example we can see in the use case 3 when we have to save the game state.
 However, we should be able to choose whether it is intended behavior because scripts lose their state after every request on a server side.
 \par
+\change[inline]{Server simulation}
 \textbf{Server abstraction} should be the main advantage of the solution.
 We could see superglobals are commonly used methods how to obtain information about navigation or submitted data.
 The solution should supports superglobals for examples like the use case 1, where the website uses information about URL query part, via \texttt{\$\_GET} variable, to make decisions.
@@ -107,6 +130,7 @@ The solution should supports superglobals for examples like the use case 1, wher
 \textbf{Forms} should be maintained by the solution. 
 They should not be sent to a server but parsed and provided in superglobals. 
 After navigation to a script defined in the \texttt{action} attribute, the script should access the form data.
+\change[inline]{relates ne tyka se }
 Data processing also relates to files, when it should be possible to upload and download files.
 \par
 \textbf{Interoperability} between PHP and Javascript should be supported for situations when forms, the server abstraction, or Blazor are not sufficient.
@@ -114,11 +138,13 @@ We should be able to call Javascript functions from PHP and vice-versa.
 
 \section{Architecture}
 
+\change[inline]{Colekce scriptu}
 The basic principle of our solution consists of a PHP script compilation into .NET assembly by Peachpie.
-After that, a Blazor App references the assembly with the support library, providing a mechanism for navigating and executing the scripts.
+After that, a Blazor App references the assembly with a support library, providing a mechanism for navigating and executing the scripts.
+\change[inline]{Zminit rovnou jeji jmeno v predchozi vete}
 From now on, we will call the library \texttt{Peachpie.Blazor}.
 Then, a server serves the application to a browser, where Mono runtime executes it.
-We will describe the architecture in view of compilation time and runtime.
+We will describe the architecture from the view point of compilation time and runtime.
 \par
 When we think about PHP script compilation, there are two possibilities.
 We can compile the scripts ahead of time and reference them from a Blazor App, as we can see in figure \ref{img11:compilation}. 
@@ -129,7 +155,9 @@ Thus, there is no silver bullet.
 The first approach saves time by ahead compilation and compilation check.
 However, the second approach can save browser memory when the web application is larger, and a client uses only a part of it.
 Since we have to choose, we are inclined to the first approach.
+\change[inline]{Je to stabdartni zpusob jak se to v peachpie dela}
 \par
+\change[inline]{Dat to pric}
 \begin{figure}[!b]\centering
 \includegraphics[scale=0.8]{./img/Compilation}
 \caption{Compilation.}
@@ -137,24 +165,29 @@ Since we have to choose, we are inclined to the first approach.
 \end{figure} 
 \par
 We have to figure out how to attach a PHP code, which is compiled into the assembly, to the Blazor App.
+\change[inline]{Peachpie to deafaultne podporuje}
 Although, we can now call functions written in PHP from Blazor, we want to create an abstraction over the Blazor environment in order to simplify the interface.
 The abstraction should offer a representation of PHP scripts in Blazor.
 It should allow an option for accessing the Blazor interface for advanced features.
 It should be compatible with the Blazor environment in other to allowing a smooth collaboration between the abstraction and the Blazor pages.
 A Blazor page consists of components.
-We can achieve collaboration by utilizing the component to represent PHP scripts.
+We can achieve collaboration by utilizing the component to represent PHP scripts.\change[inline]{Odstranit nasledujici}
 We can benefit from a component architecture.
 Componets can be arbitrarily put together, which offers to place our PHP section in the desired place in the Razor code.
+\change[inline]{Priblizit}
 Even more, we can replace \texttt{Router} with the component representing PHP scripts.
 Afterward, scripts will care about the whole Blazor website content.
 The component provides a sufficient Blazor interface for rendering control and interaction with a browser. 
 We can illustrate the options of usage in figure \ref{img12:component}.
+\change[inline]{Odkaz an nej drive}
 \par
 \begin{figure}[t]\centering
 \includegraphics{./img/component}
 \caption{The component representing a PHP script.}
 \label{img12:component}
 \end{figure} 
+\change[inline]{Uprasnit v obrazku vice scriptu}
+\change[inline]{dovysvetlit sipky}
 \par
 We can think about how to represent PHP scripts as components.
 There can be one type of component, which will provide the abstraction for all the PHP code in scenarios.
@@ -166,11 +199,13 @@ The provider finds and executes PHP scripts.
 Its purpose is to keep the user away from knowing about the detailed structure of Blazor and the integration.
 Another important thing is a provider role in a Blazor App.
 The provider can behave either as the Router or as a navigatable component, which enables the navigation of PHP scripts.
+\change[inline]{As a result...for different proposes}
 The conflict yields to create more types of components.
 These types will provide the abstraction for the particular scenarios.
 The solution will reach two types of components.
 The first one wants to bring Blazor to PHP in order to utilize the whole environment.
 The second one aims at presenting a transparent execution of standard PHP script without strangeness of connection between Blazor and PHP.
+\change[inline]{Jinak zformulovat, bez toho aby se o to musel zajimat}
 \par
 We will focus on the first component.
 We will call the component \texttt{PhpComponent} due to the effort of moving the component concept to PHP.
