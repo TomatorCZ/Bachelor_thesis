@@ -1,39 +1,35 @@
 \chapter{Solution}
-\change[inline]{describes misto relate}
-\change[inline]{aim at}
-The section describes the complete solution to solve the scenarios.
-We will start with an overview of the solution's parts.
-Then, we will give a detailed description of each part.
+
+This chapter describes the complete solution, solving the use cases.
+We start with an overview of the solution parts.
+Then, we give a detailed description of each part.
 \par
-\begin{figure}[H]\centering
-\includegraphics[scale=0.7]{./img/SolutionInfrastructure}
-\caption{The solution's infrastructure.}
-\label{img03:infrastructure}
-\end{figure} 
-\par
-Figure \ref{img03:infrastructure} illustrates the composition of projects forming a Blazor website, which will use PHP scripts.
-There are four projects on the server-side.
-We can see the user's defined PHP scripts in the Web scripts project.
-Peachpie will compile the project to the .NET assembly.
-The next project is a library containing an API for including PHP scripts to the website.
-There are PhpComponent and PhpScriptProvider, mentioned earlier, together with additional code support necessary for the correct functionality.
+The solution consists of four projects, which will form the resulting Blazor website containing PHP scripts.
+In Figure \ref{img13:infrastructure}, we can see these projects as green rectangles.
+The \textit{Server} project references \textit{Blazor App}, containg a part of the website, and \textit{Peachpie.Blazor}, containing an additional support code.
+The server cares about serving the Blazor website and its Static Web Assets.
+The next project is our library containing an API for including PHP scripts to the website.
+There are \texttt{PhpComponent} and \texttt{PhpScriptProvider}, mentioned earlier, together with additional code support necessary for the correct functionality.
 There is the Blazor App project, which becomes the environment for running PHP scripts in a browser.
-The server serves these projects.
-The server has to provide additional static web assets contained in Web scripts and The library projects.
-Dot lines represent references between projects.
-We can see the library provides functionality to the server, Blazor App, and the scripts.
-Blazor App injects the scripts using the components.
-We can see an instance of the Blazor App on the client-side.
-Arrows indicate an interaction between the sides. 
+The project references \textit{PHP scripts} and \textit{Peachpie.Blazor}, which content is used to maintain PHP scripts.
+We can see the user's defined scripts as .NET project compiled by Peachpie in \textit{PHP scripts}.
+\textit{Blazor App} injects the scripts using the components.
 \par
-The first part will aim at PhpComponent.
-It will introduce the implementation problems connected to creating render demanding applications, and it will present the proposed solution.
-The second part will talk about PhpScriptProvider.
-It will suggest a convenient way how to include the scripts into a browser, and it will present the component's design.
-The last part of the description will relate to the server's settings.
+The first section aims at \texttt{PhpComponent}.
+It introduces the implementation problems connected to creating render demanding applications and solves them.
+The second section talks about \texttt{PhpScriptProvider}.
+It suggests a convenient way how to include the scripts into a browser, and it presents the component design.
+The last section aims at the server settings.
+\par
+\begin{figure}[!b]\centering
+\includegraphics[scale=0.9]{./img/SolutionInfrastructure}
+\caption{The solution infrastructure. Green rectangles represent projects. Arrows represent a references.}
+\label{img13:infrastructure}
+\end{figure} 
 
 \section{PhpComponent}
 
+fasdf
 \change[inline]{Problem struct creation in BuildRenderTree}
 \change[inline]{PhpComponent structure}
 \change[inline]{Additional API for tag, attributes, + rendering + timer}
