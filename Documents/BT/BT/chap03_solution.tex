@@ -155,11 +155,59 @@ Furthermore, the last feature is a timer wrapper, which uses the C\# timer, offe
 
 \section{PhpScriptProvider}
 
-\change[inline]{Division into functionalities (Router, ScriptProvider, Script)}
-\change[inline]{Common things(Script finding,rendering, context, Context save, Using forms, files, parsing url)}
-\change[inline]{Router navigating}
-\change[inline]{ScriptProvider navigating}
-\change[inline]{Script navigating}
-\change[inline]{Javascript interop}
+In beginning of this section we introduce the component main parts, which gives an overview of the component composition.
+We divide component duties like navigation or script execution into subsections
+becuase the component consists of many processes, which are complex to describe at once in the structure.
+The component functionality should be explained from these sections.
+\par
+\begin{figure}[b]\centering
+\includegraphics[scale=0.8]{./img/PhpScriptProvider}
+\caption{Diagram illustrating usage of PhpScriptProvider main parts.}
+\label{img18:provider}
+\end{figure}
+\par
+We start with Figure \ref{img18:provider} describing the connections between the main parts.
+\texttt{PhpScriptProvider} is a class, representing a Blazor component.
+The component manages the following features.
+It handles the navigation.
+It finds the script by name based on provider mode.
+It creates and keeps a PHP context, which is used for script execution.
+It executes the script.
+These duties contain several steps.
+Some of them are maintained by the parts.
+As we can see, there is \texttt{PhpComponentRouteManager}, which finds the components, inheriting \texttt{PhpComponent}, based on \texttt{RouteAttribute}.
+It enables to navigate Blazor components defined in PHP scripts.
+The next part is \texttt{BlazorContext}, which is Peachpie \texttt{Context} designed for Blazor enviroment.
+The context initializes superglobals based on URL and submitted forms, manages files uploaded by a form, and redirects the script output to the render tree provided by \texttt{BlazorWriter}, which writes all output to the tree.
+In the end, \texttt{FileManager} reads submitted files, downloads them, or deleting them from Browser memory.
+\par
+We give a precious description of \texttt{PhpScriptProvider} in order to prepare a context for explaining the feature functionalities.
+The provider consists of many properties.
+Some of them are injected by the dispatcher like \texttt{NavigationManager} or \texttt{IJSRuntime}, which is a service providing interoperability with Javascript.
+Others can be parametrized, like \texttt{Type} determining the mode of provider, \texttt{ContextLifetime} determining the persistency of script context, or \texttt{ScriptName} determining the executing script when the mode \textit{Script} is set.
+These properties influence the component method behaviors.
+The first method is \texttt{Attach}, which assigns a render handle providing \texttt{RenderTreeBuilder}, and registers a navigation handler creating the context and calling \texttt{Refresh}.
+The second method,\texttt{SetParameters}, cares about calling \texttt{Refresh}, and creating the context as well.
+\texttt{Refresh} finds a script or a component based on properties, assigns the superglobals, and calls \texttt{Render} which renders the component or executes the script.
+\texttt{OnAfterRender} cares about enabling the forms to send data back to Blazor.
+Some of these methods are called by Blazor framework providing the component lifecycle.
+
+\subsection{Navigation}
+\subsection{Script Execution}
+We start with \texttt{BlazorWriter}, which inherits \texttt{TextWriter}.
+The inheritance allows to use the writer as \texttt{BlazorContext} output writer, which manipulates with script output.
+The writer consists of a buffer and \texttt{RenderTreeBuilder}.
+The main usage is to write any string to the writer, which adds it to the buffer.
+In the end, the writer flushes it into the builder by \texttt{AddMarkUpContent}.
+It results in threating the whole script output as one modification by diff algorithm, which causes the whole page update instead of smaller necessary updates.
+This disadvantage relates to following limitations.
+\texttt{AddMarkUpContent} does not allow to add incomplete markup text, meaning that tags are not properly closed.
+Thus, we can not divide the text into smaller parts, because of HTML nature, where tags are coupled by other tags.
+The second possibility is to parse the output to differ the types of HTML entities, which is no suitable, because of parser complexity.
+It is important to dispose the writer after the rendering, because the same builder can not be repeatedly used.
+\subsection{Forms}
+
+\par
+
 \section{Server}
 \change[inline]{serving web static assets}
