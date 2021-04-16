@@ -152,13 +152,13 @@ The builder is just a wrapper, so the programmer can use the original builder by
 Additional, there is a library for creating tags, which should make the builder usage easier.
 For assigning PHP handlers to C\# events, there is a universal helper.
 Furthermore, the last feature is a timer wrapper, which uses the C\# timer, offering a convenient API.
-
+\par
+The last necessary thing is to get assembly references containing the components to \texttt{Router}, which is a standard duty in Blazor.
 \section{PhpScriptProvider}
 
-In beginning of this section we introduce the component main parts, which gives an overview of the component composition.
-We divide component duties like navigation or script execution into subsections
-becuase the component consists of many processes, which are complex to describe at once in the structure.
-The component functionality should be explained from these sections.
+At the beginning of this section, we introduce the main component parts, which gives us an overview of the component composition.
+We divide component duties like navigation or script execution into subsections because the component consists of many processes, which are complex to describe at once in the structure.
+The component functionality should be explained in these sections.
 \par
 \begin{figure}[b]\centering
 \includegraphics[scale=0.8]{./img/PhpScriptProvider}
@@ -173,19 +173,18 @@ It handles the navigation.
 It finds the script by name based on provider mode.
 It creates and keeps a PHP context, which is used for script execution.
 It executes the script.
-These duties contain several steps.
-Some of them are maintained by the parts.
+These duties contain several steps, which are maintained by the parts.
 As we can see, there is \texttt{PhpComponentRouteManager}, which finds the components, inheriting \texttt{PhpComponent}, based on \texttt{RouteAttribute}.
-It enables to navigate Blazor components defined in PHP scripts.
+It enables navigation of Blazor components defined in PHP scripts.
 The next part is \texttt{BlazorContext}, which is Peachpie \texttt{Context} designed for Blazor enviroment.
-The context initializes superglobals based on URL and submitted forms, manages files uploaded by a form, and redirects the script output to the render tree provided by \texttt{BlazorWriter}, which writes all output to the tree.
+The context initializes superglobals based on URL and submitted forms, manages files uploaded by a form, and controls  \texttt{BlazorWriter} which redirects the script output to the render tree.
 In the end, \texttt{FileManager} reads submitted files, downloads them, or deleting them from Browser memory.
 \par
-We give a precious description of \texttt{PhpScriptProvider} in order to prepare a context for explaining the feature functionalities.
+We zoom in on \texttt{PhpScriptProvider} structure in order to prepare a context for explaining the feature functionalities.
 The provider consists of many properties.
 Some of them are injected by the dispatcher like \texttt{NavigationManager} or \texttt{IJSRuntime}, which is a service providing interoperability with Javascript.
-Others can be parametrized, like \texttt{Type} determining the mode of provider, \texttt{ContextLifetime} determining the persistency of script context, or \texttt{ScriptName} determining the executing script when the mode \textit{Script} is set.
-These properties influence the component method behaviors.
+Others can be parametrized, like \texttt{Type} determining the mode of provider, \texttt{ContextLifetime} determining the persistency of the script context, or \texttt{ScriptName} determining the executing script when the mode \textit{Script} is set.
+These properties influence the component methods.
 The first method is \texttt{Attach}, which assigns a render handle providing \texttt{RenderTreeBuilder}, and registers a navigation handler creating the context and calling \texttt{Refresh}.
 The second method,\texttt{SetParameters}, cares about calling \texttt{Refresh}, and creating the context as well.
 \texttt{Refresh} finds a script or a component based on properties, assigns the superglobals, and calls \texttt{Render} which renders the component or executes the script.
@@ -193,21 +192,83 @@ The second method,\texttt{SetParameters}, cares about calling \texttt{Refresh}, 
 Some of these methods are called by Blazor framework providing the component lifecycle.
 
 \subsection{Navigation}
+
+Now, we explain navigation in \texttt{PhpScriptProvider} for each its mode.
+We have to clarify how the component is instantiated and maintained by Blazor.
+There are two ways how to use the component.
+The first of them is to set it in \texttt{WebAssemblyBuilder} as a root component,
+which is rendered after the first application launch in Blazor.
+The component is alive for the whole application life because there is no \texttt{Router}, which disposes components representing a previous page. 
+It results in calling the \texttt{Attach} method and the \texttt{SetParameters} method only once.
+The second way is to use a Razor page containing the component and let the navigation to the page on \texttt{Router}, which is a root component by default.
+When the page is navigated, the component is instantiated as well.
+The difference is the possibility of calling the \texttt{SetParameters} method multiple times when the page is parameterized.
+Then, when the parameters are changed, Blazor automatically calls the inner component \texttt{SetParameters} methods when the components have no primitive types. 
+This fact is because the Blazor framework can not decide if the parameters, which are complex types, were changed.
+\par
+The \textit{Router} mode is designed to be used when the component is a root component.
+Then we are sure, that \texttt{Attach} and \texttt{SetParameters} methods are called only once.
+Thus, we register navigation handler in the \texttt{Attach} method, which should handle further navigation.
+When the navigation occurs, we create a new context if the context should not be persistent and call \texttt{Refresh}.
+We create a new context and call \texttt{Refresh} method in \texttt{SetParameters} as well, which can be problematic with its multiple calling, but in this case, it is all right.
+Then the \texttt{Refresh} method parses the query part of URL, obtained from \texttt{NavigationManager} and gets the script name from the URL.
+When we determine the script name, we call the \texttt{Render} method, where we decide if it is a script or a component defined in a script based on \texttt{.php} extension.
+If the extension is missing, we try to find a component defined in scripts, which has correct \texttt{RouteAttribute} by \texttt{PhpComponentRouteManager}.
+Additional manager duty is to assign assembly references containing scripts, to the context, at the beginning of the application.
+Otherwise, we ask the Peachpie context for obtaining the script representation as \texttt{ScriptInfo}.
+The context does not have to know the script name, or the component does not have to exist. 
+Then we render predefined \textit{not found} page, which can be set by \texttt{PhpScriptProvider} parameters.
+Otherwise, we render the script or the component.
+\par
+Next modes, \textit{ScriptProvider} and \textit{Script}, are similar.
+They are defined in a Razor page and initialized when the page is navigated.  
+The difference is finding the script by name, where the \textit{Script} always uses the name defined in the component parameter and \textit{ScriptProvider} finds script based on URL.
+As we said, the \texttt{SetParameters} can be called multiple times, so we call \texttt{Refresh} only by the first time in the method.
+Additional rendering is initiated by the navigation handler.
+Thus, when the navigation occurs, we find and update the page, or we are disposed if the \texttt{Router} match another Razor page. 
+We should check if the component has not already been disposed by \texttt{Router} before calling the \texttt{Refresh}.
+Obtaining the script is similar to \textit{Router} mode.
+
 \subsection{Script Execution}
 We start with \texttt{BlazorWriter}, which inherits \texttt{TextWriter}.
-The inheritance allows to use the writer as \texttt{BlazorContext} output writer, which manipulates with script output.
+The inheritance allows using the writer as \texttt{BlazorContext} output writer, which manipulates with script output.
 The writer consists of a buffer and \texttt{RenderTreeBuilder}.
 The main usage is to write any string to the writer, which adds it to the buffer.
 In the end, the writer flushes it into the builder by \texttt{AddMarkUpContent}.
-It results in threating the whole script output as one modification by diff algorithm, which causes the whole page update instead of smaller necessary updates.
-This disadvantage relates to following limitations.
+It results in treating the whole script output as one modification by diff algorithm, which causes the whole page update instead of smaller necessary updates.
+This disadvantage relates to the following limitations.
 \texttt{AddMarkUpContent} does not allow to add incomplete markup text, meaning that tags are not properly closed.
-Thus, we can not divide the text into smaller parts, because of HTML nature, where tags are coupled by other tags.
-The second possibility is to parse the output to differ the types of HTML entities, which is no suitable, because of parser complexity.
-It is important to dispose the writer after the rendering, because the same builder can not be repeatedly used.
+Thus, we can not divide the text into smaller parts because of the HTML nature, where tags are coupled by other tags.
+The second possibility is to parse the output and recognize the types of HTML entities, which can use specialized builder API.
+However, it is not suitable because of parser complexity.
+It is important to dispose the writer after the rendering because the same builder can not be repeatedly used.
+\par
+\texttt{BlazorContext} maintains the writer and interoperability with Javascript.
+It provides methods for initializing and ending the rendering.
+The script represented by \texttt{ScriptInfo} is executed by its method \texttt{Execute}. This method accepts the context, which maintains the script output by redirecting it to the render tree.
+It also allows setting superglobals like \texttt{\$\_GET} to provide the query part of URL and turns forms to client-side 
+handling, which is described in the following section.
+
 \subsection{Forms}
 
+Forms are sent to the server by default.
+We use Javascript interoperability to evaluate them on the client side.
+It starts in \texttt{AfterRender} method, where we call our Javascript function, which finds all already rendered forms and assigns them an event handler for submitting.
+When submit occurs, the handler collects all data from the form, does ordinary navigation to the page defined in \texttt{action} attribute, and prevents default behavior, which is sending the form to the server.
+When the navigation is handled by \texttt{PhpScriptProvider}, it gets all collected data and assigns the context superglobals by them.
+Afterward, the script is executed, and it can access the superglobals.
 \par
+In the previous paragraph, we hid the file management.
+When a user loads a file by form, Javascript obtains only the information about files. 
+When we want to read the content, we have to use a reading operation, which is done asynchronously by \texttt{Promise} mentioned in the Javascript section.
+Thus, when we get the data during navigation, we have to wait until the content is read.
+This operation could take a long time, so the page shows old content.
+For this reason, we provide an additional parameter for defining the content, which is shown during navigation.
+An alternative is initializing reading by a PHP script when it is executed.
+It uses interoperability between PHP, C\#, and Javascript in order to call desired reading methods.
+Unfortunately, Blazor does not allow us to wait until the reading operation is done, and we have to provide callbacks, which handle the end of the reading.
+We suppose that it is confusing for potential PHP programmers, which will use our solution to define PHP callbacks.
+We decide to prefetch the file content before the execution to provide the data synchronously in PHP code.
 
 \section{Server}
 \change[inline]{serving web static assets}
