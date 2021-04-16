@@ -271,4 +271,31 @@ We suppose that it is confusing for potential PHP programmers, which will use ou
 We decide to prefetch the file content before the execution to provide the data synchronously in PHP code.
 
 \section{Server}
-\change[inline]{serving web static assets}
+
+We have to set the server in order to provide additional static resources demanded by PHP scripts, as we can see in Figure \ref{img19:settings}.
+The code fragment is cut from the \texttt{StartUp} class of the server.
+It inserts middlewares providing the resources into the request pipeline.
+Afterward, these resources can be referenced by URLs and downloaded from the server.
+For example, we can reference an image with the path \texttt{Demo-PhpComponent/Asteroids/wwwroot/image.jpg} as \texttt{/Asteroids/image.jpg} in HTML document on the client side.
+The second middleware provides Javascript helpers of our library to Blazor App on client side.
+\par
+\begin{figure}[b]
+\begin{lstlisting}
+var fileProvider = new ManifestEmbeddedFileProvider(
+	typeof(PhpBlazor.BlazorContext).Assembly);
+app.UseStaticFiles(new StaticFileOptions() { 
+	FileProvider = fileProvider });
+
+app.UseStaticFiles(new StaticFileOptions
+{
+	FileProvider = new PhysicalFileProvider(Path.Combine(
+	Full name of parent directory, 
+	"Demo-PhpComponent\\Asteroids\\wwwroot")),
+	RequestPath = "/Asteroids"
+});
+\end{lstlisting}
+\caption{Fragment of code adding middlewares.}
+\label{img19:settings}
+\end{figure}
+            
+ 
