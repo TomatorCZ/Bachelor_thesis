@@ -1,7 +1,7 @@
 ﻿@page "/php/{*sth}"
 @using PhpBlazor
 
-<PhpScriptProvider ContextLifetime="@SessionLifetime.OnNavigationChanged" Type="@PhpScriptProviderType.ScriptProvider" >
+<PhpScriptProvider ContextLifetime="@SessionLifetime.OnNavigationChanged" Type="@PhpScriptProviderType.ScriptProvider">
     <Navigating>
         <p>Navigating to script</p>
     </Navigating>
@@ -11,7 +11,7 @@
 </PhpScriptProvider>
 
 @code
-{     
+{
     [Parameter]
     public string sth { get; set; }
 }

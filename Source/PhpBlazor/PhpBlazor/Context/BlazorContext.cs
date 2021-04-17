@@ -35,7 +35,7 @@ namespace PhpBlazor
             ctx.InitOutput(null);
             ctx.InitSuperglobals();
             ctx._js = js;
-            ctx._fileManager = new FileManager(ctx);
+            ctx._fileManager = new FileManager(ctx, loggerFactory);
             ctx._logger = loggerFactory.CreateLogger<BlazorContext>();
             //
             ctx.AutoloadFiles();
@@ -89,12 +89,22 @@ namespace PhpBlazor
         public async Task SetFilesAsync()
         {
             var files = _fileManager.FetchFiles();
-            foreach (var item in files)
-            {
-                Files.Add(item.fieldName, item);
-            }
 
-            await _fileManager.DownloadFilesAsync();
+            if (files.Count > 0)
+            {
+                Log.PrintFiles(_logger, files);
+
+                foreach (var item in files)
+                {
+                    Files.Add(item.fieldName, item);
+                }
+
+                await _fileManager.DownloadFilesAsync();
+            }
+            else
+            {
+                await Task.CompletedTask;
+            }
         }
         #endregion
 

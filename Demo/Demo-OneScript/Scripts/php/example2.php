@@ -1,7 +1,7 @@
 ﻿<h2>Form example 2</h2>
 <p>You can create a form and use post method.</p>
 
-<form method="post" action="php/viewform">
+<form method="post" action="php/viewform.php">
     <label>Username:</label>
     <input name="username" type="text" required="required"/><br/>
     <label>Email:</label>

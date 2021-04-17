@@ -42,7 +42,7 @@ function printGraphView()
 	}
 }
 
-if (isset($graph)) {
+if (isset($graph) && $_GET["action"] == "download") {
 	printGraphView();
 }
 else {
@@ -69,3 +69,4 @@ else {
 		require("/fileManagment/chooseForm.php");
 	}
 }
+unset($_GET["action"]);

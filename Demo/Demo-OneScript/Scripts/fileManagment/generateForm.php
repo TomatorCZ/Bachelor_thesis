@@ -1,4 +1,4 @@
-﻿<form action="phpstandalone" method="get">
+﻿<form action="phpstandalone.php" method="get">
     <label for="function">Function of graph: </label><br/>
 	<select name="function" id="function"><br/>
         <option value="const" selected>Constant</option><br/>

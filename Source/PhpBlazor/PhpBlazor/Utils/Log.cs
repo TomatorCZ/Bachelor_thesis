@@ -16,50 +16,15 @@ namespace PhpBlazor
 		private static readonly Action<ILogger, string, Exception> _navigatingScript = LoggerMessage.Define<string>(LogLevel.Information, new EventId(6, "NavigatingScript"), "Script {Name} is being rendered");
 		private static readonly Action<ILogger, string, bool, Exception> _navigating = LoggerMessage.Define<string, bool>(LogLevel.Information, new EventId(7, "Navigating"), "Navigating to {Path} started. PhpScript provider disposed = {Disposed}");
 		private static readonly Action<ILogger, Exception> _dispose = LoggerMessage.Define(LogLevel.Information, new EventId(8, "Disposing"), "PhpSriptProvider is disposed");
-        #endregion
 
-        private static readonly Action<ILogger, string,string, Exception> _dictionary = LoggerMessage.Define<string,string>(LogLevel.Information, new EventId(9, "PrintingDictionary"), "{Method}\n{Values}");
-
-		private static readonly Action<ILogger, string, Exception> _fetchingFiles = LoggerMessage.Define<string>(LogLevel.Information, new EventId(4, "FetchingFiles"), "Fetched Files\n{Files}");
-		public static void FetchingFiles(ILogger logger, List<FormFile> files)
-		{
-			var filesString = "";
-			foreach (var item in files)
-			{
-				filesString += $"fieldName: {item.fieldName}, id : {item.id}, name : {item.name}, size : {item.size}, type : {item.type}\n";
-			}
-			_fetchingFiles(logger, filesString, null);
-		}
-
-		public static void PrintGet(ILogger logger, Dictionary<string, StringValues> values)
-		{
-			var payload = "";
-			foreach (var item in values)
-			{
-				payload += $"key : {item.Key}, value : {item.Value.ToString()}\n";
-			}
-			_dictionary(logger,"GET", payload, null);
-		}
-
-		public static void PrintPost(ILogger logger, Dictionary<string, string> values)
-		{
-			var payload = "";
-			foreach (var item in values)
-			{
-				payload += $"key : {item.Key}, value : {item.Value.ToString()}\n";
-			}
-			_dictionary(logger, "POST", payload, null);
-		}
-
-		#region PhpScriptProvider
 		public static void Attach(ILogger logger)
 		{
-			_attach(logger,null);
+			_attach(logger, null);
 		}
 
 		public static void SetParameters(ILogger logger, bool firstRendering, PhpScriptProviderType type, SessionLifetime lifetime)
 		{
-			_setParameters(logger,firstRendering,type,lifetime, null);
+			_setParameters(logger, firstRendering, type, lifetime, null);
 		}
 
 		public static void BusyNavigation(ILogger logger)
@@ -84,13 +49,58 @@ namespace PhpBlazor
 
 		public static void Navigation(ILogger logger, string address, bool disposed)
 		{
-			_navigating(logger, address, disposed ,null);
+			_navigating(logger, address, disposed, null);
 		}
 
 		public static void Dispose(ILogger logger)
 		{
 			_dispose(logger, null);
 		}
-        #endregion
-    }
+		#endregion
+
+		#region BlazorContext
+		private static readonly Action<ILogger, string, string, Exception> _dictionary = LoggerMessage.Define<string, string>(LogLevel.Information, new EventId(9, "PrintingDictionary"), "Added {Method} data\n{Values}");
+
+		public static void PrintFiles(ILogger logger, List<FormFile> files)
+		{
+			var payload = "";
+			foreach (var item in files)
+			{
+				payload += $"fieldName: {item.fieldName}, id : {item.id}, name : {item.name}, size : {item.size}, type : {item.type}\n";
+			}
+			_dictionary(logger, "FILES", payload, null);
+		}
+
+		public static void PrintGet(ILogger logger, Dictionary<string, StringValues> values)
+		{
+			var payload = "";
+			foreach (var item in values)
+			{
+				payload += $"key : {item.Key}, value : {item.Value.ToString()}\n";
+			}
+			_dictionary(logger, "GET", payload, null);
+		}
+
+		public static void PrintPost(ILogger logger, Dictionary<string, string> values)
+		{
+			var payload = "";
+			foreach (var item in values)
+			{
+				payload += $"key : {item.Key}, value : {item.Value.ToString()}\n";
+			}
+			_dictionary(logger, "POST", payload, null);
+		}
+		#endregion
+
+		#region FileManager
+		private static readonly Action<ILogger, string, Exception> _download = LoggerMessage.Define<string>(LogLevel.Information, new EventId(10, "DownloadedFiles"), "File {name} downloaded.");
+
+		public static void DownloadFile(ILogger logger, FormFile file)
+		{
+			_download(logger, file.name,null);
+		}
+		#endregion
+
+
+	}
 }

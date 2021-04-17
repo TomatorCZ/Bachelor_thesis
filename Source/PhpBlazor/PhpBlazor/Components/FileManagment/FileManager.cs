@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,12 +12,14 @@ namespace PhpBlazor
         private BlazorContext _ctx;
         private List<FormFile> _fetched;
         private Dictionary<int, string> _downloaded;
+        private ILogger<FileManager> _logger;
 
-        public FileManager(BlazorContext ctx)
+        public FileManager(BlazorContext ctx, ILoggerFactory factory)
         {
             _ctx = ctx;
             _fetched = new List<FormFile>();
             _downloaded = new Dictionary<int, string>();
+            _logger = factory.CreateLogger<FileManager>();
         }
 
         public List<FormFile> FetchFiles()
@@ -40,12 +43,20 @@ namespace PhpBlazor
 
             foreach (var item in _fetched)
             {
+                Log.DownloadFile(_logger, item);
                 _downloaded.Add(item.id, await _ctx.CallJsAsync<string>(JsResource.getFileContentAsBase64, item.id));
             }
 
             _fetched = new List<FormFile>();
         }
 
-        public string GetFileData(int id) => _downloaded[id];
+        public string GetFileData(int id)
+        {
+            if (_downloaded.TryGetValue(id, out string result))
+                return result;
+            else
+                return null;
+        }
+        
     }
 }

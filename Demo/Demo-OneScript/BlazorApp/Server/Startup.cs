@@ -49,7 +49,7 @@ namespace BlazorApp.Server
             {
                 endpoints.MapFallbackToFile("index.html");
                 //Navigate .php files to webAssembly
-                //endpoints.MapFallbackToFile("/{**.php}", "index.html");
+                endpoints.MapFallbackToFile("/{**.php}", "index.html");
             });
         }
     }
