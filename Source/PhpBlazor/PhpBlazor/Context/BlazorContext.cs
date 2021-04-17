@@ -37,6 +37,9 @@ namespace PhpBlazor
             ctx._js = js;
             ctx._fileManager = new FileManager(ctx, loggerFactory);
             ctx._logger = loggerFactory.CreateLogger<BlazorContext>();
+            
+            ctx.CallJsVoid("window.php.init", ctx._objRef);
+            
             //
             ctx.AutoloadFiles();
 
@@ -120,7 +123,8 @@ namespace PhpBlazor
         }
 
         #region JSInterop
-        //TODO: CallPhpFromJS
+        [JSInvokable]
+        public PhpValue CallPHP(string name, string data) => Call(name, data);
 
         public void CallJsVoid(string function, params object[] args) => (_js as IJSInProcessRuntime).InvokeVoid(function, args);
 

@@ -10,3 +10,11 @@
 &lt;/PhpScriptProvider&gt;
 </pre>
 <?php
+
+#[Microsoft\JSInterop\JSInvokableAttribute]
+function CallPHP($data)
+{
+    $json = json_decode($data); 
+
+	echo "Hello ". $json->name . " " . $json->surname .  " from PHP\n";
+}

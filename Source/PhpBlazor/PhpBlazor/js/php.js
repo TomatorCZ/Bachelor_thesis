@@ -9,7 +9,9 @@
 
     isPost: function () { return this.postPresented; },
 
-    isFiles: function () { return this.filesPresented; }
+    isFiles: function () { return this.filesPresented; },
+
+    callPHP: function (method, data) { this.phpContext.invokeMethod("CallPHP", method, JSON.stringify(data));}
 };
 
 window.php.forms = {
