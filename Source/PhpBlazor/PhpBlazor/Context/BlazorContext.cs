@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Microsoft.JSInterop;
 using Pchp.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace PhpBlazor
@@ -15,9 +12,7 @@ namespace PhpBlazor
     public class BlazorContext : Context
     {
         private DotNetObjectReference<BlazorContext> _objRef;
-        private PhpScriptProvider _component;
         private IJSRuntime _js;
-        private ILoggerFactory _loggerFactory;
         private FileManager _fileManager;
         private ILogger<BlazorContext> _logger;
 
@@ -28,7 +23,7 @@ namespace PhpBlazor
             _objRef = DotNetObjectReference.Create<BlazorContext>(this);
         }
 
-        public static BlazorContext Create(PhpScriptProvider component)
+        public static BlazorContext Create(IJSRuntime js, ILoggerFactory loggerFactory)
         {
             var ctx = new BlazorContext(null)
             {
@@ -39,17 +34,17 @@ namespace PhpBlazor
             ctx.WorkingDirectory = ctx.RootPath;
             ctx.InitOutput(null);
             ctx.InitSuperglobals();
-            ctx._component = component;
-            ctx._js = component.Js;
+            ctx._js = js;
             ctx._fileManager = new FileManager(ctx);
-            ctx._loggerFactory = component.LoggerFactory;
-            ctx._logger = ctx._loggerFactory.CreateLogger<BlazorContext>();
+            ctx._logger = loggerFactory.CreateLogger<BlazorContext>();
             //
             ctx.AutoloadFiles();
 
             //
             return ctx;
         }
+
+        public static BlazorContext Create(PhpScriptProvider component) => Create(component.Js, component.LoggerFactory);
         #endregion
 
         #region Rendering
@@ -67,9 +62,11 @@ namespace PhpBlazor
         #endregion
 
         #region Set Globals
-        public void SetGet(Dictionary<string, StringValues> querry)
+        public void SetGet(Dictionary<string, StringValues> query)
         {
-            foreach (var item in querry)
+            Log.PrintGet(_logger, query);
+
+            foreach (var item in query)
             {
                 Get.Add(item.Key, item.Value.ToString());
             }
@@ -80,6 +77,8 @@ namespace PhpBlazor
             if (CallJs<bool>(JsResource.IsPost))
             {
                 var postData = CallJs<Dictionary<string, string>>(JsResource.getPost);
+                Log.PrintPost(_logger, postData);
+
                 foreach (var item in postData)
                 {
                     Post.Add(item.Key, item.Value);
@@ -94,7 +93,6 @@ namespace PhpBlazor
             {
                 Files.Add(item.fieldName, item);
             }
-            Log.FetchingFiles(_logger, files);
 
             await _fileManager.DownloadFilesAsync();
         }

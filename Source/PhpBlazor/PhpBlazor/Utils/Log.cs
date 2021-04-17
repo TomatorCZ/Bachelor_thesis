@@ -2,39 +2,25 @@
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhpBlazor
 {
 	public static class Log
 	{
-		private static readonly Action<ILogger, string, Exception> _renderingToScript = LoggerMessage.Define<string>(LogLevel.Information, new EventId(1, "RenderingScript"), "Rendering script '{Script}'.");
-		private static readonly Action<ILogger, string, Exception> _navigating = LoggerMessage.Define<string>(LogLevel.Information, new EventId(2, "Navigating"), "Navigating to path '{Path}'.");
-		private static readonly Action<ILogger, string, Exception> _querryParameters = LoggerMessage.Define<string>(LogLevel.Information, new EventId(3, "GettingQuerry"), "Querry parameters\n{Parameters}");
+        #region PhpScriptProvider
+        private static readonly Action<ILogger, Exception> _attach = LoggerMessage.Define(LogLevel.Information, new EventId(1, "Attaching"), "Attach method was invoked");
+		private static readonly Action<ILogger,bool,PhpScriptProviderType,SessionLifetime, Exception> _setParameters = LoggerMessage.Define<bool,PhpScriptProviderType,SessionLifetime>(LogLevel.Information, new EventId(2, "SettingParameters"), "SetParameters method was invoked.\nFirst renering={Rendered}\nProvider type={Type}\nContext mode={Mode}");
+		private static readonly Action<ILogger, Exception> _busyNavigating = LoggerMessage.Define(LogLevel.Information, new EventId(3, "BusyNavigating"), "Navigating is busy.");
+		private static readonly Action<ILogger,string, Exception> _navigatingComponent = LoggerMessage.Define<string>(LogLevel.Information, new EventId(4, "NavigatingCompoent"), "Component {Name} is being rendered");
+		private static readonly Action<ILogger,string, Exception> _navigatingFailed = LoggerMessage.Define<string>(LogLevel.Information, new EventId(5, "NavigatingFailed"), "Navigating {Path} failed");
+		private static readonly Action<ILogger, string, Exception> _navigatingScript = LoggerMessage.Define<string>(LogLevel.Information, new EventId(6, "NavigatingScript"), "Script {Name} is being rendered");
+		private static readonly Action<ILogger, string, bool, Exception> _navigating = LoggerMessage.Define<string, bool>(LogLevel.Information, new EventId(7, "Navigating"), "Navigating to {Path} started. PhpScript provider disposed = {Disposed}");
+		private static readonly Action<ILogger, Exception> _dispose = LoggerMessage.Define(LogLevel.Information, new EventId(8, "Disposing"), "PhpSriptProvider is disposed");
+        #endregion
+
+        private static readonly Action<ILogger, string,string, Exception> _dictionary = LoggerMessage.Define<string,string>(LogLevel.Information, new EventId(9, "PrintingDictionary"), "{Method}\n{Values}");
+
 		private static readonly Action<ILogger, string, Exception> _fetchingFiles = LoggerMessage.Define<string>(LogLevel.Information, new EventId(4, "FetchingFiles"), "Fetched Files\n{Files}");
-
-		public static void Navigating(ILogger logger, string path)
-		{
-			_navigating(logger, path, null);
-		}
-
-		public static void RenderingScript(ILogger logger, string script)
-		{
-			_renderingToScript(logger, script, null);
-		}
-
-		public static void QuerryParameters(ILogger logger, Dictionary<string, StringValues> parameters)
-		{
-			var parametersString = "";
-            foreach (var item in parameters)
-            {
-				parametersString += $"{item.Key} : {item.Value}\n";
-			}
-			_querryParameters(logger, parametersString, null);
-		}
-
 		public static void FetchingFiles(ILogger logger, List<FormFile> files)
 		{
 			var filesString = "";
@@ -44,5 +30,67 @@ namespace PhpBlazor
 			}
 			_fetchingFiles(logger, filesString, null);
 		}
-	}
+
+		public static void PrintGet(ILogger logger, Dictionary<string, StringValues> values)
+		{
+			var payload = "";
+			foreach (var item in values)
+			{
+				payload += $"key : {item.Key}, value : {item.Value.ToString()}\n";
+			}
+			_dictionary(logger,"GET", payload, null);
+		}
+
+		public static void PrintPost(ILogger logger, Dictionary<string, string> values)
+		{
+			var payload = "";
+			foreach (var item in values)
+			{
+				payload += $"key : {item.Key}, value : {item.Value.ToString()}\n";
+			}
+			_dictionary(logger, "POST", payload, null);
+		}
+
+		#region PhpScriptProvider
+		public static void Attach(ILogger logger)
+		{
+			_attach(logger,null);
+		}
+
+		public static void SetParameters(ILogger logger, bool firstRendering, PhpScriptProviderType type, SessionLifetime lifetime)
+		{
+			_setParameters(logger,firstRendering,type,lifetime, null);
+		}
+
+		public static void BusyNavigation(ILogger logger)
+		{
+			_busyNavigating(logger, null);
+		}
+
+		public static void ComponentNavigation(ILogger logger, string name)
+		{
+			_navigatingComponent(logger, name, null);
+		}
+
+		public static void NavigationFailed(ILogger logger, string name)
+		{
+			_navigatingFailed(logger, name, null);
+		}
+
+		public static void ScriptNavigation(ILogger logger, string name)
+		{
+			_navigatingScript(logger, name, null);
+		}
+
+		public static void Navigation(ILogger logger, string address, bool disposed)
+		{
+			_navigating(logger, address, disposed ,null);
+		}
+
+		public static void Dispose(ILogger logger)
+		{
+			_dispose(logger, null);
+		}
+        #endregion
+    }
 }

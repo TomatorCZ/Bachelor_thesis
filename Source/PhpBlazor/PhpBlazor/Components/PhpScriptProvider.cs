@@ -52,19 +52,16 @@ namespace PhpBlazor
         private ILogger<PhpScriptProvider> _logger;
         private bool _navigationInterceptionEnabled;
         private BlazorContext _ctx;
-        private string _previousRelativeUri = null;
-        private bool _navigated = false;
+        private bool _disposed = false;
+        private bool _firstRendering = true;
 
         #region IComponent
         void IComponent.Attach(RenderHandle renderHandle)
         {
-            _renderHandle = renderHandle;
             _logger = LoggerFactory.CreateLogger<PhpScriptProvider>();
+            Log.Attach(_logger);
 
-            _previousRelativeUri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-            if (_previousRelativeUri.IndexOf('?') > -1)
-                _previousRelativeUri = _previousRelativeUri.Substring(0, _previousRelativeUri.IndexOf('?'));
-            
+            _renderHandle = renderHandle;
             NavigationManager.LocationChanged += OnLocationChanged;
         }
 
@@ -72,40 +69,46 @@ namespace PhpBlazor
         {
             parameters.SetParameterProperties(this);
 
-            if (ContextLifetime == SessionLifetime.OnNavigationChanged || _ctx == null)
-                _ctx = BlazorContext.Create(this);
+            Log.SetParameters(_logger, _firstRendering, Type, ContextLifetime);
 
-            _navigated = true;
-            Refresh();
+            if (_firstRendering)
+            {
+                _firstRendering = false;
+                _ctx = BlazorContext.Create(this);
+                Refresh();
+            }
+
             return Task.CompletedTask;
         }
         #endregion
 
         private void Refresh()
         {
-            _navigated = false;
-            // Find Script
-            var relativeUri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-            var querryParameters = QueryHelpers.ParseQuery(NavigationManager.ToAbsoluteUri(relativeUri).Query);
-
-            if (relativeUri.IndexOf('?') > -1)
-                relativeUri = relativeUri.Substring(0, relativeUri.IndexOf('?'));
-
+            // Determines the script name based on URL.
             if (Type != PhpScriptProviderType.Script)
             {
-                ScriptName = String.IsNullOrWhiteSpace(relativeUri) ? "index" : relativeUri;
-                if (!ScriptName.EndsWith(".php"))
-                    ScriptName = ScriptName + ".php";
+                var relativeUri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+                if (relativeUri.IndexOf('?') > -1)
+                    relativeUri = relativeUri.Substring(0, relativeUri.IndexOf('?'));
+
+                ScriptName = String.IsNullOrWhiteSpace(relativeUri) ? "index.php" : relativeUri;
+            }
+
+            // Sets GET superglobal
+            if (Uri.TryCreate(NavigationManager.Uri, UriKind.Absolute, out Uri uri))
+            {
+                var values = QueryHelpers.ParseQuery(uri.Query);
+                if (values.Count > 0)
+                    _ctx.SetGet(values);
             }
                 
-            Log.QuerryParameters(_logger, querryParameters);
-
-            _ctx.SetGet(querryParameters);
             _ctx.SetPost();
             var task = _ctx.SetFilesAsync();
 
+            // Waits until the files are loaded into memory.
             if (task.Status != TaskStatus.RanToCompletion)
             {
+                Log.BusyNavigation(_logger);
                 if (Navigating != null)
                     _renderHandle.Render(Navigating);
 
@@ -119,17 +122,20 @@ namespace PhpBlazor
 
         private void Render(string ScriptName)
         {
-            Log.RenderingScript(_logger, ScriptName);
-            var script = Context.TryGetDeclaredScript(ScriptName);
+            Context.ScriptInfo script = default;
+            
+            // If .php exists, it is a script, otherwise it is a component
+            if (ScriptName.EndsWith(".php"))
+                script = Context.TryGetDeclaredScript(ScriptName);
 
             if (!script.IsValid)
             {
-                var prepareForSegmentation = ScriptName.EndsWith(".php") ? ScriptName.Remove(ScriptName.Length - 4) : ScriptName;
-                var segments = prepareForSegmentation.Split('/', StringSplitOptions.RemoveEmptyEntries);
+                var segments = ScriptName.Split('/', StringSplitOptions.RemoveEmptyEntries);
                 var result = RouteManager.Match(segments);
 
                 if (result.IsMatch)
                 {
+                    Log.ComponentNavigation(_logger, ScriptName);
                     _renderHandle.Render((builder) => {
                         builder.OpenComponent(0, result.MatchedRoute.Handler);
                         builder.CloseElement();
@@ -137,35 +143,27 @@ namespace PhpBlazor
                 }
                 else
                 {
+                    Log.NavigationFailed(_logger, ScriptName);
                     _renderHandle.Render(NotFound);
                 }
             }
             else
             {
+                Log.ScriptNavigation(_logger, ScriptName);
                 _renderHandle.Render((builder) => script.Evaluate(_ctx, builder));
             }
         }
 
         private void OnLocationChanged(object sender, LocationChangedEventArgs args)
         {
-            var relativeUri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-            if (relativeUri.IndexOf('?') > -1)
-                relativeUri = relativeUri.Substring(0, relativeUri.IndexOf('?'));
+            Log.Navigation(_logger, args.Location, _disposed);
 
-            if ((Type == PhpScriptProviderType.Script && relativeUri != _previousRelativeUri)
-                || (Type == PhpScriptProviderType.ScriptProvider && _navigated))
-            {
-                _previousRelativeUri = relativeUri;
+            if (_disposed)
                 return;
-            }
-
-            _previousRelativeUri = relativeUri;
-
-            Log.Navigating(_logger, args.Location);
 
             if (ContextLifetime == SessionLifetime.OnNavigationChanged)
             {
-                _ctx.Dispose();
+                _ctx?.Dispose();
                 _ctx = BlazorContext.Create(this);
             }
 
@@ -190,11 +188,10 @@ namespace PhpBlazor
         #region IDisposable
         void IDisposable.Dispose()
         {
+            Log.Dispose(_logger);
+            _disposed = true;
             NavigationManager.LocationChanged -= OnLocationChanged;
-            if (_ctx != null)
-            {
-                _ctx?.Dispose();
-            }
+            _ctx?.Dispose();
         }
         #endregion
     }
