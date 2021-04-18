@@ -440,7 +440,7 @@ We can see the process in figure \ref{img08:wasm}.
 \par
 \begin{figure}\centering
 \includegraphics[width=140mm, height=100mm]{./img/BlazorExecution}
-\caption{Running a Blazor WebAssembly App on client-side.}
+\caption{Running a Blazor WebAssembly App on a client side \squarecite{19}.}
 \label{img08:wasm}
 \end{figure}
 \par
@@ -454,7 +454,7 @@ Afterward, the application provides the dispatcher, cares about rendering, and c
 It is the root component in default.
 It contains a specialized component, \texttt{Router}, enabling to navigate the pages.
 \par
-In the end, we will describe page navigation and rendering and handling events.
+In the end, we will describe page navigation \squarecite{21} and rendering and handling events.
 The navigation \squarecite{14} can be triggered by an anchor, form, or filling up the URL bar.
 The URL bar is handled separatly by a browser.
 JavaScript can influence the remainings elements by adding a listener to their events.
@@ -474,8 +474,8 @@ Renderer keeps a copy of DOM in memory, creates page updates, and calls Javascri
 Blazor provides API for invoking Javascript functions and vice-versa.
 Renderer provides \texttt{RenderTreeBuilder} for describing page contents.
 The builder provides an API for adding various types of content to \texttt{Batch}, which is a specialized structure for describing previous and present DOM.
-Although DOM changes is performance-expensive, a diff algorithm recognizes and tries to reduce the updates in \texttt{Batch}.
-The usage of \texttt{RenderTreeBuilder} is complecated, because it has to be adapted to the algorithm.
+Although DOM changes is performance-expensive, a diff algorithm \squarecite{20} recognizes and tries to reduce the updates in \texttt{Batch}.
+The usage of \texttt{RenderTreeBuilder} is complecated, because it has to be adapted to the algorithm \squarecite{22}.
 The purpose of Razor is to make the usage more effortless when the compilation implements the \texttt{RenderTreeBuilder} for us.
 When the Renderer prepares \texttt{Batch}, it calls specialized Javascript API for changing the page through Mono runtime.
 \par

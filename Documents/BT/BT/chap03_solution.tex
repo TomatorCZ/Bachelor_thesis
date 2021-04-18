@@ -147,6 +147,7 @@ Then a programmer avoids to use the workaround defined above.
 \end{figure}
 \par
 The last feature to discuss in this section is interoperability between Javascript and PHP.
+As we mentioned, Blazor allows calling Javascript functions from C\# \squarecite{23} and vice-versa \squarecite{24}.
 We can utilize a Blazor service,\texttt{IJSRuntime}, injected by the dispatcher, to call Javascript functions.
 The service offers a specialized API for that.
 Calling PHP from Javascript is more complex.
@@ -232,7 +233,7 @@ Then we are sure, that \texttt{Attach} and \texttt{SetParameters} methods are ca
 Thus, we register navigation handler in the \texttt{Attach} method, which should handle further navigation.
 When the navigation occurs, we create a new context if the context should not be persistent and call \texttt{Refresh}.
 We create a new context and call \texttt{Refresh} method in \texttt{SetParameters} as well, which can be problematic with its multiple calling, but in this case, it is all right.
-Then the \texttt{Refresh} method parses the query part of URL, obtained from \texttt{NavigationManager} and gets the script name from the URL.
+Then the \texttt{Refresh} method parses the query part of URL \squarecite{26}, obtained from \texttt{NavigationManager} and gets the script name from the URL.
 When we determine the script name, we call the \texttt{Render} method, where we decide if it is a script or a component defined in a script based on \texttt{.php} extension.
 If the extension is missing, we try to find a component defined in scripts, which has correct \texttt{RouteAttribute} by \texttt{PhpComponentRouteManager}.
 Additional manager duty is to assign assembly references containing scripts, to the context, at the beginning of the application.
