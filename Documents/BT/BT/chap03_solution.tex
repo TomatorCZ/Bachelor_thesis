@@ -6,7 +6,8 @@ Then, we give a detailed description of each part.
 \par
 The solution consists of four projects, which will form the resulting Blazor website containing PHP scripts.
 In Figure \ref{img13:infrastructure}, we can see these projects as green rectangles.
-The \textit{Server} project references \textit{Blazor App}, containg a part of the website, and \textit{Peachpie.Blazor}, containing an additional support code.
+The \textit{Server} project references \textit{Blazor App}, containing a part of the website, and \textit{Peachpie.Blazor}, containing an additional support code.
+A part of the support code is a Javascript, which is linked to at the beginning of \texttt{index.html}, providing helper functions for form handling and interoperability with PHP.  
 The server cares about serving the Blazor website and its Static Web Assets.
 The next project is our library containing an API for including PHP scripts to the website.
 There are \texttt{PhpComponent} and \texttt{PhpScriptProvider}, mentioned earlier, together with additional code support necessary for the correct functionality.
@@ -145,6 +146,24 @@ Then a programmer avoids to use the workaround defined above.
 \label{img17:solution}
 \end{figure}
 \par
+The last feature to discuss in this section is interoperability between Javascript and PHP.
+We can utilize a Blazor service,\texttt{IJSRuntime}, injected by the dispatcher, to call Javascript functions.
+The service offers a specialized API for that.
+Calling PHP from Javascript is more complex.
+Peachpie enables calling PHP function by \texttt{Call} method of \texttt{Context}. 
+The context finds already defined methods contained in the included PHP script and executes it with the current context.
+When we want to call C\# instance method from Javascript, we have to have the reference, supplied by the framework, for calling it.
+Additionally, the called C\# method has to be marked with a \texttt{JSCallableAttribute} during compilation.
+The reference can be assigned from C\# by a method, which creates it and uses it as a parameter of a Javascript function.
+These conditions lead us to create our context,\texttt{BlazorContext}, which inherits the original context and provides the \texttt{CallPHP} method marked by the attribute and calling the PHP function based on parameters.
+The context requests the mentioned services provided by the dispatcher and sets the reference by calling predefined code in \texttt{Peachpie.Blazor.js}.
+The context will be the Peachpie context of the component.
+Thus, it enables to call PHP methods defined in this context from Javascript by using the reference.
+However, it has a limitation.
+Calling PHP functions is allowed when the reference is presented, meaning that we have to create the context and include scripts containing the functions.
+The advantage of this approach is that we can have two components inheriting \texttt{PhpComponent} with the same context when we set their context to the same instance.
+Thus, we can call their functions by only one reference.
+\par
 When we already presented the problems, we can introduce the architecture of \texttt{PhpComponent} and solution of \textit{PhpComponent} use case.
 The component hides the original function for rendering and replaces it with our version of the builder, as shown in Figure \ref{img17:solution}.
 It results in transparent usage of the builder in the inherited class.
@@ -152,6 +171,7 @@ The builder is just a wrapper, so the programmer can use the original builder by
 Additional, there is a library for creating tags, which should make the builder usage easier.
 For assigning PHP handlers to C\# events, there is a universal helper.
 Furthermore, the last feature is a timer wrapper, which uses the C\# timer, offering a convenient API.
+For the interoperability, we can use our predefined API using \texttt{BlazorContext}.
 \par
 The last necessary thing is to get assembly references containing the components to \texttt{Router}, which is a standard duty in Blazor.
 \section{PhpScriptProvider}
@@ -176,7 +196,8 @@ It executes the script.
 These duties contain several steps, which are maintained by the parts.
 As we can see, there is \texttt{PhpComponentRouteManager}, which finds the components, inheriting \texttt{PhpComponent}, based on \texttt{RouteAttribute}.
 It enables navigation of Blazor components defined in PHP scripts.
-The next part is \texttt{BlazorContext}, which is Peachpie \texttt{Context} designed for Blazor enviroment.
+The next part is \texttt{BlazorContext} already mentioned in PhpComponent, which is Peachpie \texttt{Context} designed for Blazor enviroment.
+The context constructor accepts several Blazor services like \texttt{IJSRuntime} enabling interoperability with Javascript.
 The context initializes superglobals based on URL and submitted forms, manages files uploaded by a form, and controls  \texttt{BlazorWriter} which redirects the script output to the render tree.
 In the end, \texttt{FileManager} reads submitted files, downloads them, or deleting them from Browser memory.
 \par
@@ -219,6 +240,8 @@ Otherwise, we ask the Peachpie context for obtaining the script representation a
 The context does not have to know the script name, or the component does not have to exist. 
 Then we render predefined \textit{not found} page, which can be set by \texttt{PhpScriptProvider} parameters.
 Otherwise, we render the script or the component.
+Additionally, when we navigate the component, we set its context by our context.
+It results in using the interoperability by either provider or the component because we can use the same context reference in Javascript code.
 \par
 Next modes, \textit{ScriptProvider} and \textit{Script}, are similar.
 They are defined in a Razor page and initialized when the page is navigated.  
@@ -245,7 +268,7 @@ It is important to dispose the writer after the rendering because the same build
 \par
 \texttt{BlazorContext} maintains the writer and interoperability with Javascript.
 It provides methods for initializing and ending the rendering.
-The script represented by \texttt{ScriptInfo} is executed by its method \texttt{Execute}. This method accepts the context, which maintains the script output by redirecting it to the render tree.
+The script represented by \texttt{ScriptInfo} is executed by its method \texttt{Evaluate}. This method accepts the context, which maintains the script output by redirecting it to the render tree.
 It also allows setting superglobals like \texttt{\$\_GET} to provide the query part of URL and turns forms to client-side 
 handling, which is described in the following section.
 
@@ -269,6 +292,9 @@ It uses interoperability between PHP, C\#, and Javascript in order to call desir
 Unfortunately, Blazor does not allow us to wait until the reading operation is done, and we have to provide callbacks, which handle the end of the reading.
 We suppose that it is confusing for potential PHP programmers, which will use our solution to define PHP callbacks.
 We decide to prefetch the file content before the execution to provide the data synchronously in PHP code.
+\par
+Interoperability in the provider can be achieved in a similar manner as in \texttt{PhpComponent}.
+The difference is calling the Javascript functions, which use prefined API using our context, which uses the \texttt{IJSRuntime} service.
 
 \section{Server}
 
@@ -279,7 +305,7 @@ Afterward, these resources can be referenced by URLs and downloaded from the ser
 For example, we can reference an image with the path \texttt{Demo-PhpComponent/Asteroids/wwwroot/image.jpg} as \texttt{/Asteroids/image.jpg} in HTML document on the client side.
 The second middleware provides Javascript helpers of our library to Blazor App on client side.
 \par
-\begin{figure}[b]
+\begin{figure}[t]
 \begin{lstlisting}
 var fileProvider = new ManifestEmbeddedFileProvider(
 	typeof(PhpBlazor.BlazorContext).Assembly);
