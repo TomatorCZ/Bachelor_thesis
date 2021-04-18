@@ -7,7 +7,7 @@ Then, we give a detailed description of each part.
 The solution consists of four projects, which will form the resulting Blazor website containing PHP scripts.
 In Figure \ref{img13:infrastructure}, we can see these projects as green rectangles.
 The \textit{Server} project references \textit{Blazor App}, containing a part of the website, and \textit{Peachpie.Blazor}, containing an additional support code.
-A part of the support code is a Javascript, which is linked to at the beginning of \texttt{index.html}, providing helper functions for form handling and interoperability with PHP.  
+A part of the support code is a Javascript script, which is linked to at the beginning of \texttt{index.html}, providing helper functions for form handling and interoperability with PHP.  
 The server cares about serving the Blazor website and its Static Web Assets.
 The next project is our library containing an API for including PHP scripts to the website.
 There are \texttt{PhpComponent} and \texttt{PhpScriptProvider}, mentioned earlier, together with additional code support necessary for the correct functionality.
@@ -153,7 +153,7 @@ Calling PHP from Javascript is more complex.
 Peachpie enables calling PHP function by \texttt{Call} method of \texttt{Context}. 
 The context finds already defined methods contained in the included PHP script and executes it with the current context.
 When we want to call C\# instance method from Javascript, we have to have the reference, supplied by the framework, for calling it.
-Additionally, the called C\# method has to be marked with a \texttt{JSCallableAttribute} during compilation.
+Additionally, the called C\# method has to be marked with a \texttt{JSInvokableAttribute} during compilation.
 The reference can be assigned from C\# by a method, which creates it and uses it as a parameter of a Javascript function.
 These conditions lead us to create our context,\texttt{BlazorContext}, which inherits the original context and provides the \texttt{CallPHP} method marked by the attribute and calling the PHP function based on parameters.
 The context requests the mentioned services provided by the dispatcher and sets the reference by calling predefined code in \texttt{Peachpie.Blazor.js}.
