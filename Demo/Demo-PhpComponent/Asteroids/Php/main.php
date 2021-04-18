@@ -17,6 +17,10 @@ class AsteroidsComponent extends \PhpBlazor\PhpComponent
 
 	public function OnInitialized() : void 
 	{
+		parent::OnInitialized();
+
+		CallJsVoid("window.alert","Hello from asteroids");
+		
 		require(__DIR__ . "/settings.php"); // once !!!
 		$this->app = new Application($settings);	
 		

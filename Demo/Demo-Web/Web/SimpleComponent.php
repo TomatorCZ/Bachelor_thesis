@@ -6,4 +6,11 @@ class ExampleComponent extends \PhpBlazor\PhpComponent
 	{
 		$builder->AddMarkupContent(0, "<h1>Simple php component</h1>");
 	}
+
+	public function OnInitialized()
+	{
+		parent::OnInitialized();
+
+		CallJsVoid("window.alert", "Hello from PHP");
+	}
 }

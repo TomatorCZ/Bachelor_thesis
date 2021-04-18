@@ -138,6 +138,7 @@ namespace PhpBlazor
                     Log.ComponentNavigation(_logger, ScriptName);
                     _renderHandle.Render((builder) => {
                         builder.OpenComponent(0, result.MatchedRoute.Handler);
+                        builder.AddAttribute(1, "Ctx", _ctx);
                         builder.CloseElement();
                     });
                 }

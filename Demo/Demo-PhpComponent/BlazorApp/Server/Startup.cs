@@ -41,6 +41,10 @@ namespace BlazorApp.Server
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
+            // Add helper js code for php.
+            var fileProvider = new ManifestEmbeddedFileProvider(typeof(PhpBlazor.BlazorContext).Assembly);
+            app.UseStaticFiles(new StaticFileOptions() { FileProvider = fileProvider });
+
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.FullName, "Asteroids\\wwwroot")),
