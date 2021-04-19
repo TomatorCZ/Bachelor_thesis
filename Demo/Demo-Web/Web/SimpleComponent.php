@@ -4,13 +4,8 @@ class ExampleComponent extends \PhpBlazor\PhpComponent
 {	
 	public function BuildRenderTree($builder) : void 
 	{
+		global $msg;
 		$builder->AddMarkupContent(0, "<h1>Simple php component</h1>");
-	}
-
-	public function OnInitialized()
-	{
-		parent::OnInitialized();
-
-		CallJsVoid("window.alert", "Hello from PHP");
+		$builder->AddMarkupContent(1, "<p>msg = " . $msg . "</p>");
 	}
 }

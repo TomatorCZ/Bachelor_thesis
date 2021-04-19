@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Logging;
 using PhpBlazor;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlazorApp.Client

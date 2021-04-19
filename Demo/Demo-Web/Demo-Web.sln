@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp.Client", "BlazorA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhpBlazor", "..\..\Source\PhpBlazor\PhpBlazor\PhpBlazor.csproj", "{C8178205-6843-46ED-BF6C-0C13AF8F28BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{22AD02AB-CC0F-480B-8AE0-76AC0426A4A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{22AD02AB-CC0F-480B-8AE0-76AC0426A4A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
