@@ -9,9 +9,11 @@
     &lt;/NotFound&gt;
 &lt;/PhpScriptProvider&gt;
 </pre>
+
+<p>Click and look at console output</p>
+<button onclick="window.php.callPHP('CallPHP', { name : 'Bon', surname: 'Jovi'});">PHP</button>
 <?php
 
-#[Microsoft\JSInterop\JSInvokableAttribute]
 function CallPHP($data)
 {
     $json = json_decode($data); 
