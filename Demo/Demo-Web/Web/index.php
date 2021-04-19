@@ -27,7 +27,7 @@ public static async Task Main(string[] args)
 <h3>Offline</h3>
 <p>You can try the offline mode by disabling it in the developer tools.</p>
 <p>You can navigate through the website, but external resources (like images) can not be loaded in offline mode.</p>
-<img src="Web/images/offlineMode.png"/>
+<img src="Web/images/offlineMode.png" width="600" height="200"/>
 <h3>Compatible with PhpComponents</h3>
 <p>The context is shared between the component and the provider, which renders the component, when the context mode is persistant.
 We demonstrate it by creating variable $msg &et; "Hello from provider" and printing it in the component</p>
