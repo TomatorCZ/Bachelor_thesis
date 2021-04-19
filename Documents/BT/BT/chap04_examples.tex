@@ -155,5 +155,64 @@ if (isset($_GET["developer"])) {
 \end{figure}
 
 \section{OneScript}
+
+In this example, we aim at the second use case.
+The solution contains four project again.
+\texttt{Blazor.Server} and \texttt{Peachpie.Blazor} are same.
+\texttt{Blazor.Client} contains now common Razor pages, and has \texttt{Router} as a root component.
+We create several scripts in the \texttt{Scripts} project to enrich the website with content generated from the PHP scripts.
+The website contains three Razor pages: \texttt{Index.razor}, \texttt{PhpGateway}, and \texttt{PhpScript}.
+The first page uses \texttt{PhpScriptProvider} to navigate \texttt{index.php}.
+Using the provider is straightforward.
+\par
+We want to show the calling PHP function from Javascript in Figure \ref{img26:index}.
+As we can see, it is effortless to call it.
+The \texttt{callPHP} function accepts the function name and object to serialize as an function parameter.
+When the script is rendered, the context contains defined \texttt{CallPHP} function.
+We click on the button, which invokes \texttt{Call} method on the context, which invokes the desired function.
+Then, we deserialize the parameter.
+There is an interesting thing about using \texttt{echo}, \texttt{print}, etc. when the script is not rendered.
+The context provides the second writer, which uses \texttt{Console} as the output.
+It causes printing the message into the web browser console.
+\begin{figure}
+\begin{lstlisting}
+...
+<p>Click and look at console output</p>
+<button onclick="window.php.callPHP('CallPHP',
+	{ name : 'Bon', surname: 'Jovi'});">PHP</button>
+<?php
+
+function CallPHP($data)
+{
+    $json = json_decode($data); 
+
+	echo "Hello " . $json->name . " ";
+	echo $json->surname .  " from PHP\n";
+}
+\end{lstlisting}
+\caption{index.php}
+\label{img26:index}
+\end{figure}
+\par
+Another part of the website uses forms to demonstrates \texttt{GET} and \texttt{POST} method.
+We can see it in \texttt{php} folder, where are three examples of forms using both methods and file loading.
+These examples can be navigated based on their names due to the unspecified URL of the Razor page, which uses the provider.
+After navigation to this page, the provider gets the script name from the URL.
+\par
+\begin{figure}[!b]\centering
+\includegraphics[scale=0.4]{./img/graph}
+\caption{Application for visualising a graph.}
+\label{img27:graph}
+\end{figure} 
+\par
+The last part aims at the persistent context and using forms as interaction with the user.
+It is a common approach in PHP, and we can use it on a client side due to our solution.
+There is a simple application enabling us to visualize a graph, as we can see in the folder \texttt{fileManagment}.
+The application can upload a CSV file containing a graph or generate a new one based on the given parameters.
+It then visualizes the graph and enables it to be downloaded as a CSV file, which can be used for the next visualization, as shown in Figure \ref{img27:graph}.
+We use PHP library for parsing the file, which demonstrates a possibility to utilize the already created library on a client side.
+The application has the main script,\texttt{fileManagment/index.php}, which recognizes what to do based on superglobals and saved variables.
+It is possible due to context persistence.
+
 \section{PhpComponent}
 \section{AllTogether}
