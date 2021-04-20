@@ -215,4 +215,26 @@ The application has the main script,\texttt{fileManagment/index.php}, which reco
 It is possible due to context persistence.
 
 \section{PhpComponent}
+
+The example aims at the third use case.
+It contains a game, where we are a rocket, which has to destroy asteroids with bullets.
+The example consists of four projects, which are designed in the same manner as the previous one.
+Our game is implemented in \texttt{Ascteroids} project, where we can see \texttt{main.php} script, which extends \texttt{PhpComponent}.
+There is \texttt{asteroids.php} which defines all entities used in the game.
+These entities represent a rocket, an asteroid, a bullet, a background, and the game containing these entities.
+We use our library to utilize HTML helper classes like \texttt{Tag}, which makes the rendering easier.
+After the component is navigated, the game is created, and its state is saved in the component.
+\texttt{Timer}, predefined in our library, raises tick events, which update the game state and the screen.
+There are buttons, which invoke events controlling the game.
+Also, there is a possibility to control the game with a keyboard.
+We can see the print screen in Figure \ref{img28:game}.
+\par
+\begin{figure}[H]\centering
+\includegraphics[scale=0.4]{./img/Asteroids}
+\caption{The game.}
+\label{img28:game}
+\end{figure} 
+\par
+ 
+
 \section{AllTogether}

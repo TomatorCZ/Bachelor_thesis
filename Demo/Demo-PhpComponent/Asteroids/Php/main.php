@@ -2,8 +2,6 @@
 
 require_once(__DIR__ . "\asteroids.php");
 
-//TODO: It will be nice to not use whole names witch namespaces...
-
 #[\Microsoft\AspNetCore\Components\RouteAttribute("/Asteroids")]
 class AsteroidsComponent extends \PhpBlazor\PhpComponent
 {	
@@ -19,9 +17,7 @@ class AsteroidsComponent extends \PhpBlazor\PhpComponent
 	{
 		parent::OnInitialized();
 
-		CallJsVoid("window.alert","Hello from asteroids");
-		
-		require(__DIR__ . "/settings.php"); // once !!!
+		require(__DIR__ . "/settings.php");
 		$this->app = new Application($settings);	
 		
 		$this->timer = new \PhpBlazor\Timer($settings["speed"]);
