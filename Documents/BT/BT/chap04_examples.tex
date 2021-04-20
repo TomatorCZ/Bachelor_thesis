@@ -219,7 +219,7 @@ It is possible due to context persistence.
 The example aims at the third use case.
 It contains a game, where we are a rocket, which has to destroy asteroids with bullets.
 The example consists of four projects, which are designed in the same manner as the previous one.
-Our game is implemented in \texttt{Ascteroids} project, where we can see \texttt{main.php} script, which extends \texttt{PhpComponent}.
+Our game is implemented in \texttt{Asteroids} project, where we can see \texttt{main.php} script, which extends \texttt{PhpComponent}.
 There is \texttt{asteroids.php} which defines all entities used in the game.
 These entities represent a rocket, an asteroid, a bullet, a background, and the game containing these entities.
 We use our library to utilize HTML helper classes like \texttt{Tag}, which makes the rendering easier.
@@ -238,3 +238,42 @@ We can see the print screen in Figure \ref{img28:game}.
  
 
 \section{AllTogether}
+
+This example aims at the fourth use case, where we want to connect PHP and C\# to form one website.
+The example uses the website made in the first example and includes it in the already existing Blazor website.
+The PHP page is injected into the website by \texttt{PhpScriptProvider}, which is contained in the Razor page shown in Figure \ref{img29:razor}.
+There we can see that the page is navigated by few URL paths defined at the beginning of the file.
+This allows to remain the provider instance and navigate to the desired PHP script.
+\par
+\begin{figure}[H]
+\begin{lstlisting}
+@page "/community/{*sth}"
+@page "/about/{*sth}"
+@page "/index.php"
+@page "/simpleComponent"
+@using PhpBlazor
+
+<PhpScriptProvider ContextLifetime="@SessionLifetime.OnNavigationChanged" Type="@PhpScriptProviderType.ScriptProvider">
+    <Navigating>
+        <p>Navigating</p>
+    </Navigating>
+    <NotFound>
+        <p>Not found</p>
+    </NotFound>
+</PhpScriptProvider>
+
+@code
+{
+    [Parameter]
+    public string sth { get; set; }
+}
+\end{lstlisting}
+\caption{Web.php}
+\label{img29:razor}
+\end{figure}
+\par
+\begin{figure}[H]\centering
+\includegraphics[scale=0.4]{./img/AllTogether}
+\caption{The example.}
+\label{img30:allTogether}
+\end{figure} 

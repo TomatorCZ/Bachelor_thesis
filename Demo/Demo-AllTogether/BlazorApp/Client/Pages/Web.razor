@@ -6,10 +6,10 @@
 
 <PhpScriptProvider ContextLifetime="@SessionLifetime.OnNavigationChanged" Type="@PhpScriptProviderType.ScriptProvider">
     <Navigating>
-        <PhpScriptProvider ContextLifetime="@SessionLifetime.OnNavigationChanged" Type="@PhpScriptProviderType.Script" ScriptName="navigating.php" />
+        <p>Navigating</p>
     </Navigating>
     <NotFound>
-        <PhpScriptProvider ContextLifetime="@SessionLifetime.OnNavigationChanged" Type="@PhpScriptProviderType.Script" ScriptName="notfound.php" />
+        <p>Not found</p>
     </NotFound>
 </PhpScriptProvider>
 
