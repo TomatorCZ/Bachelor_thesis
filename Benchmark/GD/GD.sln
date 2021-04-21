@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp.Server", "BlazorApp\Server\BlazorApp.Server.csproj", "{FF87E3E9-EA99-4530-9D68-2BE13C8EFA13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp.Client", "BlazorApp\Client\BlazorApp.Client.csproj", "{FB93993E-677B-443A-A1A3-C37DCA1E7B02}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhpBlazor", "..\..\Source\PhpBlazor\PhpBlazor\PhpBlazor.csproj", "{338C9A1E-2B7F-4776-9DCE-2747CA4C7418}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scripts", "Scripts\Scripts.csproj", "{3C291182-BC8C-4613-83E3-EA07D86CDAD7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF87E3E9-EA99-4530-9D68-2BE13C8EFA13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF87E3E9-EA99-4530-9D68-2BE13C8EFA13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF87E3E9-EA99-4530-9D68-2BE13C8EFA13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF87E3E9-EA99-4530-9D68-2BE13C8EFA13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB93993E-677B-443A-A1A3-C37DCA1E7B02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB93993E-677B-443A-A1A3-C37DCA1E7B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB93993E-677B-443A-A1A3-C37DCA1E7B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB93993E-677B-443A-A1A3-C37DCA1E7B02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{338C9A1E-2B7F-4776-9DCE-2747CA4C7418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{338C9A1E-2B7F-4776-9DCE-2747CA4C7418}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{338C9A1E-2B7F-4776-9DCE-2747CA4C7418}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{338C9A1E-2B7F-4776-9DCE-2747CA4C7418}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C291182-BC8C-4613-83E3-EA07D86CDAD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C291182-BC8C-4613-83E3-EA07D86CDAD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C291182-BC8C-4613-83E3-EA07D86CDAD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C291182-BC8C-4613-83E3-EA07D86CDAD7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A4EAC784-19E6-4AAD-AA07-396FFB47B9EC}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,10 @@
+﻿@page "/{*sth}"
+
+<PhpBlazor.PhpScriptProvider Type="PhpBlazor.PhpScriptProviderType.Script" ScriptName="index.php" ContextLifetime="PhpBlazor.SessionLifetime.Persistant"/>
+
+@code
+{
+    [Parameter]
+    public string sth { get; set; }
+
+}
