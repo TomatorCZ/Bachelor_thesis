@@ -19,7 +19,7 @@ namespace PhpBlazor
         #region Create
         protected BlazorContext(IServiceProvider services) : base(services)
         {
-            Output = Console.Out;
+            Output = BlazorWriter.CreateConsole();
             _objRef = DotNetObjectReference.Create<BlazorContext>(this);
         }
 
@@ -37,7 +37,8 @@ namespace PhpBlazor
             ctx._js = js;
             ctx._fileManager = new FileManager(ctx, loggerFactory);
             ctx._logger = loggerFactory.CreateLogger<BlazorContext>();
-            
+            ctx.Output = BlazorWriter.CreateConsole();
+
             ctx.CallJsVoid("window.php.init", ctx._objRef);
             
             //

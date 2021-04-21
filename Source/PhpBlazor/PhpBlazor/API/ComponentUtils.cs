@@ -40,6 +40,11 @@ namespace PhpBlazor
             return startIndex;
         }
         #endregion
+
+        public override string ToString()
+        {
+            return content;
+        }
     }
     
     [PhpType]
@@ -77,6 +82,14 @@ namespace PhpBlazor
             return startIndex;
         }
         #endregion
+
+        public override string ToString()
+        {
+            string result = $"<{name} {attributes.ToString()}>";
+            content.ForEach((item) => result += item.ToString());
+            result += $"</{name}>";
+            return result;
+        }
     }
     
     [PhpType]
@@ -164,6 +177,27 @@ namespace PhpBlazor
             return attributes.ContainsKey(offset);
         }
         #endregion
+
+        public override string ToString()
+        {
+            string result = "";
+
+            foreach (var item in attributes)
+            {
+                if (!item.Key.IsString)
+                    result += item.Value.ToString() + " ";
+                else
+                    result += $"{item.Key.String}=\"{item.Value.ToString()}\" ";
+            }
+
+            if (styles != null)
+                result += $"style=\"{styles.ToString()}\" ";
+
+            if (classes != null)
+                result += $"class=\"{classes.ToString()}\" ";
+
+            return result;
+        }
     }
     
     [PhpType]
