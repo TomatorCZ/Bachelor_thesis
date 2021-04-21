@@ -1,3 +1,30 @@
 \chapter{Benchmarks}
-\change[inline]{Rendering speed(Asteroids first version vs. the current)}
-\change[inline]{Problem with gd library}
+
+In this chapter, we present two benchmarks, which explore the used technology limitations.
+We introduce the background of the benchmarks, execute them and then evaluate the results.
+
+\section{Rendering}
+
+\section{GD library}
+
+This benchmark tests the effectivity of PHP library, \textit{gdlibrary}, in the Blazor environment.
+We prepare a simple script, which creates a blank image with 1920x1080 resolution.
+We use \texttt{imagecreatetruecolor} function defined in the library.
+Then we measure elapsed time during the function execution by printing the current time before and after the function call.
+We compare the results with executing the script in desktop environments, where we use Peachpie and native PHP interpreter.
+\par
+\begin{table}
+\centering
+\begin{tabular}{l@{\hspace{1.5cm}}D{.}{,}{3.2}D{.}{,}{1.2}D{.}{,}{2.3}}
+\toprule
+\mc{\textbf{Enviroment}} & \mc{\textbf{Execution time}}\\
+\midrule
+Blazor   & \mc{---} \\
+Peachpie & \mc{---} \\
+Native   & \mc{---} \\
+\end{tabular}
+\caption{Elapsed time of the function execution.}
+\label{tab01:time}
+\end{table}
+\par
+We can see measured data in Table \ref{tab01:time}.
