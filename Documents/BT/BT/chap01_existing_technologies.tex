@@ -395,7 +395,10 @@ Another markup is transformed into calling a specialized method in the \texttt{B
 \par
 A component has several stages, which can be used for initialization or action.
 Virtual methods of \texttt{ComponentBase} represent these stages.
-We can see the texttt{OnInitializedAsync} method, which is invoked after setting the component parameters.
+We can see the \texttt{OnInitializedAsync} method, which is invoked after setting the component parameters by the \texttt{SetParameters} method.
+We can start the rendering by calling the \texttt{StateHasChanged} method.
+After that, the \texttt{RenderTreeBuilder} is invoked.
+When the rendering finishes, Blazor invokes the \texttt{AfterRender} method, which can manipulate with already rendered HTML tags.
 \par
 We should mention asynchronous processing because it helps render a page with long-loading content.
 Blazor allows using Tasks and async methods, separating the code into smaller tasks planned by a scheduler.
