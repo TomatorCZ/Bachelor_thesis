@@ -1,44 +1,72 @@
 \chapter{Solution}
 
-One script execution should render one game scene as an HTML markup.
-There is a timer, which executes the scripts every defined period of time.
-
-This chapter describes the complete solution, solving the use cases.
+This chapter describes the complete solution, covering the use cases.
 We start with an overview of the solution parts.
 Then, we give a detailed description of each part.
 \par
-The solution consists of four projects, which will form the resulting Blazor website containing PHP scripts.
+The proposed solution is implemented in \textit{Peachpie.Blazor}, which is a library containing components mentioned in the previous section with an additional support code.
+It is provided as a NuGet package containing an API for including PHP scripts to the website.
+It defines a collection of support classes representing HTML entities, which makes the rendering easier.
+A part of the support code is a Javascript script, which is linked to the beginning of the HTML document, providing helper functions for form handling and interoperability with PHP.
+Then, the resulting Blazor website consists of three projects forming a .NET solution.
 In Figure \ref{img13:infrastructure}, we can see these projects as green rectangles.
-The \textit{Server} project references \textit{Blazor App}, containing a part of the website, and \textit{Peachpie.Blazor}, containing an additional support code.
-A part of the support code is a Javascript script, which is linked to at the beginning of \texttt{index.html}, providing helper functions for form handling and interoperability with PHP.  
-The server cares about serving the Blazor website and its Static Web Assets.
-The next project is our library containing an API for including PHP scripts to the website.
-There are \texttt{PhpComponent} and \texttt{PhpScriptProvider}, mentioned earlier, together with additional code support necessary for the correct functionality.
-There is the Blazor App project, which becomes the environment for running PHP scripts in a browser.
-The project references \textit{PHP scripts} and \textit{Peachpie.Blazor}, which content is used to maintain PHP scripts.
-We can see the user's defined scripts as .NET project compiled by Peachpie in \textit{PHP scripts}.
-\textit{Blazor App} injects the scripts using the components.
-\par
-The first section aims at \texttt{PhpComponent}.
-It introduces the implementation problems connected to creating render demanding applications and solves them.
-The second section talks about \texttt{PhpScriptProvider}.
-It suggests a convenient way how to include the scripts into a browser, and it presents the component design.
-The last section aims at the server settings.
+The \textit{Server} project references \textit{Blazor App}, containing a part of the website, and \textit{Peachpie.Blazor} library, containing the support code.
+The server cares about providing the Blazor website and its Static Web Assets.
+There is the \textit{Blazor App} project, which becomes the environment for running PHP scripts in a browser.
+The rendering process and website composition, where the scripts are evaluated, are meant by the environment.
+The project references the Peachpie project containing the programmer's PHP scripts and \textit{Peachpie.Blazor}, which content is used to maintain the scripts.
+\textit{Blazor App} inserts the scripts using the components defined in the library.
 \par
 \begin{figure}[!b]\centering
 \includegraphics[scale=0.9]{./img/SolutionInfrastructure}
-\caption{The solution infrastructure. Green rectangles represent projects. Arrows represent a references.}
+\caption{The solution infrastructure. Green rectangles represent projects. The orange rectangle represents a NuGet package. Arrows represent references.}
 \label{img13:infrastructure}
 \end{figure} 
+\par
+The first section aims at the server settings providing a Blazor application using PHP scripts and the \textit{Peachpie.Blazor} library.
+The second section talks about \texttt{PhpComponent}.
+It describes the resulting implementation and solutions of problems, which occurred during the implementation.
+The last section aims at \texttt{PhpScriptProvider}.
+It suggests a convenient way how to include the scripts into a browser, and it presents the component design.
+
+\section{Server}
+
+We have to set the server in order to provide additional static resources demanded by PHP scripts, as we can see in Figure \ref{img19:settings}.
+The code fragment is cut from the \texttt{StartUp} class of the server.
+It inserts middlewares providing the resources into the request pipeline.
+Afterward, these resources can be referenced by URLs and downloaded from the server.
+For example, we can reference an image with the path \texttt{Demo-PhpComponent/Asteroids/wwwroot/image.jpg} as \texttt{/Asteroids/image.jpg} in HTML document on the client side.
+The second middleware provides Javascript helpers of our library to Blazor App on client side.
+\par
+\begin{figure}[H]
+\begin{lstlisting}
+var fileProvider = new ManifestEmbeddedFileProvider(
+	typeof(PhpBlazor.BlazorContext).Assembly);
+app.UseStaticFiles(new StaticFileOptions() { 
+	FileProvider = fileProvider });
+
+app.UseStaticFiles(new StaticFileOptions
+{
+	FileProvider = new PhysicalFileProvider(Path.Combine(
+	Full name of parent directory, 
+	"Demo-PhpComponent\\Asteroids\\wwwroot")),
+	RequestPath = "/Asteroids"
+});
+\end{lstlisting}
+\caption{Fragment of code adding middlewares.}
+\label{img19:settings}
+\end{figure}
 
 \section{PhpComponent}
 
-In the beginning, we introduce problems, which are related to the \textit{PhpComponent} use case.
-Then, we suggest a solution and design \texttt{PhpComponent} class.
+This section introduces several issues caused by many factors, like the difference between the PHP and C\# language.
+We analyze these issues and suggest solutions, which form the resulting \texttt{PhpComponent} class.
 \par
-The first problem causes PHP, which does not know structs and method overloading.
+The first issue is caused by the difference between the PHP and C\# language where Peachpie tries to compensate it, but it is not its main target. 
+For example, C\# structs have not a representation in PHP.
 Structs are necessary to work with \texttt{RenderTreeBuilder}, which contains API for adding callbacks handling element events, as we can see in Figure \ref{img14:callback}.
 This API uses method overloading in many methods.
+However, PHP does not support method overloading.
 \texttt{AddAttribute} is an example where we can write various types of the attribute value.
 One of the values can be \texttt{EventCallback} struct representing an event handler.
 The struct contains static property \texttt{Factory}, which is a class containing methods for creating callbacks.
@@ -59,55 +87,22 @@ __builder.CloseElement();
 Peachpie enables using structs in PHP code. 
 However, there are limitations at the time of writing, which force us to make workarounds.
 We try to rewrite the previous example in PHP code using Peachpie.
-We create a component, which inherits {textttComponentBase}. 
-Afterward, we override the method for building a render tree and implements the body.
-The fragment of the body can be seen in Figure \ref{img15:problems}, where we try using workarounds to make the example functional.
-There is the first issue in line 5, where Peachpie does not allow us to access a static property of struct.
-It results in a runtime error, which can be solved by \texttt{Helper} written as a C\# class containing a method, which returns the property.
-The second issue causes method overloading when Peachpie can not choose the correct version of the \texttt{Create} method in line 8.
-Peachpie defines a type of PHP function, \texttt{IPhpCallable}, which can cause the issue
-However, if we wrap this function into the correct type by a helper function, the problem remains.
-The workaround can be another helper method, which will have a different name for each overload of this method.
-However, we come to a compilation error when we want to get an instance of \texttt{EventCallback}.
-As we can see in the figure, we tried to use many workarounds, but it is impossible to use some Blazor structures directly in PHP code.
+We create a component, which inherits \texttt{ComponentBase}. 
+Afterward, we override the method for building a render tree and implement the body.
+Peachpie does not allow us to access a static property of struct, which is necessary for obtaining an object providing callbacks representing event callbacks of HTML elements.
+Another issue is using a method for creating the callback, which uses many overrides.
+Peachpie can not choose the correct version, which results in a runtime error.
+We tried to use many workarounds, which used helper classes trying to avoid these issues, but it is impossible to use some Blazor API directly in PHP code.
 \par
-\begin{figure}
-\begin{lstlisting}[numbers=left]
-use \Microsoft\AspNetCore\Components;
-...
-$builder->OpenElement(1, "button");
-		
-//$factory = Components\EventCallback::Factory;
-$factory = \ClassLibrary2\Helper::GetFactory();
-
-//$action = function() {\System\Console::WriteLine("Click");}; 
-$action = \ClassLibrary2\Helper::GetAction(function() {
-	\System\Console::WriteLine("Click");});
-		
-//$callback = $factory->
-//	Create<Components\Web\MouseEventArgs>($this, $action);
-$callback = \ClassLibrary2\Helper::
-	GetCallback<Components\Web\MouseEventArgs>($factory, 
-		$this, $action);
-
-$builder->AddAttribute(2, "onclick", $callback);
-$builder->AddContent(3, "Click me");
-$builder->CloseElement();
-\end{lstlisting}
-\caption{Problem of using structs and method overloading. Helper is a class defining workarounds.}
-\label{img15:problems}
-\end{figure}
-\par
-To make the example functional, we can hide the struct from PHP code by implementing a C\# helper method using the struct.
+To make the example working, we can hide the struct from PHP code by implementing a C\# helper method using the struct.
 The method should have only parameters compatible with PHP types. 
 The overloading can be replaced by a different method name for each overload.
 Afterward, Peachpie allows us to call the methods from PHP code.
 We can use this approach in the \texttt{AddAtribute} method. 
 Defining a new method for each overload is a reasonable approach due to a small number of overloads.
-Although defining global methods are not the best way, how to do it.
-It is a pity that the builder is sealed. 
-Although, we can create a wrapper containing the builder and defining method for each overload, which calls the original method in C\# code.
-This decision leads us to make a new \texttt{RenderTreeBuilder}  in a different namespace as a wrapper of the original builder.
+The \texttt{RenderTreeBuilder} does not allow us to inherit it because it is sealed.
+For this reason, we create a wrapper containing the builder and defining method for each overload, which calls the original method in C\# code.
+This decision leads us to make \texttt{PhpTreeBuilder} wrapping the original builder.
 \par
 The next issue relates to rendering time.
 \texttt{RenderTreeBuilder} provides a method for adding arbitrary markup text.
@@ -118,16 +113,21 @@ Although using the one method for rendering, the whole component causes slow ren
 The diff algorithm relies on marking the blocks of markup by sequence numbers for optimization in page updates.
 When we have only one big block, the diff algorithm can not do anything better than generate an update, which renders the whole page. 
 This issue can be seen in the Benchmark section, where we compare the difference between using the one method and utilizing all methods.
-Because the builder usage can be complex, we introduce a library for representing tags, helping implement the code using the builder for rendering.
-We present library class diagram in Figure \ref{img16:diagram}.
-The main idea is to implement the \texttt{iBlazorWritable} interface, which writes the class content into the builder.
+Because the builder usage can be complex, we introduce a collection of classes for representing tags, helping implement the code using the builder for rendering.
+We present the class diagram in Figure \ref{img16:diagram}.
+The main idea is to implement the \texttt{BlazorWritable} interface, which writes the class content into the builder.
 An example of a class is \texttt{Tag}, which represents an arbitrary tag.
+The tag contains its name, attributes represented by \texttt{AttributeCollection} and inner objects implementing the \texttt{BlazorWritable} interface.
 Because a tag can contain other tags using sequence numbers, we have to keep the currently used sequence number used in the diff algorithm.
 For this purpose, the \texttt{writeTreeBuilder} method gets the actual sequence number and returns the last unused number.
 This API should hide separated class logics for rendering.
 We offer the basic implementation of this method, which renders the content with a dynamic sequence numbering. 
 However, a programmer can override the method because sequence numbering is impossible to predefine in advance to make the most effective updates.
-Another abstraction is \texttt{AttributeCollerction}, which offers convenient interface for working with attributes by implementing PHP \texttt{ArrayAccess}.
+The next object implementing the interface is the \texttt{Text} class representing a text.
+\texttt{AttributeCollection} offers convenient interface for working with attributes by implementing the PHP \texttt{ArrayAccess} interface enabling indexer.
+Becuase string values of \texttt{style} and \texttt{class} attributes are more complicated.
+We provide dedicated classes for working with these attributes, used by \texttt{AttribureCollection}.
+\texttt{CssBuilder} and \texttt{ClassBuilder} provide API for creating these values and then format it into the HTML style.
 \par
 \begin{figure}\centering
 \includegraphics[scale=0.8]{./img/ComponentLibrary}
@@ -137,17 +137,12 @@ Another abstraction is \texttt{AttributeCollerction}, which offers convenient in
 \par
 The next barrier is assigning handlers to C\# events in PHP code.
 Peachpie does not either support accessing the events.
-Thus, we can not directly use a class like \texttt{Timer}, which is useful in \textit{PhpComponent} use case for updating the screen every period.
-The issue can be solved by helper methods defined in C\# accepting the object, handler, and event name.
+Thus, we can not directly use a class like \texttt{Timer}, which is useful in \textit{PhpComponent} use case for updating the screen every defined period of time.
+The issue can be solved by helper methods defined in a C\# static class, \texttt{EventHelper}.
+They accept the object providing some events, handler, and event name.
 Afterward, we can use reflection for obtaining the desired event by name from the object and then assign the \texttt{IPhpCallable} handler to it.
 Because \texttt{Timer} is a common object, we create an additional PHP wrapper class, which uses the timer.
 Then a programmer avoids to use the workaround defined above.
-\par
-\begin{figure}\centering
-\includegraphics[scale=0.8]{./img/PhpComponentSolution}
-\caption{Class diagram of the use case solution.}
-\label{img17:solution}
-\end{figure}
 \par
 The last feature to discuss in this section is interoperability between Javascript and PHP.
 As we mentioned, Blazor allows calling Javascript functions from C\# \squarecite{23} and vice-versa \squarecite{24}.
@@ -159,25 +154,34 @@ The context finds already defined methods contained in the included PHP script a
 When we want to call C\# instance method from Javascript, we have to have the reference, supplied by the framework, for calling it.
 Additionally, the called C\# method has to be marked with a \texttt{JSInvokableAttribute} during compilation.
 The reference can be assigned from C\# by a method, which creates it and uses it as a parameter of a Javascript function.
-These conditions lead us to create our context,\texttt{BlazorContext}, which inherits the original context and provides the \texttt{CallPHP} method marked by the attribute and calling the PHP function based on parameters.
+These conditions lead us to create a new Peachpie context,\texttt{BlazorContext}, which inherits the original Peachpie context and provides the \texttt{CallPHP} method marked by the attribute and calling the PHP function based on parameters.
 The context requests the mentioned services provided by the dispatcher and sets the reference by calling predefined code in \texttt{Peachpie.Blazor.js}.
 The context will be the Peachpie context of the component.
 Thus, it enables to call PHP methods defined in this context from Javascript by using the reference.
-However, it has a limitation.
-Calling PHP functions is allowed when the reference is presented, meaning that we have to create the context and include scripts containing the functions.
 The advantage of this approach is that we can have two components inheriting \texttt{PhpComponent} with the same context when we set their context to the same instance.
 Thus, we can call their functions by only one reference.
 \par
-When we already presented the problems, we can introduce the architecture of \texttt{PhpComponent} and solution of \textit{PhpComponent} use case.
+\begin{figure}\centering
+\includegraphics[scale=0.8]{./img/PhpComponentSolution}
+\caption{Class diagram of the use case solution.}
+\label{img17:solution}
+\end{figure}
+\par
+We summarize the architecture of \texttt{PhpComponent} and solution of \textit{WebGame} use case.
 The component hides the original function for rendering and replaces it with our version of the builder, as shown in Figure \ref{img17:solution}.
 It results in transparent usage of the builder in the inherited class.
-The builder is just a wrapper, so the programmer can use the original builder by accessing its property.
-Additional, there is a library for creating tags, which should make the builder usage easier.
-For assigning PHP handlers to C\# events, there is a universal helper.
+The builder is just a wrapper, so the programmer can use the original builder by accessing its property, \texttt{Builder}.
+Additionally, there is a collection of classes for creating tags, making builder usage easier.
+For assigning PHP handlers to C\# events, there is a universal helper class, \texttt{EventHelper}.
 Furthermore, the last feature is a timer wrapper, which uses the C\# timer, offering a convenient API.
-For the interoperability, we can use our predefined API using \texttt{BlazorContext}.
+We can use our predefined API using \texttt{BlazorContext} for interoperability with Javascript.
+These features are sufficient for implementing a game described in \textit{WebGame} use case.
+Using PHP functions as handlers, we use the timer to update the game screen by \texttt{StateHasChanged}.
+The update consists of evaluating the position of game entities, which use the helper classes representing HTML entities.
+Lastly, we use context preservation to keep the game state.
 \par
 The last necessary thing is to get assembly references containing the components to \texttt{Router}, which is a standard duty in Blazor.
+
 \section{PhpScriptProvider}
 
 At the beginning of this section, we introduce the main component parts, which gives us an overview of the component composition.
@@ -300,32 +304,6 @@ We decide to prefetch the file content before the execution to provide the data 
 Interoperability in the provider can be achieved in a similar manner as in \texttt{PhpComponent}.
 The difference is calling the Javascript functions, which use prefined API using our context, which uses the \texttt{IJSRuntime} service.
 
-\section{Server}
 
-We have to set the server in order to provide additional static resources demanded by PHP scripts, as we can see in Figure \ref{img19:settings}.
-The code fragment is cut from the \texttt{StartUp} class of the server.
-It inserts middlewares providing the resources into the request pipeline.
-Afterward, these resources can be referenced by URLs and downloaded from the server.
-For example, we can reference an image with the path \texttt{Demo-PhpComponent/Asteroids/wwwroot/image.jpg} as \texttt{/Asteroids/image.jpg} in HTML document on the client side.
-The second middleware provides Javascript helpers of our library to Blazor App on client side.
-\par
-\begin{figure}[t]
-\begin{lstlisting}
-var fileProvider = new ManifestEmbeddedFileProvider(
-	typeof(PhpBlazor.BlazorContext).Assembly);
-app.UseStaticFiles(new StaticFileOptions() { 
-	FileProvider = fileProvider });
-
-app.UseStaticFiles(new StaticFileOptions
-{
-	FileProvider = new PhysicalFileProvider(Path.Combine(
-	Full name of parent directory, 
-	"Demo-PhpComponent\\Asteroids\\wwwroot")),
-	RequestPath = "/Asteroids"
-});
-\end{lstlisting}
-\caption{Fragment of code adding middlewares.}
-\label{img19:settings}
-\end{figure}
             
  
