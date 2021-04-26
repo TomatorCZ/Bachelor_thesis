@@ -3,7 +3,7 @@ using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 
-namespace PhpBlazor
+namespace Peachpie.Blazor
 {
 	public static class Log
 	{

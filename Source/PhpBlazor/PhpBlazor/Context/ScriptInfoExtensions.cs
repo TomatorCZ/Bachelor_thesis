@@ -1,9 +1,6 @@
 ﻿using Pchp.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace PhpBlazor
+namespace Peachpie.Blazor
 {
     [PhpHidden]
     public static class ScriptInfoExtensions

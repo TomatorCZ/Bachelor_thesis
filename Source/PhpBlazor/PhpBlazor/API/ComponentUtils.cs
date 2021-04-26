@@ -1,25 +1,20 @@
 ﻿using Pchp.Core;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
 
-namespace PhpBlazor
+namespace Peachpie.Blazor
 {
-    public static class ComponentUtils
-    {
-    }
 
     [PhpType]
-    public interface iBlazorWritable
+    public interface BlazorWritable
     {
-        public int writeWithTreeBuilder(Context ctx, RenderTreeBuilder builder, int startIndex);
+        public int writeWithTreeBuilder(Context ctx, PhpTreeBuilder builder, int startIndex);
     }
     
     [PhpType]
-    public class Text : iBlazorWritable
+    public class Text : BlazorWritable
     {
         protected string content;
 
@@ -34,7 +29,7 @@ namespace PhpBlazor
         #endregion
 
         #region iBlazorWritable
-        public int writeWithTreeBuilder(Context ctx, RenderTreeBuilder builder, int startIndex)
+        public int writeWithTreeBuilder(Context ctx, PhpTreeBuilder builder, int startIndex)
         {
             builder.AddContent(startIndex++, content);
             return startIndex;
@@ -48,11 +43,11 @@ namespace PhpBlazor
     }
     
     [PhpType]
-    public class Tag : iBlazorWritable
+    public class Tag : BlazorWritable
     {
         public string name;
         public AttributeCollection attributes;
-        public List<iBlazorWritable> content;
+        public List<BlazorWritable> content;
 
         public Tag():this("div")
         { }
@@ -61,7 +56,7 @@ namespace PhpBlazor
         {
             this.name = name;
             attributes = new AttributeCollection();
-            content = new List<iBlazorWritable>();
+            content = new List<BlazorWritable>();
         }
 
         public void __construct(string name)
@@ -70,7 +65,7 @@ namespace PhpBlazor
         }
 
         #region iBlazorWritable
-        public int writeWithTreeBuilder(Context ctx, RenderTreeBuilder builder, int startIndex)
+        public int writeWithTreeBuilder(Context ctx, PhpTreeBuilder builder, int startIndex)
         {
             builder.OpenElement(startIndex++, name);
 
@@ -93,7 +88,7 @@ namespace PhpBlazor
     }
     
     [PhpType]
-    public class AttributeCollection : iBlazorWritable, ArrayAccess
+    public class AttributeCollection : BlazorWritable, ArrayAccess
     {
         protected PhpArray attributes;
         protected Dictionary<string, IPhpCallable> events;
@@ -118,7 +113,7 @@ namespace PhpBlazor
         }
 
         #region iBlazorWritable
-        public int writeWithTreeBuilder(Context ctx, RenderTreeBuilder builder, int startIndex)
+        public int writeWithTreeBuilder(Context ctx, PhpTreeBuilder builder, int startIndex)
         {
             foreach (var item in attributes)
             {
@@ -278,5 +273,30 @@ namespace PhpBlazor
 
             return sb.ToString();
         }
+    }
+
+    [PhpType]
+    public class Timer
+    {
+        private System.Timers.Timer timer;
+
+        public Timer(double interval)
+        {
+            timer = new System.Timers.Timer(interval);
+        }
+
+        public void addEventElapsed(Context ctx, IPhpCallable handler)
+        {
+            void HandlerDelegate(object sender, ElapsedEventArgs args)
+            {
+                handler.Invoke(ctx, PhpValue.FromClr(sender), PhpValue.FromClass(args));
+            }
+
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(HandlerDelegate);
+        }
+
+        public void Start() => timer.Start();
+
+        public void Stop() => timer.Stop();
     }
 }

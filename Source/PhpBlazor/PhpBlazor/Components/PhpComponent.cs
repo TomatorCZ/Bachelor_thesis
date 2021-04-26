@@ -2,9 +2,8 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using Pchp.Core;
-using System;
 
-namespace PhpBlazor
+namespace Peachpie.Blazor
 {
     public abstract class PhpComponent : ComponentBase
     {
@@ -26,10 +25,10 @@ namespace PhpBlazor
         protected sealed override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
         {
             base.BuildRenderTree(builder);
-            BuildRenderTree(new RenderTreeBuilder(builder, this));
+            BuildRenderTree(new PhpTreeBuilder(builder, this));
         }
 
-        protected abstract void BuildRenderTree(RenderTreeBuilder builder);
+        protected abstract void BuildRenderTree(PhpTreeBuilder builder);
 
         protected override void OnInitialized()
         {

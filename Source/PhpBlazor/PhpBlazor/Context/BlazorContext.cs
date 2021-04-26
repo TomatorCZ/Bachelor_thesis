@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace PhpBlazor
+[assembly: PhpExtension]
+
+namespace Peachpie.Blazor
 {
     public class BlazorContext : Context
     {

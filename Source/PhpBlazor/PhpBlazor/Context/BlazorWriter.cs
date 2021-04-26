@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace PhpBlazor
+namespace Peachpie.Blazor
 {
     public class BlazorWriter : TextWriter
     {

@@ -1,11 +1,6 @@
 ﻿using Pchp.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PhpBlazor
+namespace Peachpie.Blazor
 {
     [PhpType]
     public class BrowserFile
@@ -39,7 +34,7 @@ namespace PhpBlazor
             return GenericHelper.CallJs<BrowserFile>(ctx, JsResource.createFile, data, name, contentType);
         }
 
-        public static void DownLoadFile(Context ctx, int id)
+        public static void DownloadFile(Context ctx, int id)
         {
             InteropUtils.CallJsVoid(ctx, JsResource.downloadFile, id);
         }

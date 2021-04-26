@@ -7,7 +7,7 @@ using Pchp.Core;
 using System;
 using System.Threading.Tasks;
 
-namespace PhpBlazor
+namespace Peachpie.Blazor
 {
     public enum SessionLifetime { Persistant, OnNavigationChanged }
     public enum PhpScriptProviderType { Router, ScriptProvider, Script }
