@@ -3,6 +3,65 @@
 This chapter demonstrates the usage of our solution by four examples, which are inspired by the use cases mentioned earlier.
 We describe example structure, show important blocks of code, which has to be added to project.
 At the end, we make snapshots of the websites.
+\par
+
+\section{WebGame}
+
+The example aims at the third use case.
+It contains a game where we have a rocket, which has to destroy falling asteroids with bullets, as we can see in Figure \ref{img28:game}.
+We can also see current \ac{FPS} in the left corner of the screenshot.
+The rocket can be control by buttons in the bottom, or we can use a keyboard, where arrows determine the rocket movement and \texttt{F} key fires a bullet.
+We will discuss the rendering time in the benchmark section.
+\par
+\begin{figure}\centering
+\includegraphics[scale=0.5]{./img/Asteroids}
+\caption{The game.}
+\label{img28:game}
+\end{figure} 
+\par
+The example is implemented as .NET solution consisting of three projects. 
+\texttt{BlazorApp.Client} and \texttt{BlazorApp.Server} are pregenerated projects by the Blazor App template.
+The game is implemented in the Peachpie \texttt{PHPScripts} project.
+These projects reference the \texttt{Peachpie.Blazor} library as a NuGet package containing our solution. 
+We describe steps, which was necessary for making the game working.
+\par
+The game implementation is contained in three PHP scripts and a CSS file containing game styles.
+The \textit{settings.php} script contains default values of FPS, an asteroids frequency, and additional settings.
+The \textit{asteroids.php} script contains definitions of game entities like the rocket or an asteroid.
+These entities utilizes \texttt{Peachpie.Blazor} library, which provides helper classes representing HTML elements.
+At the bottom of the script is \texttt{Application} class connecting all parts together.
+The class uses HTML elements events for interacting with the user due to the \texttt{PhpTreeBuilder} class providing an API targeting PHP usage.
+The last script is \textit{main.php}, which contains \texttt{AsteroidsComponent} class.
+This class is routable by \texttt{/Asteroids} URL and initializes the game.
+It uses \texttt{Timer} provided by \texttt{Peachpie.Blazor}, which enables to handles tick events, which update the game and the screen.
+Because \texttt{Application} class inherits the helper class \texttt{Tag}, \texttt{AscteroidsComponent} does not bother with game rendering and uses \texttt{BlazorWritable} interface for transparent initiating the rendering.
+\par
+\texttt{BlazorApp.Client} references the game and uses the default \texttt{Router} component to navigate \texttt{AsteroidsComonent}.
+\texttt{index.html} contains links to the game styles and a supporting Javascript defined in the \texttt{Peachpie.Blazor} library.
+We can see two examples of \texttt{AsteroidsComponent} usage in Figure \ref{img28:game}.
+\textit{Asteroids 1} utilizes the router for navigating it.
+\textit{Asteroids 2} utilizes a Razor page, which contains additional content with the game.
+\par
+\texttt{BlazorApp.Server} provides the Web Static Assets to a client by inserting additional middlewares, which handles their requests.
+This insertion can be seen in the \textit{Startup.cs} file and in Figure \ref{img21:server}.
+\par
+\begin{figure}
+\begin{lstlisting}
+var fileProvider = new ManifestEmbeddedFileProvider(
+	typeof(PhpBlazor.BlazorContext).Assembly);
+app.UseStaticFiles(new StaticFileOptions() {
+	 FileProvider = fileProvider });
+
+app.UseStaticFiles(new StaticFileOptions
+{
+	FileProvider = new PhysicalFileProvider(
+		Path to static resources, "PHPScripts\\wwwroot")),
+	RequestPath = "/Asteroids"
+});
+\end{lstlisting}
+\caption{A part of the \texttt{Configure} method contained in the \texttt{StartUp} class, which is defined in \textit{Startup.cs}}
+\label{img21:server}
+\end{figure}
 
 \section{Web}
 
@@ -34,24 +93,6 @@ public static async Task Main(string[] args)
 \texttt{Blazor.Server} provides the application with other static resources to the client.
 It references \texttt{Blazor.Client} and our library, which provides an embedded file representing the Javascript script.
 We have to add middlewares for serving the resources in the last two projects, as we can see in Figure \ref{img21:server}.
-\par
-\begin{figure}[H]
-\begin{lstlisting}
-var fileProvider = new ManifestEmbeddedFileProvider(
-	typeof(PhpBlazor.BlazorContext).Assembly);
-app.UseStaticFiles(new StaticFileOptions() {
-	 FileProvider = fileProvider });
-
-app.UseStaticFiles(new StaticFileOptions
-{
-	FileProvider = new PhysicalFileProvider(
-		Path to static resources, "Web\\wwwroot")),
-	RequestPath = "/Web"
-});
-\end{lstlisting}
-\caption{A part of the Configure method contained in the StartUp class, which is defined in Startup.cs}
-\label{img21:server}
-\end{figure}
 \par
 Then, there is our library \texttt{Peachpie.Blazor} providing API for executing PHP scripts.
 The last project contains the programmer's defined PHP scripts forming the web of some software company.
@@ -214,27 +255,7 @@ We use PHP library for parsing the file, which demonstrates a possibility to uti
 The application has the main script,\texttt{fileManagment/index.php}, which recognizes what to do based on superglobals and saved variables.
 It is possible due to context persistence.
 
-\section{PhpComponent}
 
-The example aims at the third use case.
-It contains a game, where we are a rocket, which has to destroy asteroids with bullets.
-The example consists of four projects, which are designed in the same manner as the previous one.
-Our game is implemented in \texttt{Asteroids} project, where we can see \texttt{main.php} script, which extends \texttt{PhpComponent}.
-There is \texttt{asteroids.php} which defines all entities used in the game.
-These entities represent a rocket, an asteroid, a bullet, a background, and the game containing these entities.
-We use our library to utilize HTML helper classes like \texttt{Tag}, which makes the rendering easier.
-After the component is navigated, the game is created, and its state is saved in the component.
-\texttt{Timer}, predefined in our library, raises tick events, which update the game state and the screen.
-There are buttons, which invoke events controlling the game.
-Also, there is a possibility to control the game with a keyboard.
-We can see the print screen in Figure \ref{img28:game}.
-\par
-\begin{figure}[H]\centering
-\includegraphics[scale=0.4]{./img/Asteroids}
-\caption{The game.}
-\label{img28:game}
-\end{figure} 
-\par
  
 
 \section{AllTogether}

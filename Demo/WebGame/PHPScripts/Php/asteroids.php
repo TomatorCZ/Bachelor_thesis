@@ -91,7 +91,7 @@ class Asteroid extends MovableEntity
 
     public static function createDefault(array $position) : Asteroid
     {
-        return new self($position, ["x" => 0, "y" => 25], ["height" => 50, "width" => 50]);
+        return new self($position, ["x" => 0, "y" => 40], ["height" => 50, "width" => 50]);
     }
 
     public function move(float $time) : void
@@ -315,11 +315,11 @@ class Application extends \Peachpie\Blazor\Tag
     {
         if ($e->Key === "ArrowLeft")
         {
-            $this->rocket->changeDirection(["x" => -40,"y" => 0]);
+            $this->rocket->changeDirection(["x" => -50,"y" => 0]);
         }
         else if ($e->Key === "ArrowRight")
         {
-            $this->rocket->changeDirection(["x" => 40,"y" => 0]);
+            $this->rocket->changeDirection(["x" => 50,"y" => 0]);
         }
         else if ($e->Key === "f")
         {
@@ -335,7 +335,7 @@ class Application extends \Peachpie\Blazor\Tag
 
     private function HandleMouseDownMoveRight() : void
     {
-         $this->rocket->changeDirection(["x" => 2,"y" => 0]);
+         $this->rocket->changeDirection(["x" => 50,"y" => 0]);
     }
 
     private function HandleMouseUp() : void
@@ -345,7 +345,7 @@ class Application extends \Peachpie\Blazor\Tag
 
     private function HandleMouseDownMoveLeft() : void
     {
-         $this->rocket->changeDirection(["x" => -2,"y" => 0]);
+         $this->rocket->changeDirection(["x" => -50,"y" => 0]);
     }
 
     private function HandleFire() : void

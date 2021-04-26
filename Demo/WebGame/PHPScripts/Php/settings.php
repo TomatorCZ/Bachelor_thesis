@@ -1,7 +1,7 @@
 ﻿<?php namespace Asteroids;
 
 $settings = [
-    "speed" => 30, // < 1000 / 23
+    "speed" => 16, // < 1000 / 60
     "asteroidFrequency" => 2,
     "height" => 800,
     "width" => 700
