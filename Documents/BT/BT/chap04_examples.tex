@@ -1,7 +1,7 @@
 \chapter{Examples}
 
 This chapter demonstrates the usage of our solution by four examples, which are inspired by the use cases mentioned earlier.
-We describe example structure, show important blocks of code, which has to be added to project.
+We describe examples structures, show important blocks of code, which has to be added to projects.
 At the end, we make snapshots of the websites.
 \par
 
@@ -9,8 +9,8 @@ At the end, we make snapshots of the websites.
 
 The example aims at the third use case.
 It contains a game where we have a rocket, which has to destroy falling asteroids with bullets, as we can see in Figure \ref{img28:game}.
-We can also see current \ac{FPS} in the left corner of the screenshot.
-The rocket can be control by buttons in the bottom, or we can use a keyboard, where arrows determine the rocket movement and \texttt{F} key fires a bullet.
+We can also see the current \ac{FPS} in the left corner of the screenshot.
+The rocket can be control by buttons in the bottom, or we can use a keyboard, where arrows determine the rocket movement and the \texttt{F} key fires a bullet.
 We will discuss the rendering time in the benchmark section.
 \par
 \begin{figure}\centering
@@ -19,7 +19,7 @@ We will discuss the rendering time in the benchmark section.
 \label{img28:game}
 \end{figure} 
 \par
-The example is implemented as .NET solution consisting of three projects. 
+The example is implemented as a .NET solution consisting of three projects. 
 \texttt{BlazorApp.Client} and \texttt{BlazorApp.Server} are pregenerated projects by the Blazor App template.
 The game is implemented in the Peachpie \texttt{PHPScripts} project.
 These projects reference the \texttt{Peachpie.Blazor} library as a NuGet package containing our solution. 
@@ -28,15 +28,15 @@ We describe steps, which was necessary for making the game working.
 The game implementation is contained in three PHP scripts and a CSS file containing game styles.
 The \textit{settings.php} script contains default values of FPS, an asteroids frequency, and additional settings.
 The \textit{asteroids.php} script contains definitions of game entities like the rocket or an asteroid.
-These entities utilizes \texttt{Peachpie.Blazor} library, which provides helper classes representing HTML elements.
-At the bottom of the script is \texttt{Application} class connecting all parts together.
-The class uses HTML elements events for interacting with the user due to the \texttt{PhpTreeBuilder} class providing an API targeting PHP usage.
-The last script is \textit{main.php}, which contains \texttt{AsteroidsComponent} class.
-This class is routable by \texttt{/Asteroids} URL and initializes the game.
+These entities utilizes the \texttt{Peachpie.Blazor} library, which provides helper classes representing HTML elements.
+At the bottom of the script is the \texttt{Application} class connecting all parts together.
+The class uses HTML elements events for interacting with a user due to the \texttt{PhpTreeBuilder} class providing an API targeting PHP usage.
+The last script is \textit{main.php}, which contains the \texttt{AsteroidsComponent} class.
+This class is routable as \texttt{/Asteroids} and initializes the game.
 It uses \texttt{Timer} provided by \texttt{Peachpie.Blazor}, which enables to handles tick events, which update the game and the screen.
-Because \texttt{Application} class inherits the helper class \texttt{Tag}, \texttt{AscteroidsComponent} does not bother with game rendering and uses \texttt{BlazorWritable} interface for transparent initiating the rendering.
+Because \texttt{Application} class inherits the helper class \texttt{Tag}, \texttt{AsteroidsComponent} does not bother with a game rendering and uses \texttt{BlazorWritable} interface for the transparent rendering.
 \par
-\texttt{BlazorApp.Client} references the game and uses the default \texttt{Router} component to navigate \texttt{AsteroidsComonent}.
+\texttt{BlazorApp.Client} references the game and uses the default \texttt{Router} component to navigate \texttt{AsteroidsComponent}.
 \texttt{index.html} contains links to the game styles and a supporting Javascript defined in the \texttt{Peachpie.Blazor} library.
 We can see two examples of \texttt{AsteroidsComponent} usage in Figure \ref{img28:game}.
 \textit{Asteroids 1} utilizes the router for navigating it.
@@ -101,9 +101,9 @@ public static async Task Main(string[] args)
 \label{img20:program}
 \end{figure}
 \par
-The project references \texttt{Peachpie.Blazor} library and the Peachpie project, \texttt{PHPScripts}, containing PHP scripts representing the website.
-The provider has default settings, which are the \texttt{Router} type and the \texttt{OnNavigationChanged} mode of \texttt{BlazorContext}.
-Furthermore, we have to link the Javascript script from \texttt{Peachpie.Blazor} library to \textit{index.html} in order to use it during the runtime.
+The project references the \texttt{Peachpie.Blazor} library and the Peachpie project, \texttt{PHPScripts}, containing PHP scripts representing the website.
+The provider has default settings, which contains the \texttt{Router} type and the \texttt{OnNavigationChanged} mode of \texttt{BlazorContext}.
+Furthermore, we have to link the Javascript script from the \texttt{Peachpie.Blazor} library to \textit{index.html} in order to use it during the runtime.
 \par
 The \texttt{PHPScripts} project contains the programmer's defined PHP scripts forming the web of some software company.
 We can see the project content in Figure \ref{img22:web}.
@@ -124,7 +124,7 @@ It uses script inclusion to add the head section.
 Then, there is a Javascript call, which uses our predefined API, which causes showing the alert with the message when the page loads.
 The whole page uses HTML interleaving.
 We can see using \texttt{\$\_GET} superglobal in the script, where we decide to show its content based on the URL query.
-When we have the \textit{OnNavigationChanged} mode for the context, and we refresh the page after navigation to a developer, then we can see the anchors to developers.
+When we have the \texttt{OnNavigationChanged} mode for the context, and we refresh the page after navigation to a developer, then we can see the anchors to developers.
 It is caused by creating a new context between navigation, so the variables are disposed.
 With the second mode of context,\texttt{Persistant}, we still have the info page of the firstly navigated developer because the variables in the context remain.
 This page is transparently rendered by our \texttt{PhpScriptProvider}, which evaluates the whole script and adds the output as a markup text to the builder.
@@ -158,7 +158,7 @@ if (isset($_GET["developer"])) {
 \section{OneScript}
 
 In this example, we aim at the second use case.
-The website contains several pages with demonstrates inserting page fragments written in PHP to the Blazor website.
+The website contains several pages which demonstrates an insertion of page fragments, written in PHP, to the Blazor website.
 When we navigate the page, we can see a button, which utilizes interoperability between PHP and Javascript provided by our solution.
 When we click on it, the javascript code calls PHP code, which writes a message to a browser console.
 Next examples referred as \textit{Example 1}, \textit{Example 2}, \textit{Example 3} show working with forms.
@@ -167,9 +167,9 @@ When we submit the form, we are navigated to a page written in PHP, displaying t
 The same process is done with the \texttt{POST} method.
 We can also try to load a file to the form in the last example.
 After the submit, the page displays its file contect encoded into \textit{base64} encoding.
-\textit{Example 4} uses previously mentioned features to enable displaying user defines graphs.
+\textit{Example 4} uses previously mentioned features to enable displaying user defined graphs.
 We can upload a file containing the graph, or the application will generate it.
-Then the graph is displayed, and we can download the points defining it as we can see in Figure \ref{img27:graph}.
+Then the graph is displayed, and we can download the points defining it, as we can see in Figure \ref{img27:graph}.
 \par
 \begin{figure}\centering
 \includegraphics[scale=0.4]{./img/graph}
@@ -178,9 +178,9 @@ Then the graph is displayed, and we can download the points defining it as we ca
 \end{figure} 
 \par
 The .NET solution consists of three projects.
-\texttt{BlazorApp.Server} is the same as previois ones.
+\texttt{BlazorApp.Server} is the same as previous ones.
 \texttt{BlazorApp.Client} contains common Razor pages, and has default \texttt{Router} as a root component.
-We create several scripts in the Peachpie\texttt{PHPScripts} project to enrich the website with all content except the layout, which we presented.
+We create several scripts in the Peachpie \texttt{PHPScripts} project to enrich the website with the all presented content except the layout provided by Blazor.
 The website contains three Razor pages: \textit{Index.razor}, \textit{PhpGateway.razor}, and \textit{PhpScript.razor}.
 The first page uses \texttt{PhpScriptProvider} to navigate \texttt{index.php}.
 Using the provider is straightforward.
@@ -214,16 +214,16 @@ function CallPHP($data)
 \label{img26:index}
 \end{figure}
 \par
-Another part of the website uses forms to demonstrates \texttt{GET} and \texttt{POST} method.
-We can see it in \textit{php} folder, where are three examples of forms using both methods and file loading.
+Another part of the website uses forms to demonstrate \texttt{GET} and \texttt{POST} methods.
+We can see it in the \textit{php} folder, where are three examples of forms using both methods and file loading.
 These examples can be navigated based on their names due to the unspecified URL of the Razor page, which uses the provider.
 After navigation to this page, the provider gets the script name from the URL.
 \par
-The graph visualization aims at the persistent context and using forms as interaction with the user.
+The graph visualization aims at the persistent context and using forms as an interaction with a user.
 It is a common approach in PHP, and we can use it on a client side due to our solution.
 There is a simple application enabling us to visualize a graph, as we can see in the folder \texttt{fileManagement}.
 The application can upload a CSV file containing a graph or generate a new one based on the given parameters.
-We use PHP library for parsing the file, which demonstrates a possibility to utilize the already created library on a client side.
+We use a PHP library for parsing the file, which demonstrates a possibility to utilize the already created library on a client side.
 The application has the main script,\texttt{fileManagment/index.php}, which recognizes what to do based on superglobals and saved variables.
 It is possible due to context persistence.
 
@@ -243,19 +243,19 @@ Afterward, we can see a graph, which contains a score generated by the game.
 \label{img30:allTogether}
 \end{figure} 
 \par
-The .NET solution again contains three projects \texttt{BlazorApp.Client}, \texttt{BlazorApp.Server}, and \texttt{PHPScripts}.
+The .NET solution contains three projects \texttt{BlazorApp.Client}, \texttt{BlazorApp.Server}, and \texttt{PHPScripts}.
 \texttt{PHPScripts} consists of \textit{Game}, \textit{Graph}, \textit{Web}, and \textit{wwwroot} folders.
 We already know the implementation of these parts.
-An interesting collaboration is between the game and the graph, where we save a global variable containing the graph in \texttt{AsteroidsComponent} and uses later in \textit{main.php} script of graph visualization.
-This works due to \texttt{PhpScriptProvider}, where we navigate either the \textit{main.php} or \texttt{AsteroidsComponent}.
+An interesting collaboration is between the game and the graph, where we save a global variable containing the graph in \texttt{AsteroidsComponent} and uses it later in \textit{main.php}, which provides the graph visualization.
+It works due to \texttt{PhpScriptProvider}, where we navigate either \textit{main.php} or \texttt{AsteroidsComponent}.
 Because the context can be persistent, we share global variables between these parts, and we can communicate through them.
-We choose between navigated parts by a submit form containing one button, which navigates to the game, and an anchor containing a reference to the \textit{main.php}.
-Because the default \texttt{Router} can navigate the \texttt{AsteroidsComponent}, we don't add the \texttt{PHPScripts} assembly to the router additional assemblies in order to keep the provider alive and share its content with the game.
+We choose between navigated parts by submitting a form containing one button, which navigates the game, and an anchor containing a reference to \textit{main.php}.
+Because default \texttt{Router} can navigate \texttt{AsteroidsComponent}, we don't add the \texttt{PHPScripts} assembly to the router additional assemblies in order to keep the provider alive and share its content with the game.
 \par
 \texttt{BlazorApp.Client} contains the \textit{Web.razor} page containg \texttt{PhpScriptProvider}, which manages the PHP website navigation.
 It contains the \texttt{Game.razor} page, which is shown in Figure \ref{img29:razor}.
 There is a trick with the navigation.
-Because the default Blazor \texttt{Router} is a root component, it reacts to navigation, but we want to navigate the game and graph visualization by the provider.
+Because default Blazor \texttt{Router} is a root component, it reacts to navigation, but we want to navigate the game and graph visualization by the provider.
 This can be avoided by defining two routable paths, which navigate the same Razor page, but the different content by our provider.
 \par
 \begin{figure}[!b]
