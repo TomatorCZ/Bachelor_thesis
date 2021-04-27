@@ -158,11 +158,30 @@ if (isset($_GET["developer"])) {
 \section{OneScript}
 
 In this example, we aim at the second use case.
-The solution contains four project again.
-\texttt{Blazor.Server} and \texttt{Peachpie.Blazor} are same.
-\texttt{Blazor.Client} contains now common Razor pages, and has \texttt{Router} as a root component.
-We create several scripts in the \texttt{Scripts} project to enrich the website with content generated from the PHP scripts.
-The website contains three Razor pages: \texttt{Index.razor}, \texttt{PhpGateway}, and \texttt{PhpScript}.
+The website contains several pages with demonstrates inserting page fragments written in PHP to the Blazor website.
+When we navigate the page, we can see a button, which utilizes interoperability between PHP and Javascript provided by our solution.
+When we click on it, the javascript code calls PHP code, which writes a message to a browser console.
+Next examples referred as \textit{Example 1}, \textit{Example 2}, \textit{Example 3} show working with forms.
+The first example uses a simple form with the \texttt{GET} method.
+When we submit the form, we are navigated to a page written in PHP, displaying the content of superglobals.
+The same process is done with the \texttt{POST} method.
+We can also try to load a file to the form in the last example.
+After the submit, the page displays its file contect encoded into \textit{base64} encoding.
+\textit{Example 4} uses previously mentioned features to enable displaying user defines graphs.
+We can upload a file containing the graph, or the application will generate it.
+Then the graph is displayed, and we can download the points defining it as we can see in Figure \ref{img27:graph}.
+\par
+\begin{figure}\centering
+\includegraphics[scale=0.4]{./img/graph}
+\caption{Application for visualising a graph.}
+\label{img27:graph}
+\end{figure} 
+\par
+The .NET solution consists of three projects.
+\texttt{BlazorApp.Server} is the same as previois ones.
+\texttt{BlazorApp.Client} contains common Razor pages, and has default \texttt{Router} as a root component.
+We create several scripts in the Peachpie\texttt{PHPScripts} project to enrich the website with all content except the layout, which we presented.
+The website contains three Razor pages: \textit{Index.razor}, \textit{PhpGateway.razor}, and \textit{PhpScript.razor}.
 The first page uses \texttt{PhpScriptProvider} to navigate \texttt{index.php}.
 Using the provider is straightforward.
 \par
@@ -191,32 +210,22 @@ function CallPHP($data)
 	echo $json->surname .  " from PHP\n";
 }
 \end{lstlisting}
-\caption{index.php}
+\caption{\textit{index.php}}
 \label{img26:index}
 \end{figure}
 \par
 Another part of the website uses forms to demonstrates \texttt{GET} and \texttt{POST} method.
-We can see it in \texttt{php} folder, where are three examples of forms using both methods and file loading.
+We can see it in \textit{php} folder, where are three examples of forms using both methods and file loading.
 These examples can be navigated based on their names due to the unspecified URL of the Razor page, which uses the provider.
 After navigation to this page, the provider gets the script name from the URL.
 \par
-\begin{figure}[!b]\centering
-\includegraphics[scale=0.4]{./img/graph}
-\caption{Application for visualising a graph.}
-\label{img27:graph}
-\end{figure} 
-\par
-The last part aims at the persistent context and using forms as interaction with the user.
+The graph visualization aims at the persistent context and using forms as interaction with the user.
 It is a common approach in PHP, and we can use it on a client side due to our solution.
-There is a simple application enabling us to visualize a graph, as we can see in the folder \texttt{fileManagment}.
+There is a simple application enabling us to visualize a graph, as we can see in the folder \texttt{fileManagement}.
 The application can upload a CSV file containing a graph or generate a new one based on the given parameters.
-It then visualizes the graph and enables it to be downloaded as a CSV file, which can be used for the next visualization, as shown in Figure \ref{img27:graph}.
 We use PHP library for parsing the file, which demonstrates a possibility to utilize the already created library on a client side.
 The application has the main script,\texttt{fileManagment/index.php}, which recognizes what to do based on superglobals and saved variables.
 It is possible due to context persistence.
-
-
- 
 
 \section{AllTogether}
 
