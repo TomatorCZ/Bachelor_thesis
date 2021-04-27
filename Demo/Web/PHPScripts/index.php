@@ -1,6 +1,5 @@
 ﻿<?php
     require("/headers/defaultHeader.php");
-    CallJsVoid("window.alert", "Hello from PHP script.");
 ?>
 
 <h1>Index</h1>

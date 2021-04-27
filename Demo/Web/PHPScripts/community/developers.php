@@ -1,5 +1,6 @@
 <?php
     require("/headers/defaultHeader.php");
+    CallJsVoid("window.alert", "Hello from PHP script.");
 ?>
 
 <?php
