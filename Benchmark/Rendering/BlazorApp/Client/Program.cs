@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Peachpie.Blazor;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -18,9 +19,9 @@ namespace BlazorApp.Client
             builder.RootComponents.Add<App>("#app");
 
             // Configure logging
-            builder.Logging.SetMinimumLevel(LogLevel.Information); // Debug does not work
+            builder.Logging.SetMinimumLevel(LogLevel.Debug); // Debug does not work
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.AddPhp(new[] { typeof(Asteroids.AsteroidsComponent).Assembly });
 
             await builder.Build().RunAsync();
         }

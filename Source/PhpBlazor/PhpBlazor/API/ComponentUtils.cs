@@ -276,7 +276,7 @@ namespace Peachpie.Blazor
     }
 
     [PhpType]
-    public class Timer
+    public class Timer : IDisposable
     {
         private System.Timers.Timer timer;
 
@@ -295,8 +295,14 @@ namespace Peachpie.Blazor
             timer.Elapsed += new System.Timers.ElapsedEventHandler(HandlerDelegate);
         }
 
+        public void Dispose()
+        {
+            timer.Dispose();
+        }
+
         public void Start() => timer.Start();
 
         public void Stop() => timer.Stop();
+
     }
 }

@@ -2,10 +2,11 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using Pchp.Core;
+using System;
 
 namespace Peachpie.Blazor
 {
-    public abstract class PhpComponent : ComponentBase
+    public abstract class PhpComponent : ComponentBase, IDisposable
     {
         protected Context _ctx;
 
@@ -21,6 +22,11 @@ namespace Peachpie.Blazor
 
         [Inject]
         public ILoggerFactory LoggerFactory { get; set; }
+
+        public virtual void Dispose()
+        {
+            _ctx?.Dispose();
+        }
 
         protected sealed override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
         {
