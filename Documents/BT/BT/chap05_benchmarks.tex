@@ -33,6 +33,10 @@ We suppose that the first method is less effective than the second because the d
 It is caused by not providing the sequence numbers for each of the HTML entities, but it is regarded as the one part.
 This part is regenerated every time instead of update only the changed parts.
 \par
+\par
+The following benchmarks uses Google Chrome (version: 90.0.4430.93) browser.
+We used notebook with Intel(R) Core(TM) i7-8550U CPU, 8GB RAM, and NVIDIA GeForce MX150.
+\par
 We can see results from the first measurement in Figure \ref{img31:benchmark1}.
 We set the timer to refresh the window sixty times per second, which results in 60 FPS.
 Then, we generate five asteroids per second.
@@ -41,19 +45,19 @@ We measure the FPS and number of objects for 60 seconds.
 We can see two graphs displaying the current time and number of objects.
 The lines represent measured values for each type of rendering.
 \par
-\begin{figure}\centering
-\includegraphics{./img/graph_1}
-\includegraphics{./img/graph_2}
-\caption{FPS: 60, Asteroids Per Second: 5, Background dimensions: 800x800, Duration: 60, Asteroid size: 20, Asteroid speed (Pixels Per Second): 60 , one element per Asteroid}
-\label{img31:benchmark1}
-\end{figure} 
-\par
 The second measurement aims at the deeper structure of updating elements. 
 It should magnify the difference between the first and the second way.
 We create an asteroids as \texttt{<div>} element containing inner three \texttt{<div>} elements, which have one \texttt{<div>} element.
 These elements have no special styles, just simulates a complex structure.
 So the one asteroid consists of nine HTML elements.
 The setting is the same as the previous one.
+\par
+\begin{figure}\centering
+\includegraphics{./img/graph_1}
+\includegraphics{./img/graph_2}
+\caption{FPS: 60, Asteroids Per Second: 5, Background dimensions: 800x800, Duration: 60, Asteroid size: 20, Asteroid speed (Pixels Per Second): 60 , one element per Asteroid}
+\label{img31:benchmark1}
+\end{figure} 
 \par
 \begin{figure}\centering
 \includegraphics{./img/graph_4}
