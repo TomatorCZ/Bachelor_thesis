@@ -67,7 +67,7 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
 
 	public function GetStatsString()
 	{
-		return "FPS: " . strval(round($this->framerate,1)) . "\n" . "Objects: " . strval($this->app->GetObjectCounts()) . "\n" . "Time: " . strval($this->previousTime);
+		return "FPS: " . strval(round($this->framerate,1)) . "\n" . "Objects: " . strval($this->app->GetObjectCounts()) . "\n" . "Time: " . strval($this->previousTime - $this->startTime);
 	}
 
 	public function TickHandler($sender, $e)
@@ -92,7 +92,7 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
 
 			$this->infoTag->content[0] = new \Peachpie\Blazor\Text($this->GetStatsString());
 
-			$this->logs[] = [0 => $this->framerate, 1 => $newTime, 2 => $this->app->GetObjectCounts()];
+			$this->logs[] = [0 => $this->framerate, 1 => ($newTime - $this->startTime), 2 => $this->app->GetObjectCounts()];
 		}
 
 		$this->app->tick($delta);

@@ -87,6 +87,16 @@ class Asteroid extends MovableEntity
         $this->attributes["style"]["width"] = $this->size["width"] . "px";
         $this->attributes["style"]["top"] = $this->position["y"] . "px";
         $this->attributes["style"]["left"] = $this->position["x"] . "px";
+
+        $this->content[] = new \Peachpie\Blazor\Tag("div");
+        $this->content[0]->content[] = new \Peachpie\Blazor\Tag("div");
+        $this->content[0]->content[0]->content[] = new \Peachpie\Blazor\Tag("div");
+        $this->content[] = new \Peachpie\Blazor\Tag("div");
+        $this->content[1]->content[] = new \Peachpie\Blazor\Tag("div");
+        $this->content[1]->content[0]->content[] = new \Peachpie\Blazor\Tag("div");
+        $this->content[] = new \Peachpie\Blazor\Tag("div");
+        $this->content[2]->content[] = new \Peachpie\Blazor\Tag("div");
+        $this->content[2]->content[0]->content[] = new \Peachpie\Blazor\Tag("div");
     }
 
     public static function createDefault(array $position) : Asteroid
@@ -142,7 +152,8 @@ class Application extends \Peachpie\Blazor\Tag
 
     public function GetObjectCounts()
     {
-        return count($this->asteroids) + 1;
+        return count($this->asteroids) * 9 + 1;
+        //return count($this->asteroids) + 1;
     }
 
     public function tick($delta) : void
