@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Scripts\Scripts.csproj" />
+    <ProjectReference Include="..\PHPScripts\PHPScripts.msbuildproj" />
   </ItemGroup>
 
 </Project>
