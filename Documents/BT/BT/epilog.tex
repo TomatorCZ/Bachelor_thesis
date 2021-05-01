@@ -1,12 +1,14 @@
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
 
-We observed the limitations of Peachpie and Blazor.
-Then, we considered possible ways, how to combine the PHP script compilation with the Blazor environment to provide executing these scripts on a client side.
+We introduced the PHP language and its conventions as a server-side scripting language.
+We continued with the Javascript language and a new supported standard, WebAssembly.
+We observed the basics and limitations of Peachpie and Blazor.
+Then, we considered possible ways, how to combine the PHP scripts compilation with the Blazor environment to provide executing these scripts on a client side.
 The usage of this integration was described by four use cases aiming at different end-users.
 The proposed solution results in \texttt{Peachpie.Blazor} library, which offers API for inserting PHP scripts to Razor pages of the Blazor website.
-These scripts can utilize different levels of abstraction to cover the problem better.
-We are able to work with Blazor structures directly or render the content of PHP scripts due to our solution.
+These scripts can utilize different levels of abstraction to cover a problem better.
+We are able to work with Blazor structures directly or render the content of PHP scripts transparently due to our solution.
 These features help PHP programers to use Blazor and move the script executions to a client side and helps PHP and C\# programers to co-work on a joint website.
 \par
 We demonstrated the use cases by implementing four examples, which presents different levels of difficulty utilizing the integration.
@@ -17,5 +19,6 @@ We learned that the proper usage of \texttt{RenderTreeBuilder} has the purpose, 
 \section*{Future work}
 \addcontentsline{toc}{section}{Future work}
 
-Peachpie is still developing, and the issues that we met can be solved in the feature versions.
+Peachpie is still being developed, and the issues that we met can be solved in the feature versions.
 It would be nice to follow these updates and adjust our solution to more utilize the future Peachpie features.
+

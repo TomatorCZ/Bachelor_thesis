@@ -21,7 +21,7 @@ Then, we evaluate the results.
 This benchmark is created as a separated .NET solution, \texttt{Rendering}.
 The solution consists of three projects: \texttt{BlazorApp.Client}, \texttt{BlazorApp.Server}, \texttt{PHPScripts}.
 The setting of BlazorApp is similar to the previous demo.
-\texttt{PHPScripts} contains the modified game together with additional scripts providing the interactive setting for benchmark in a browser.
+\texttt{PHPScripts} contains the modified game together with additional scripts providing the interactive setting for the benchmark in a browser.
 When we start the server and navigate the website, we can set various properties of measurement like an FPS, a frequency of asteroids, or dimensions of background.
 We will explain only the \textit{Rendering} property because the rest of the properties are self-explaining.
 We have two options for the property.
@@ -87,15 +87,16 @@ The benchmark is created as a .NET solution consisting of four projects: \texttt
 The \texttt{PHPScripts} project contains \textit{index.php}, which does the benchmark.
 The \texttt{Desktop} project runs the script in a console application.
 \texttt{BlazorApp} projects run the script in a browser.
-We can see the result of measurement in table \ref{tab01:time}.
 The benchmark uses Google Chrome (version: 90.0.4430.93) browser and Apache server.
 We used notebook with Intel(R) Core(TM) i7-8550U CPU, 8GB RAM, and NVIDIA GeForce MX150.
-The difference between execution with a native interpreter and Console application is caused by using the different graphic libraries.
+\par
+We can see the result of measurement in table \ref{tab01:time}.
+The difference between the execution with a native interpreter and the console application is caused by using the different graphic libraries.
 Peachpie uses the \texttt{ImageSharp} library, which is a graphic library written in C\#.
 The native interpreter uses a different library written in C.
 The execution interpreter is the fastest.
 However, we consider the execution times of the results almost the same.
-What is surprising is the execution time in the browser environment, which is extensively worse.
+The suprising thing is the execution time in the browser environment, which is extensively worse.
 We suppose that it is caused by the \texttt{ImageSharp} library, which has not to be optimized in the browser environment.
 \par
 \begin{table}[b!]
@@ -104,7 +105,7 @@ We suppose that it is caused by the \texttt{ImageSharp} library, which has not t
 \toprule
 \mc{\textbf{Enviroment}} & \mc{\textbf{Execution time (seconds)}}\\
 \midrule
-Blazor -Peachpie  & \mc{23,56} \\
+Blazor - Peachpie  & \mc{23,56} \\
 Desktop - Peachpie & \mc{0,22} \\
 Desktop - Native   & \mc{0,002} \\
 \end{tabular}
