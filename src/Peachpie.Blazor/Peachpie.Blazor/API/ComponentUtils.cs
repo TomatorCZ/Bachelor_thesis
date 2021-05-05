@@ -7,12 +7,24 @@ using System.Timers;
 namespace Peachpie.Blazor
 {
 
+    /// <summary>
+    /// Interface for rendering a page content with <see cref="PhpTreeBuilder"/>.
+    /// </summary>
     [PhpType]
     public interface BlazorWritable
     {
+        /// <summary>
+        /// Writes a content to <see cref="PhpTreeBuilder"/> for renders it.
+        /// </summary>
+        /// <param name="ctx">The <see cref="BlazorContext"/>.</param>
+        /// <param name="startIndex">The next sequence number used by Blazor diff algorithm.</param>
+        /// <returns>Returns the next sequence number after the written content.</returns>
         public int writeWithTreeBuilder(Context ctx, PhpTreeBuilder builder, int startIndex);
     }
     
+    /// <summary>
+    /// The class represents a text content of web page.
+    /// </summary>
     [PhpType]
     public class Text : BlazorWritable
     {
@@ -42,11 +54,23 @@ namespace Peachpie.Blazor
         }
     }
     
+    /// <summary>
+    /// The class represents an HTML tag.
+    /// </summary>
     [PhpType]
     public class Tag : BlazorWritable
     {
+        /// <summary>
+        /// The name of tag.
+        /// </summary>
         public string name;
+        /// <summary>
+        /// Tag attributes
+        /// </summary>
         public AttributeCollection attributes;
+        /// <summary>
+        /// Tag content represented as a collection of children.
+        /// </summary>
         public List<BlazorWritable> content;
 
         public Tag():this("div")
@@ -64,7 +88,7 @@ namespace Peachpie.Blazor
             this.name = name;
         }
 
-        #region iBlazorWritable
+        #region BlazorWritable
         public int writeWithTreeBuilder(Context ctx, PhpTreeBuilder builder, int startIndex)
         {
             builder.OpenElement(startIndex++, name);
@@ -87,6 +111,9 @@ namespace Peachpie.Blazor
         }
     }
     
+    /// <summary>
+    /// The class represents attributes of tag.
+    /// </summary>
     [PhpType]
     public class AttributeCollection : BlazorWritable, ArrayAccess
     {
