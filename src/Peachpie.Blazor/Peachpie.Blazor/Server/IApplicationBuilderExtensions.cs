@@ -13,7 +13,7 @@ namespace Peachpie.Blazor
     {
         public static void UseAdditionalWebStaticAssets(this IApplicationBuilder app, IConfiguration config)
         {
-            foreach (var item in config.GetSection("AdditionalWebStaticAssets").GetChildren())
+            foreach (var item in config.GetSection("AdditionalStaticWebAssets").GetChildren())
             {
                 app.UseStaticFiles(new StaticFileOptions
                 {

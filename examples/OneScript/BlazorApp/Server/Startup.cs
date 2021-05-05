@@ -39,10 +39,6 @@ namespace BlazorApp.Server
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
-            // Add helper js code for php.
-            var fileProvider = new ManifestEmbeddedFileProvider(typeof(Peachpie.Blazor.BlazorContext).Assembly);
-            app.UseStaticFiles(new StaticFileOptions() { FileProvider = fileProvider });
-
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

@@ -10,4 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Peachpie.Blazor" Version="1.0.0-alpha" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="wwwroot\**" />
+  </ItemGroup>
 </Project>

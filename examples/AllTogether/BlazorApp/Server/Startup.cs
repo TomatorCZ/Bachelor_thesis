@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Peachpie.Blazor;
 using System;
 using System.IO;
 using System.Linq;
@@ -44,21 +45,14 @@ namespace BlazorApp.Server
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
-            // Add helper js code for php.
-            var fileProvider = new ManifestEmbeddedFileProvider(typeof(Peachpie.Blazor.BlazorContext).Assembly);
-            app.UseStaticFiles(new StaticFileOptions() { FileProvider = fileProvider });
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.FullName, "PHPScripts\\wwwroot")),
-                RequestPath = "/PHPScripts"
-            });
+            app.UseAdditionalWebStaticAssets(Configuration);
 
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapFallbackToFile("index.html");
+                endpoints.MapFallbackToFile("/{**.php}", "index.html");
             });
         }
     }
