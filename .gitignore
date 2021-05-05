@@ -357,3 +357,4 @@ Documents/BT/BT/*.blg
 *.aux
 *.xmpi
 *.gz
+*.out
