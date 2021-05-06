@@ -137,7 +137,7 @@ We provide dedicated classes for working with these attributes, used by \texttt{
 \par
 The next barrier is assigning handlers to C\# events in PHP code.
 Peachpie does not either support accessing the events.
-Thus, we can not directly use a class like \texttt{Timer}, which is useful in \textit{PhpComponent} use case for updating the screen every defined period of time.
+Thus, we can not directly use a class like \texttt{Timer}, which is useful in the \textit{WebGame} use case for updating the screen every defined period of time.
 The issue can be solved by helper methods defined in a C\# static class, \texttt{EventHelper}.
 They accept the object providing some events, handler, and event name.
 Afterward, we can use reflection for obtaining the desired event by name from the object and then assign the \texttt{IPhpCallable} handler to it.
