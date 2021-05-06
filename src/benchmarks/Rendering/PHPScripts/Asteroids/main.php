@@ -37,7 +37,9 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
 		{
 			$seq = $this->infoTag->writeWithTreeBuilder($builder, 0);
 			$this->app->writeWithTreeBuilder($builder, $seq);
-		} 
+		}
+
+		$this->timer->Start();
 	}
 
 	public function OnInitialized() : void 
@@ -49,6 +51,7 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
 		//Timer
 		$this->timer = new \Peachpie\Blazor\Timer(1000 / $setting["fps"]);
 		$this->timer->addEventElapsed(function($s, $e) {$this->TickHandler($s, $e);});
+		$this->timer->AutoReset(false); 
 
 		$this->app = new \Application($setting);			
 		$this->infoTag = new \Peachpie\Blazor\Tag("p");
@@ -61,13 +64,11 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
 		$frames = 0;
 		$this->startTime = microtime(true);
 		$this->previousTick = $this->startTime;
-
-		$this->timer->Start();
 	}
 
 	public function GetStatsString()
 	{
-		return "FPS: " . strval(round($this->framerate,1)) . "\n" . "Objects: " . strval($this->app->GetObjectCounts()) . "\n" . "Time: " . strval($this->previousTime - $this->startTime);
+		return "FPS: " . strval(round($this->framerate,1)) . "\n" . "Objects: " . strval($this->app->GetObjectCounts()) . "\n" . "Time: " . strval(round($this->previousTime - $this->startTime,1));
 	}
 
 	public function TickHandler($sender, $e)
