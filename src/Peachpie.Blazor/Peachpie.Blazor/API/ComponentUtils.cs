@@ -305,7 +305,7 @@ namespace Peachpie.Blazor
     [PhpType]
     public class Timer : IDisposable
     {
-        private System.Timers.Timer timer;
+        public System.Timers.Timer timer;
 
         public Timer(double interval)
         {
@@ -325,6 +325,11 @@ namespace Peachpie.Blazor
         public void Dispose()
         {
             timer.Dispose();
+        }
+
+        public void AutoReset(bool indicator)
+        {
+            timer.AutoReset = indicator;
         }
 
         public void Start() => timer.Start();

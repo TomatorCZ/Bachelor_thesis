@@ -13,11 +13,13 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
 	private \Peachpie\Blazor\Timer $timer;
 	private $infoTag;
 
-	public function BuildRenderTree($builder) : void 
+	public  function BuildRenderTree($builder) : void 
 	{
 		$seq = $this->infoTag->writeWithTreeBuilder($builder, 0);
 
 		$this->app->writeWithTreeBuilder($builder, $seq);
+
+		$this->timer->Start();
 	}
 
 	public function OnInitialized() : void 
@@ -29,12 +31,12 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
 		
 		$this->timer = new \Peachpie\Blazor\Timer($settings["speed"]);
 		$this->timer->addEventElapsed(function($s, $e) {$this->ClickHandler($s, $e);});
+		$this->timer->AutoReset(false); 
 
 		$this->framerate = 0;
 		$this->infoTag = new \Peachpie\Blazor\Tag("p");
         $this->infoTag->content[] = new \Peachpie\Blazor\Text("FPS: " . strval(round($this->framerate, 1)));
 
-		$this->timer->Start();
 		$this->previousTime = microtime(true);
 		$this->previousFrames = previousTime;
 	}
@@ -56,5 +58,11 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
 
 		$this->app->tick($delta);
 		$this->StateHasChanged();
+	}
+
+	public function Dispose() 
+	{
+		parent::Dispose();
+		$this->timer->Dispose();
 	}
 }
