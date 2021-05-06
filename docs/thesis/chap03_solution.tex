@@ -260,7 +260,10 @@ They are defined in a Razor page and initialized when the page is navigated.
 The difference is finding the script by name, where the \textit{Script} always uses the name defined in the component parameter and \textit{ScriptProvider} finds script based on URL.
 As we said, the \texttt{SetParameters} can be called multiple times, so we call \texttt{Refresh} only by the first time in the method.
 Additional rendering is initiated by the navigation handler.
-Thus, when the navigation occurs, we find and update the page, or the component is disposed if \texttt{Router} matches another Razor page. 
+Thus, when the navigation occurs, we find and update the page, or the component is disposed if \texttt{Router} matches another Razor page.
+We create the new context based on the \texttt{ContextLifetime} mode.
+It differs from common PHP behavior, where the context is disposed after scritps handles the request.
+This unusual approach allows calling functions defined in the context after the component is rendered, which is a part of Javascript interoperability when we can call PHP functions by Javascript.
 We should check if the component has not already been disposed by \texttt{Router} before calling the \texttt{Refresh}.
 Obtaining the script is similar to \textit{Router} mode.
 
