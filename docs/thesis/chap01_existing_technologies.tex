@@ -35,8 +35,8 @@ The script includes a header, which adds a proper beginning of an HTML document.
 Then, it prints a \texttt{post} content together with a file content whenever the file \texttt{file} was obtained.
 There is a form enabling to send information about a name and attach a file to the massage.
 A browser sends the message to the server via \texttt{post} method when the form is submitted.
-The request is handled by \texttt{index.php} defined in \texttt{action}.
-In the end, the script includes a proper ending of the document by \texttt{footer.php}.
+The request is handled by \textit{index.php} defined in \texttt{action}.
+In the end, the script includes a proper ending of the document by \textit{footer.php}.
 \par
 \begin{figure}
 \begin{lstlisting}
@@ -72,7 +72,7 @@ In the end, the script includes a proper ending of the document by \texttt{foote
     inlude("footer.php");
 ?>
 \end{lstlisting}
-\caption{An example of PHP code in file index.php.}
+\caption{An example of PHP code in \textit{index.php} file.}
 \label{img01:php}
 \end{figure}
 \par
@@ -101,8 +101,8 @@ After dealing with a request, the script is terminated, meaning that the request
 One of the well-known design patterns relating to PHP is the Front controller.
 Usually, the main script invokes other parts of the program, based on the request, to deal with it and send the response back.
 The idea of this pattern can be shown in figure \ref{img01:php}.
-In the beginning, we delegate header rendering to \texttt{header.php} script.
-Then we render the body and include \texttt{footer.php}, which cares about the proper ending of the HTML page.
+In the beginning, we delegate header rendering to \textit{header.php} script.
+Then we render the body and include \textit{footer.php}, which cares about the proper ending of the HTML page.
 \par
 We can divide code in several ways.
 Global functions are the most notable characteristic of PHP despite wide-spread object-oriented programming.
@@ -174,7 +174,7 @@ The page contains a button that invokes an alert with a second delay when a clie
     </body>
 </html>
 \end{lstlisting}
-\caption{A Javascript code.}
+\caption{An example of a Javascript code.}
 \label{img02:javascript}
 \end{figure}
 \par
@@ -238,7 +238,7 @@ In the figure, the code calls Javascript \texttt{alert} function with the parame
 	<?php vrzno_run('alert', ['Hello, world!']);
 </script>
 \end{lstlisting}
-\caption{An example of PHP script block.}
+\caption{An example of PHP script block executed by the project.}
 \label{img03:vrzno}
 \end{figure}
 \par
@@ -302,7 +302,7 @@ When we chose the template, there are two main projects to describe.
 \end{figure} 
 \par
 As we can see in figure \ref{img04:projects}, there is a server, which serves the Blazor App to a client.
-The project contains a standard builder of a host using a StartUp class, which configures an HTTP request pipeline processing requests in \texttt{StartUp.cs} file.
+The project contains a standard builder of a host using a StartUp class, which configures an HTTP request pipeline processing requests in \textit{StartUp.cs} file.
 A middleware is a segment of an HTTP request pipeline, which cares about some functionality related to request processing.
 The pipeline contains a middleware providing the Blazor files.
 \par
@@ -338,7 +338,7 @@ else
     }
 }
 \end{lstlisting}
-\caption{Example of Razor page.}
+\caption{An example of Razor page.}
 \label{img05:razor}
 \end{figure}
 \par
@@ -346,7 +346,7 @@ Although the format is self-explaining, we describe the keywords.
 The first line begins with a \texttt{page} keyword determining a part of the page URL.
 The next keyword is \texttt{inject}, representing a \texttt{HttpClient} service injection. 
 An \texttt{if} keyword is an control structure iterleaved by an HTML code.
-A \texttt{code} keyword contains a regular C\# code, which can be used in the whole \texttt{razor.} file.
+A \texttt{code} keyword contains a regular C\# code, which can be used in the whole \texttt{.razor} file.
 \par
 A Razor file is compiled into a C\# dedicated class.
 The class inherits from \texttt{ComponentBase} or implements \texttt{IComponent}, which provides necessary methods for rendering the page.
@@ -405,16 +405,16 @@ Blazor allows using Tasks and async methods, separating the code into smaller ta
 Blocking operations in Blazor are projected into UI because it is single-threaded due to Javascript and WASM.
 \par
 We return to the project description. 
-Folders \texttt{Pages} and \texttt{Shared} contains parts of Blazor pages written in Razor.
-\_Imposts.razor contains namespaces, which are automatically included in others \texttt{.razor} files.
-The next folder is \texttt{wwwroot}, containing static data of the application.
-We can see \texttt{index.html}, which cares about loading parts of the Blazor application to the browser.
-We will call all static files in \texttt{wwwroot}, additional Javascript scripts and WASM runtime Static Web Assets.
+Folders \textit{Pages} and \textit{Shared} contains parts of Blazor pages written in Razor.
+\textit{\_Imposts.razor} contains namespaces, which are automatically included in others \texttt{.razor} files.
+The next folder is \textit{wwwroot}, containing static data of the application.
+We can see \textit{index.html}, which cares about loading parts of the Blazor application to the browser.
+We will call all static files in \textit{wwwroot}, additional Javascript scripts and WASM runtime Static Web Assets.
 \par
 We will describe the loading of Blazor into the browser to fully understand the interaction between Blazor and the browser.
 We have the server, the Blazor App, and other optional user's defined projects. 
 When we start the server and tries to navigate the web application, the following process is done.
-The server maps the navigation to \texttt{index.html} and sends it back.
+The server maps the navigation to \textit{index.html} and sends it back.
 \par
 \begin{figure}
 \begin{lstlisting}
@@ -428,7 +428,7 @@ The server maps the navigation to \texttt{index.html} and sends it back.
 </body>
 
 \end{lstlisting}
-\caption{index.html}
+\caption{\textit{index.html} provided by the server}
 \label{img07:index}
 \end{figure}
 \par 
