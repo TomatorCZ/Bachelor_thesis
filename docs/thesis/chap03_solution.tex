@@ -4,7 +4,7 @@ This chapter describes the complete solution, covering the use cases.
 We start with an overview of the solution parts.
 Then, we give a detailed description of each part.
 \par
-The proposed solution is implemented in \textit{Peachpie.Blazor}, which is a library containing components mentioned in the previous section with an additional support code.
+The proposed solution is implemented in \textit{Peachpie.Blazor}, which is a RCL library containing components mentioned in the previous section with an additional support code.
 It is provided as a NuGet package containing an API for including PHP scripts to the website.
 It defines a collection of support classes representing HTML entities, which makes the rendering easier.
 A part of the support code is a Javascript script, which is linked to the beginning of the HTML document, providing helper functions for form handling and interoperability with PHP.
@@ -31,29 +31,29 @@ It suggests a convenient way how to include the scripts into a browser, and it p
 
 \section{Server}
 
-We have to set the server in order to provide additional static resources demanded by PHP scripts, as we can see in Figure \ref{img19:settings}.
-The code fragment is cut from the \texttt{StartUp} class of the server.
-It inserts middlewares providing the resources into the request pipeline.
+We have to set the server in order to provide additional static resources contained in a Peachpie project containing PHP scripts because the WebAssembly SDK ignores the \textit{wwwroot} folder of libraries except for RCL.
+Thus, we create the \texttt{UseAdditionalWebStaticAssets} extension method of \texttt{IApplicationBuilder}, which inserts middlewares providing the resources into the request pipeline.
+Its parameter is a configuration obtained from \textit{appsettings.json}, which is a part of the \texttt{BlazorApp.Server} project.
+We can see an example of the configuration file in Figure \ref{img19:settings}, which defines a path to a folder and a base path used as a prefix of HTML document references.
 Afterward, these resources can be referenced by URLs and downloaded from the server.
-For example, we can reference an image with the path \texttt{Demo-PhpComponent/Asteroids/wwwroot/image.jpg} as \texttt{/Asteroids/image.jpg} in HTML document on the client side.
-The second middleware provides Javascript helpers of our library to Blazor App on client side.
+For example, we can reference an image with the path \texttt{WebGame/PHPScripts/wwwroot/image.jpg} as \texttt{/Asteroids/image.jpg} in HTML document on the client side.
+Javascript helpers of our library can be found in the \textit{wwwroot} folder, which is transparently provided to a client side due to an RCL library type and the SDK.
 \par
 \begin{figure}[H]
 \begin{lstlisting}
-var fileProvider = new ManifestEmbeddedFileProvider(
-	typeof(PhpBlazor.BlazorContext).Assembly);
-app.UseStaticFiles(new StaticFileOptions() { 
-	FileProvider = fileProvider });
-
-app.UseStaticFiles(new StaticFileOptions
 {
-	FileProvider = new PhysicalFileProvider(Path.Combine(
-	Full name of parent directory, 
-	"Demo-PhpComponent\\Asteroids\\wwwroot")),
-	RequestPath = "/Asteroids"
-});
+	...
+  "AdditionalStaticWebAssets": [
+    {
+      "Path": "An//Absolute//Path//To//Resources//Directory",
+      "BasePath": "/Asteroids"
+    }
+  ]
+  ...
+}
+
 \end{lstlisting}
-\caption{Fragment of code adding middlewares.}
+\caption{Fragment of configuration file defining additional resources.}
 \label{img19:settings}
 \end{figure}
 

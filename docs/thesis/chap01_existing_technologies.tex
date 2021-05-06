@@ -489,6 +489,11 @@ A benefit of this information is detecting loops and conditional statements to g
 \par
 Event handling is just clever usage of the Renderer with dedicated Javascript API for updating, where the API registers the listener.
 When the event is fired, the listener invokes C\# method representing the handler through the WASM runtime.
+\par
+Blazor brings a new type of library called \ac{RCL}, which differs from normal libraries by the \textit{wwwroot} folder handling.
+During the compilation, Blazor \ac{SDK} generates a configuration file comprising paths to \textit{wwwroot} folders.
+The server provides static web assets of these folders to a client by default.
+The SDK only involves the folders contained in RCL libraries and WebAssembly projects into the configuration file.
 
 \section{Peachpie}
 
