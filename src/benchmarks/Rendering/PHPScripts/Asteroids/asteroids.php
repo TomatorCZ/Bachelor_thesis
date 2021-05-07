@@ -87,7 +87,7 @@ class Asteroid extends MovableEntity
         $this->attributes["style"]["width"] = $this->size["width"] . "px";
         $this->attributes["style"]["top"] = $this->position["y"] . "px";
         $this->attributes["style"]["left"] = $this->position["x"] . "px";
-        /**/
+        /*/
         $this->content[] = new \Peachpie\Blazor\Tag("div");
         $this->content[0]->content[] = new \Peachpie\Blazor\Tag("div");
         $this->content[0]->content[0]->content[] = new \Peachpie\Blazor\Tag("div");

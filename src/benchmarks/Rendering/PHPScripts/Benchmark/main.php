@@ -1,10 +1,10 @@
 ﻿<h2>Set the benchmark</h2>
 <form method="get" action="Benchmark/summary.php">
     <label for="fps" >Frames Per Second:</label>
-    <input id="aps" name="fps" type="number" required="required" value="60"/><br/>
+    <input id="aps" name="fps" type="number" required="required" value="1000"/><br/>
 
     <label for="aps" >Asteroids Per Second:</label>
-    <input id="aps" name="aps" type="number" required="required" value="10"/><br/>
+    <input id="aps" name="aps" type="number" required="required" value="5"/><br/>
     
     <label for="asteroid_size" >Asteroid size:</label>
     <input id="asteroid_size" name="asteroid_size" type="number" required="required" value="20"/><br/>
@@ -20,12 +20,12 @@
 
     <label for="rendering">Rendering:</label>
     <select name="rendering" id="rendering">
-        <option value="simple" >simple</option>
-        <option value="complex" selected>complex</option>
+        <option value="simple" >String</option>
+        <option value="complex" selected>Diff</option>
     </select><br/>
 
     <label for="duration">Duration:</label>
-    <input id="duration" name="duration" type="number" required="required"  value="30"/><br/>
+    <input id="duration" name="duration" type="number" required="required"  value="60"/><br/>
 
     <input type="submit" value="Submit"/><br/>
 </form>
