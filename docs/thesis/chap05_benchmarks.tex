@@ -1,7 +1,7 @@
 \chapter{Benchmarks}
 
 In this chapter, we show the difference between using \texttt{PhpTreeBuilder} properly and only the \texttt{AddMarkupContent} method.
-Then, we test the speed of two PHP library functions in the Blazor and desktop environments.
+Then, we test the speed of three PHP library functions in the Blazor and desktop environments.
 These benchmarks are available as .NET solutions in the attachment.
 We introduce the background of the benchmarks, execute them and then evaluate the results.
 \par
@@ -82,38 +82,44 @@ Because the click events consist of two inner events (mouse up, mouse down), the
 
 \section{GD library}
 
-This benchmark tests the effectivity of PHP library, \textit{gdlibrary}, in the Blazor environment.
-We prepare a simple script, which creates a blank image with 1920x1080 resolution.
-We use \texttt{imagecreatetruecolor} function defined in the library.
-Then we measure elapsed time during the function execution by printing the current time before and after the function call.
-We compare the results with executing the script in a desktop environment, where we use Peachpie and native PHP interpreter.
+This benchmark wants to highlight PHP library performances in the Blazor environment.
+We prepared a simple script, which measures execution time of the following three functions: \texttt{imagecreatetruecolor}, \texttt{str\_getcsv}, \texttt{md5}.
+The first function creates a 1920x1080 blank image.
+The second function converts a short string representing CSV data to an array.
+The last function computes a hash of the CSV string.
+We measure elapsed time during the function execution multiple times and then make a mean.
+This approach should make the time spend with the JIT compilation less important.
+We compare the results of executing the script in a desktop environment, where we use Peachpie, the Blazor environment using Peachpie as well, and the native PHP interpreter.
 \par
 The benchmark is created as a .NET solution consisting of four projects: \texttt{BlazorApp.Client}, \texttt{BlazorApp.Server}, \texttt{Desktop}, \texttt{PHPScripts}.
 The \texttt{PHPScripts} project contains \textit{index.php}, which does the benchmark.
 The \texttt{Desktop} project runs the script in a console application.
 \texttt{BlazorApp} projects run the script in a browser.
 \par
-We can see the result of measurement in table \ref{tab01:time}.
-The difference between the execution with a native interpreter and the console application is caused by using the different graphic libraries.
-Peachpie uses the \texttt{ImageSharp} library, which is a graphic library written in C\#.
-The native interpreter uses a different library written in C.
-The execution interpreter is the fastest.
-However, we consider the execution times of the results almost the same.
-The suprising thing is the execution time in the browser environment, which is extensively worse.
-We suppose that it is caused by the \texttt{ImageSharp} library, which has not to be optimized in the browser environment.
-\par
 \begin{table}[b!]
 \centering
-\begin{tabular}{l@{\hspace{1.5cm}}D{.}{,}{3.2}D{.}{,}{1.2}D{.}{,}{2.3}}
+\begin{tabular}{l@{\hspace{1.5cm}}D{.}{,}{2.0}D{.}{,}{2.0}D{.}{,}{2.0}}
 \toprule
-\mc{\textbf{Environment}} & \mc{\textbf{Execution time (seconds)}}\\
+\textbf{Environment} & \mc{\textbf{imagecreatetruecolor}} & \mc{\textbf{str\_getcsv}} & \mc{\textbf{md5}}\\
 \midrule
-Blazor - Peachpie  & \mc{23,56} \\
-Desktop - Peachpie & \mc{0,22} \\
-Desktop - Native   & \mc{0,002} \\
+Blazor - Peachpie  & \mc{23} &  \mc{\num{6e-5}} & \mc{Error} \\
+Desktop - Peachpie & \mc{0.01} & \mc{\num{2e-6}} & \mc{\num{2e-6}} \\
+Desktop - Native   & \mc{\num{4e-4}} & \mc{\num{7e-6}} & \mc{\num{4e-7}} \\
+\bottomrule
 \end{tabular}
-\caption{Elapsed time of the function execution.}
+\caption{Elapsed time (seconds) of the function executions.}
 \label{tab01:time}
 \end{table}
 \par
-
+We can see the result of measurement in Table \ref{tab01:time}.
+The first observation is the call of the \texttt{md5} function caused an error: \textit{This function is unsupported in this platform}.
+The second observation is an extremely slow execution of the \texttt{imagecreatetruecolor} function in the Blazor environment.
+We suppose that it is caused by the \texttt{ImageSharp} library, which has not to be optimized in the browser environment.
+The difference between the execution times with the PHP interpreter and the console application is caused by using the different libraries.
+Peachpie uses libraries, which are written in C\#.
+The PHP interpreter uses different libraries written in C.
+We can not say that Peachpie or the PHP interpreter is faster due to the results.
+\par
+This benchmark reveals the need to test a library before it is being used in the Blazor environment.
+We suppose that these issues with speed and the error will be solved because Peachpie uses a standard library for the encryption and \texttt{ImageSharp} for the graphics, which has a big community.
+On the other hand, if the execution time will be slower than the execution with the PHP interpreter, it would consume a client resource, which is a server benefit.

@@ -1,24 +1,65 @@
 ﻿<?php
 
-$started = microtime(true);
-$redimg = imagecreatetruecolor(1920, 1080);
-$end = microtime(true);
-$diff = $end - $started;
+function bench_csv() 
+{
+	$csv = "a,b,c,d\n1,2,3,4\n1,2,3,4";
+	$graph = array();
+	$time = array();
 
-echo "<p>\n";
+	for ($i = 0; $i < 100; $i++)
+	{
+		$started = microtime(true);
+		$graph = str_getcsv($csv);
+		$end = microtime(true);
+		if ($i >= 50)
+			$time[] = $end - $started;
+	}
 
-echo "The function <b>imagecreatetruecolor(1920, 1080);</b>\n";
+	return array_sum($time)/count($time);
+}
 
-echo "Started: $started\n";
+function bench_gd() 
+{
+	$time = array();
+	for ($i = 0; $i < 100; $i++)
+	{
+		$started = microtime(true);
+		$redimg = imagecreatetruecolor(1920, 1080);
+		$end = microtime(true);
+		//if ($i >= 50)
+		return $end - $started;
+	}
 
-echo "Ended: $end\n";
+	return array_sum($time)/count($time);
+}
 
-echo "State: ";
-if ($redimg)
-	echo "Success\n";
-else 
-	echo "Failed\n";
+function bench_md5() 
+{	
+	$csv = "a,b,c,d\n1,2,3,4\n1,2,3,4";
+	$res = "";
+	$time = array();
 
-echo "Total elapsed time: $diff\n";
+	for ($i = 0; $i < 100; $i++)
+	{
+		$started = microtime(true);
+		$res = md5($csv);
+		$end = microtime(true);
+		//if ($i >= 50)
+		return $end - $started;
+	}
 
-echo "</p>";
+	return array_sum($time)/count($time);
+}
+
+function printResult($value, $function)
+{
+	echo "<p>\n";
+	echo "The function <b>$function;</b>\n";
+	echo "Total elapsed time: $value\n";
+	echo "</p>";
+}
+
+
+printResult(round(bench_csv(),7), "str_getcsv(\$csv)"); 
+printResult(round(bench_gd(),7), "imagecreatetruecolor(1920, 1080)"); 
+//printResult(round(bench_md5(),7), "md5(\$csv)"); 
