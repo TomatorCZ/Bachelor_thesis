@@ -80,9 +80,9 @@ This benchmark demonstrates when it is a good choice to use the builder properly
 Another problem caused by the first way of rendering is handling click events when the window is being quickly refreshed.
 Because the click events consist of two inner events (mouse up, mouse down), the event is not fired due to removing the element before the second event appears.
 
-\section{GD library}
+\section{Performance of libraries}
 
-This benchmark wants to highlight PHP library performances in the Blazor environment.
+This benchmark wants to highlight performance of PHP libraries in the Blazor environment.
 We prepared a simple script, which measures execution time of the following three functions: \texttt{imagecreatetruecolor}, \texttt{str\_getcsv}, \texttt{md5}.
 The first function creates a 1920x1080 blank image.
 The second function converts a short string representing CSV data to an array.
