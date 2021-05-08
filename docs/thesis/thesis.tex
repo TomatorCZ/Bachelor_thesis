@@ -95,9 +95,11 @@ Dedication.
 \def\Abstract{%
 Peachpie is a modern compiler enabling the compilation of PHP scripts into .NET.
 Blazor is a new part of the ASP.NET platform offering the usage of C\# on a client side due to a new web standard, WebAssembly.
-Although there exists a project providing the execution of PHP scripts inside a browser using WebAssembly, this thesis explores a new approach of the execution based on the integration between Peachpie and Blazor.
-This exploration aims at enabling PHP programmers to move the PHP execution to a client side with the advantages of the Blazor environment.
-However, the difference of used technologies limits usage possibilities.
+This thesis explores a new approach of execution based on the integration between Peachpie and Blazor.
+PHP scripts can be referenced from Blazor and evaluated, but there are many steps to make it work.
+We analyzed these steps and designed a solution for inserting these scripts to Razor pages, navigating, and evaluating them.
+It results in a library containing helper classes to enable PHP programmers to move the PHP execution to a client side with the advantages of the Blazor environment.
+However, the difference of used technologies limits usage possibilities, which are shown by two benchmarks.
 }
 
 % 3 to 5 keywords (recommended), each enclosed in curly braces
