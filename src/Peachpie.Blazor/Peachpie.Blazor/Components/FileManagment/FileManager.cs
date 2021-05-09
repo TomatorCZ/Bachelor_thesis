@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace Peachpie.Blazor
 {
+    /// <summary>
+    /// The class provides a file management using the Javascript interoperability. 
+    /// </summary>
     public class FileManager
     {
         private BlazorContext _ctx;
@@ -19,6 +22,9 @@ namespace Peachpie.Blazor
             _logger = factory.CreateLogger<FileManager>();
         }
 
+        /// <summary>
+        /// Gets uploaded files by an HTML form.
+        /// </summary>
         public List<FormFile> FetchFiles()
         {
             if (_ctx.CallJs<bool>(JsResource.IsFiles))
@@ -33,6 +39,9 @@ namespace Peachpie.Blazor
             return _fetched;
         }
 
+        /// <summary>
+        /// Load file contents into memory.
+        /// </summary>
         public async Task DownloadFilesAsync()
         {
             if (_fetched.Count == 0)
@@ -47,6 +56,10 @@ namespace Peachpie.Blazor
             _fetched = new List<FormFile>();
         }
 
+        /// <summary>
+        /// Gets file content saved in memory.
+        /// </summary>
+        /// <param name="id"></param>
         public string GetFileData(int id)
         {
             if (_downloaded.TryGetValue(id, out string result))

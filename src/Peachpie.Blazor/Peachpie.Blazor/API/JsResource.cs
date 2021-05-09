@@ -2,6 +2,9 @@
 
 namespace Peachpie.Blazor
 {
+    /// <summary>
+    /// The class provides used Javascript function names.
+    /// </summary>
     [PhpHidden]
     public static class JsResource
     {

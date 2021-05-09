@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace Peachpie.Blazor
 {
+	/// <summary>
+	/// The class provides logging of component states.
+	/// </summary>
 	public static class Log
 	{
         #region PhpScriptProvider

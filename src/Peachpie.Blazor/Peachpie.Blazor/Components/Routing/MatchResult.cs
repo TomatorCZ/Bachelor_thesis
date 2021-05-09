@@ -1,5 +1,10 @@
 ﻿namespace Peachpie.Blazor
 {
+    // Inspired by this project: https://github.com/TomatorCZ/BuildingACustomRouterForBlazor
+    
+    /// <summary>
+    /// The class represents a result of route matching.
+    /// </summary>
     public class MatchResult
     {
         private MatchResult(bool isMatch, Route matchedRoute)

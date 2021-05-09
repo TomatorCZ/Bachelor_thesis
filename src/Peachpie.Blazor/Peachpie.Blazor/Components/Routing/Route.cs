@@ -2,6 +2,9 @@
 
 namespace Peachpie.Blazor
 {
+    /// <summary>
+    /// The class represents a routable component.
+    /// </summary>
     public class Route
     {
         public Type Handler;

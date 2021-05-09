@@ -6,6 +6,9 @@ using System;
 
 namespace Peachpie.Blazor
 {
+    /// <summary>
+    /// The class represents a base class for inheriting in PHP.
+    /// </summary>
     public abstract class PhpComponent : ComponentBase, IDisposable
     {
         protected Context _ctx;

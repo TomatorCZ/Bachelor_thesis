@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace Peachpie.Blazor
 {
+    /// <summary>
+    /// The context is specialized for the Blazor environment.
+    /// </summary>
     public class BlazorContext : Context
     {
         private DotNetObjectReference<BlazorContext> _objRef;
@@ -54,11 +57,17 @@ namespace Peachpie.Blazor
         #endregion
 
         #region Rendering
+        /// <summary>
+        /// Sets the context to redirect the script output into the builder.
+        /// </summary>
         public void StartRender(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
         {
             Output = BlazorWriter.CreateTree(builder);
         }
 
+        /// <summary>
+        /// Sets the context to redirect the script output into the console.
+        /// </summary>
         public void StopRender()
         {
             Output.Flush();
@@ -68,6 +77,9 @@ namespace Peachpie.Blazor
         #endregion
 
         #region Set Globals
+        /// <summary>
+        /// Sets the GET superglobal.
+        /// </summary>
         public void SetGet(Dictionary<string, StringValues> query)
         {
             Log.PrintGet(_logger, query);
@@ -78,6 +90,9 @@ namespace Peachpie.Blazor
             }
         }
 
+        /// <summary>
+        /// Sets the POST superglobal by using the Javascript interoperability.
+        /// </summary>
         public void SetPost()
         {
             if (CallJs<bool>(JsResource.IsPost))
@@ -92,6 +107,9 @@ namespace Peachpie.Blazor
             }
         }
 
+        /// <summary>
+        /// Sets the File superglobal by using the Javascript interoperability. It loads all file contents ahead of time in order to use it synchronyously in PHP.
+        /// </summary>
         public async Task SetFilesAsync()
         {
             var files = _fileManager.FetchFiles();
@@ -120,21 +138,42 @@ namespace Peachpie.Blazor
             _objRef?.Dispose();
         }
 
+        /// <summary>
+        /// Gets the file content saved in memory.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public string GetDownloadFile(int id)
         {
             return _fileManager.GetFileData(id);
         }
 
         #region JSInterop
+
+        /// <summary>
+        /// Calls a PHP function defined in the context by given name.
+        /// </summary>
         [JSInvokable]
         public PhpValue CallPHP(string name, string data) => Call(name, data);
 
+        /// <summary>
+        /// Calls a Javascript void function.
+        /// </summary>
         public void CallJsVoid(string function, params object[] args) => (_js as IJSInProcessRuntime).InvokeVoid(function, args);
 
+        /// <summary>
+        /// Calls a Javascript function.
+        /// </summary>
         public TResult CallJs<TResult>(string function, params object[] args) => (_js as IJSInProcessRuntime).Invoke<TResult>(function, args);
 
+        /// <summary>
+        /// Calls a Javascript void function asynchronyously.
+        /// </summary>
         public void CallJsVoidAsync(string function, params object[] args) => _js.InvokeVoidAsync(function, args);
 
+        /// <summary>
+        /// Calls a Javascript function asynchronyously.
+        /// </summary>
         public ValueTask<TResult> CallJsAsync<TResult>(string function, params object[] args) => _js.InvokeAsync<TResult>(function, args);
         #endregion
     }

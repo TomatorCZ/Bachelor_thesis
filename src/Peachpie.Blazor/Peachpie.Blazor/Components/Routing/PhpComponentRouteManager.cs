@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Components;
 
 namespace Peachpie.Blazor
 {
+    // Inspired by this project: https://github.com/TomatorCZ/BuildingACustomRouterForBlazor
+
+    /// <summary>
+    /// The class finds all components defined in PHP scripts.
+    /// </summary>
     public class PhpComponentRouteManager
     {
         public Route[] Routes { get; private set; }

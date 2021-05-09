@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Peachpie.Blazor
 {
+    /// <summary>
+    /// The class writes an input to <see cref="Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder"/> or console depending on its state.
+    /// </summary>
     public class BlazorWriter : TextWriter
     {
         private Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder _builder;

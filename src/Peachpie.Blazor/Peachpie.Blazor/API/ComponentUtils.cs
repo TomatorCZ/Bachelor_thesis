@@ -8,13 +8,13 @@ namespace Peachpie.Blazor
 {
 
     /// <summary>
-    /// Interface for rendering a page content with <see cref="PhpTreeBuilder"/>.
+    /// The interface defines a rendering API used in Blazor.
     /// </summary>
     [PhpType]
     public interface BlazorWritable
     {
         /// <summary>
-        /// Writes a content to <see cref="PhpTreeBuilder"/> for renders it.
+        /// Writes the content to <see cref="PhpTreeBuilder"/>.
         /// </summary>
         /// <param name="ctx">The <see cref="BlazorContext"/>.</param>
         /// <param name="startIndex">The next sequence number used by Blazor diff algorithm.</param>
@@ -128,11 +128,17 @@ namespace Peachpie.Blazor
             events = new Dictionary<string, IPhpCallable>();
         }
 
+        /// <summary>
+        /// Adds the event to <see cref="PhpTreeBuilder"/>. It passes the current sequence number and the builder to the accepted handler.   
+        /// </summary>
         public void addEvent(string name, IPhpCallable handler)
         {
             events.Add(name, handler);
         }
 
+        /// <summary>
+        /// Removes the event by name.   
+        /// </summary>
         public void removeEvent(string name)
         {
             if (events.ContainsKey(name))
@@ -222,6 +228,9 @@ namespace Peachpie.Blazor
         }
     }
     
+    /// <summary>
+    /// The class formats css styles into an HTML string(key1:value1;key2:value2).
+    /// </summary>
     [PhpType]
     public class CssBuilder : ArrayAccess
     {
@@ -272,6 +281,9 @@ namespace Peachpie.Blazor
         }
     }
 
+    /// <summary>
+    /// The class formats tag classes into an HTML string(class1 class2).
+    /// </summary>
     [PhpType]
     public class ClassBuilder
     {
@@ -282,8 +294,14 @@ namespace Peachpie.Blazor
             _classes = new List<string>();
         }
 
+        /// <summary>
+        /// Adds the class name to the collection.
+        /// </summary>
         public void add(string @class) => _classes.Add(@class);
 
+        /// <summary>
+        /// Removes the class name to the collection.
+        /// </summary>
         public void remove(string @class)
         {
             _classes.Remove(@class);
@@ -302,6 +320,9 @@ namespace Peachpie.Blazor
         }
     }
 
+    /// <summary>
+    /// Wrapper of .NET timer.
+    /// </summary>
     [PhpType]
     public class Timer : IDisposable
     {
@@ -312,6 +333,9 @@ namespace Peachpie.Blazor
             timer = new System.Timers.Timer(interval);
         }
 
+        /// <summary>
+        /// Adds PHP handler to the event.
+        /// </summary>
         public void addEventElapsed(Context ctx, IPhpCallable handler)
         {
             void HandlerDelegate(object sender, ElapsedEventArgs args)
@@ -327,13 +351,23 @@ namespace Peachpie.Blazor
             timer.Dispose();
         }
 
+        /// <summary>
+        /// Timer raises the Elapsed event only once, when it is set to false.
+        /// </summary>
         public void AutoReset(bool indicator)
         {
             timer.AutoReset = indicator;
         }
 
+        /// <summary>
+        /// Timer starts to raise events.
+        /// </summary>
         public void Start() => timer.Start();
 
+        
+        /// <summary>
+        /// Timer stops to raise events.
+        /// </summary>
         public void Stop() => timer.Stop();
 
     }

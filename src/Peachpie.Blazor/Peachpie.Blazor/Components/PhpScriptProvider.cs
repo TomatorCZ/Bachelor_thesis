@@ -9,9 +9,19 @@ using System.Threading.Tasks;
 
 namespace Peachpie.Blazor
 {
+    /// <summary>
+    /// Defines a context preservation type.
+    /// </summary>
     public enum SessionLifetime { Persistant, OnNavigationChanged }
+
+    /// <summary>
+    /// Defines the component type.
+    /// </summary>
     public enum PhpScriptProviderType { Router, ScriptProvider, Script }
 
+    /// <summary>
+    /// The class provides PHP script and PHP components navigation and evaluation.
+    /// </summary>
     public class PhpScriptProvider : IComponent, IHandleAfterRender, IDisposable
     {
         #region Parameters

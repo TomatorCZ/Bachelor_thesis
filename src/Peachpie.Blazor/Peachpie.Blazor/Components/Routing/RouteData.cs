@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Peachpie.Blazor
 {
+    /// <summary>
+    /// The class represents a routable component with its parameters.
+    /// </summary>
     public struct RouteData
     {
         public Type Handler { get; private set; }
