@@ -22,6 +22,7 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
 		$seq = $this->NewGameTag->writeWithTreeBuilder($builder, $seq);
 
 		$this->app->writeWithTreeBuilder($builder, $seq);
+		$this->timer->Start();
 	}
 
 	public function OnInitialized() : void 
@@ -33,6 +34,7 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
 		
 		$this->timer = new \Peachpie\Blazor\Timer($settings["speed"]);
 		$this->timer->addEventElapsed(function($s, $e) {$this->ClickHandler($s, $e);});
+		$this->timer->AutoReset(false); 
 
 		$this->framerate = 0;
 		$this->infoTag = new \Peachpie\Blazor\Tag("p");
@@ -42,7 +44,6 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
         $this->NewGameTag->attributes["href"] = "/Graph/index.php";
 		$this->NewGameTag->content[] =  new \Peachpie\Blazor\Text("Restart");
 
-		$this->timer->Start();
 		$this->previousTime = microtime(true);
 		$this->previousFrames = previousTime;
 	}
@@ -69,5 +70,11 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
 		$graph = $this->app->GetStats();
 		
 		$this->StateHasChanged();
+	}
+
+	public function Dispose() 
+	{
+		parent::Dispose();
+		$this->timer->Dispose();
 	}
 }
