@@ -62,11 +62,13 @@ Because he has previous experience with Blazor infrastructure, he will appreciat
 \par
 \begin{figure}[t]\centering
 \includegraphics[scale=0.8]{./img/UseCaseAllTogether}
-\caption{The AllTogether use case describing the combination of the all previous use cases. Double-headed arrows represent the person's used language. Dashed arrows represent a possible usage, where the head aims to an implementation written in the language.}
+\caption{The \texttt{AllTogether} use case describing the combination of the all previous use cases. }
 \label{img09:usecase}
 \end{figure} 
 \par
 We can see an illustration of the fourth use case, which we call \textbf{AllTogether}, in Figure \ref{img09:usecase}.
+A double-headed arrow represents the person's used language. 
+A dashed arrow represents a possible usage, where the head aims at an implementation of a website part written in the language connected with that part.
 The goal of the use case is to allow collaboration between PHP and Blazor programmers, where a difference of languages is not a barrier.  
 We can image two teams creating a web application. 
 They agreed on developing a client-side web application, where both teams aim at different parts of the website.
@@ -87,9 +89,10 @@ If the proposed solution covers the requirements, then PHP scripts will become a
 \textbf{Navigation} is the first requirement that our solution should provide.
 We demonstrate navigation posibilities in Figure \ref{img10:scripts}.
 Basic functionality should provide script routing, which finds a script by its name, executes it, and displays the output in a browser.
+This intention is illustrated by the first rectangle containing a collection of scripts in the figure.
 The solution should offer a straightforward router making a PHP website accessible, as we can see in the figure.
 The simplicity is a necessary condition for the \textit{Web} use case and should be reflected.
-Blazor should navigate components defined in \texttt{script.php} due to the \textit{WebGame} use case, which uses Blazor structures.
+Blazor should navigate components defined in \textit{script.php} due to the \textit{WebGame} use case, which uses Blazor structures.
 \par
 \textbf{Reusability} of script is an important feature to make the \textit{OneScript} use case more useful.
 Thus, Bob can insert the widget in different parts of the website, meaning that he can create a new web page containing some content and insert the widget into it, as we can see in Figure \ref{img10:scripts} where the Blazor component is generated from a PHP script and a Razor file.
@@ -97,8 +100,6 @@ Thus, Bob can insert the widget in different parts of the website, meaning that 
 \begin{figure}[t]\centering
 \includegraphics{./img/Requirement}
 \caption{The requirement describing navigation between different types of entities. 
-The first one represents a collection of script routable by default \texttt{Router}.
-The second represents a standard component contenting a PHP code, and the last contains a defined Blazor component in the script.
 The proposed solution with Blazor connects these types into a single website, where they can live together.
 }
 \label{img10:scripts}
