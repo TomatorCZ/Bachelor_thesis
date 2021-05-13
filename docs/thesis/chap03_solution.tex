@@ -35,6 +35,7 @@ We have to set the server in order to provide additional static resources contai
 Thus, we create the \texttt{UseAdditionalWebStaticAssets} extension method of \texttt{IApplicationBuilder}, which inserts middlewares providing the resources into the request pipeline.
 Its parameter is a configuration obtained from \textit{appsettings.json}, which is a part of the \texttt{BlazorApp.Server} project.
 We can see an example of the configuration file in Figure \ref{img19:settings}, which defines a path to a folder and a base path used as a prefix of HTML document references.
+The path can be absolute or relative to the current working directory.
 Afterward, these resources can be referenced by URLs and downloaded from the server.
 For example, we can reference an image with the path \texttt{WebGame/PHPScripts/wwwroot/image.jpg} as \texttt{/Asteroids/image.jpg} in HTML document on the client side.
 Javascript helpers of our library can be found in the \textit{wwwroot} folder, which is transparently provided to a client side due to an RCL library type and the SDK.
@@ -45,7 +46,7 @@ Javascript helpers of our library can be found in the \textit{wwwroot} folder, w
 	...
   "AdditionalStaticWebAssets": [
     {
-      "Path": "An//Absolute//Path//To//Resources//Directory",
+      "Path": "A//Path//To//Resources//Directory",
       "BasePath": "/Asteroids"
     }
   ]
