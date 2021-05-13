@@ -169,6 +169,7 @@ window.php.internal = {
         document.body.removeChild(a);
     },
 
+    //https://stackoverflow.com/questions/9267899/arraybuffer-to-base64-encoded-string
     arrayBufferToBase64: function (buffer) {
         var binary = '';
         var bytes = new Uint8Array(buffer);

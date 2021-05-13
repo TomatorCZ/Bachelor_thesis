@@ -27,7 +27,7 @@ A query part begins with a question mark.
 We can see parameter keys \texttt{par1} and \texttt{par2} containing values \texttt{hello} and \texttt{world}.
 Another method is called \texttt{post}, which encodes it in the request body, which does not appear in the URL.
 \par
-Although PHP \squarecite{5} was originally designed for user page templating on a server side, it has been adjusted gradually to enable writing application logic.
+Although PHP \cite{online:phpWiki} was originally designed for user page templating on a server side, it has been adjusted gradually to enable writing application logic.
 PHP is an interpreted language maintained by The PHP Group.
 \par
 We will describe the language by using figure \ref{img01:php} as an example.
@@ -86,15 +86,13 @@ This is because the type system is dynamic.
 A variable represents just a reference to the heap.
 Its type is determined during runtime. 
 \par
-PHP has superglobals \squarecite{6}, which are built-in variables accessible from all scopes of the script.
+PHP has superglobals \cite{online:phpManual}, which are built-in variables accessible from all scopes of the script.
 Following superglobals are relevant to the thesis.
 The \texttt{\$\_GET} variable stores parsed query part of the URL.
 The \texttt{\$\_POST} variable stores variables which are sent by post method.
 The \texttt{\$\_FILES} variable contains information about uploaded files sent by a client.
 The uploaded file is saved as a temporary file, and standard reading operations can obtain the content.
 This is demonstrated in the previously mentioned example by \texttt{file\_get\_contents} function.
-\par
-\change[inline]{Maybe add information about SESSION.}
 \par
 The nature of the request-response semantic usually results in a one-way pass of the application.
 After dealing with a request, the script is terminated, meaning that the request is sent, and variables are disposed.
@@ -114,7 +112,7 @@ Scripts can be composed into a package, which another code can reuse.
 
 \section{Javascript}
 
-A client-side code needs to control the rendered page and access a web interface providing additional services, which is usually accessible via Javascript, in order to interact with a user.
+A client-side code needs to control the rendered page and access a web interface providing additional services, which is usually accessible via Javascript \cite{online:javascriptWiki}, in order to interact with a user.
 We will start with a description of loading Javascript in a browser.
 We will introduce a page representation in a browser alongside page events.
 In the end, we will present Javascript as a scripting language for the creation of a responsive web page.
@@ -141,7 +139,7 @@ For example, a button has an \texttt{onclick} event which triggers when a client
 Other events can represent a state of a page like \texttt{onload} which fires when the whole HTML document is parsed.
 \par
 A browser provides more APIs valuable for the application, like fetching extra data from a server or local storage.
-These APIs are mentioned as Web API \squarecite{7}.
+These APIs are mentioned as Web API \cite{online:webApi}.
 \par
 \ac{ES} is a Javascript standard recommending across browsers.
 We can see later an abbreviation ES2015 which determines the ECMAScript version.
@@ -190,7 +188,6 @@ We can treat them as common variables.
 Javascript supports an event-driven style that helps to react to events conveniently.
 There is a handler assigned to the click event in figure \ref{img02:javascript}.
 \par
-\change[inline]{Maybe add a section about async functions. Compare it with PHP}
 Javascript is single-threaded, but allows effective synchronous execution.
 This can be achieved by \texttt{Promise}, which is a structure representing an unfinished process.
 We can separate a large task into smaller ones in other to offer the processing time for other parts of the application.
@@ -198,7 +195,7 @@ These processes can be chained.
 Although the structure can give an illusion of multi-threading, it uses the scheduler for planning the next task executed by the main thread after the previous task is completed or an event triggered it.
 The single thread is critical for blocking operations like time demanding computatitons which causes thread freezing.
 \par
-\texttt{Worker} object represents a web worker \squarecite{11}, provided by a browser, enabling to run the script in the background.
+\texttt{Worker} object represents a web worker \cite{online:workers}, provided by a browser, enabling to run the script in the background.
 The worker limitation is communication with UI thread only by handling message events. 
 Messages have to be serialized and deserialized.
 \par
@@ -210,14 +207,14 @@ The module advantage is to define the API and to hide the internal code, which i
 
 \section{WebAssembly}
 
-WASM \squarecite{9} is a new code format that can be run in current browsers. 
+WASM \cite{online:wasmConcepts} is a new code format that can be run in current browsers. 
 It has a compact byte format, and its performance is near to a native code. 
 WASM is designed to be a compiling target of popular low-level languages like C or C++ due to its memory model.
 It results in the possibility to run other languages in a browser because its runtime is often written in C or C++.
 Browsers enable to run Javascript alongside WebAssembly, and even more, their code can call each other.
 WASM code is secure as same as a code written in Javascript because of the sandbox. 
 \par
-Thread \squarecite{10} support is currently discussed nowadays, and it will probably be added in future browser versions.
+Thread \cite{online:wasmThreads} support is currently discussed nowadays, and it will probably be added in future browser versions.
 After all, new versions of Google Chrome experiments with proper multi-threading support.
 A replacement of multi-threading can be Web workers mentioned in Javascript section.
 \par
@@ -226,7 +223,7 @@ WebAssembly JavaScript API was created in order to be able to load a WebAssembly
 
 \section{PHP in Browser}
 
-The project \squarecite{2} aims to use compiled PHP interpreter into WebAssembly, which allows evaluating a PHP code.
+The project PIB \cite{online:pib} aims to use compiled PHP interpreter into WebAssembly, which allows evaluating a PHP code.
 The page has to import a specialized module \texttt{php-wasm}. 
 A PHP code is evaluated by using JavaScript API or writing a specialized script block as we can see in figure \ref{img03:vrzno}.
 PHP can afterward interact with JavaScript using a specialized API.
@@ -250,7 +247,7 @@ The next problem relates to how a script can navigate to another script without 
 
 \section{C\# and .NET 5}
 
-We will introduce the Common Language Infrastructure (abbreviated CLI) \squarecite{18} before diving into .NET, which is an overused name for several technologies.
+We will introduce the Common Language Infrastructure (abbreviated CLI) \cite{online:cliWiki} before diving into .NET, which is an overused name for several technologies.
 CLI is a specification describing executable code and runtime for running it on different architectures.
 CLI contains descriptions of a type system, rules, and the virtual machine (runtime), which executes specified Common Intermediate Language (abbreviated CIL) by translating it to a machine code. 
 The virtual machine is named CLR (Common Language Runtime).
@@ -258,7 +255,7 @@ CIL's advantage is a compilation target of languages like C\#, F\#, and VisualBl
 .NET Framework, .NET 5, and Mono are implementations of CLI.
 These implementations are usually uniformly called .NET.
 \par
-.NET 5 \squarecite{17} is the lastest version of .NET Core, which is a cross-platform successor to .NET Framework.
+.NET 5 \cite{online:netcoreWiki} is the lastest version of .NET Core, which is a cross-platform successor to .NET Framework.
 From now on, we will refer .NET 5 as .NET, since it should be the only supported framework in the future.
 .NET is an open-source project primarily developed by Microsoft.
 It consists of runtime for executing CIL and many libraries that can represent whole frameworks like ASP.NET, which aims to web development.
@@ -266,7 +263,7 @@ A large collection of code is usually compiled into an assembly containing the c
 As assembly can represent either a library or an executable program.
 \par
 Mono aims at cross platform exection of CIL. 
-Recently, they started to support compilation \squarecite{12} into WebAssembly.
+Recently, they started to support compilation \cite{online:monoCompilation} into WebAssembly.
 This support allows executing CIL inside browsers.
 The compilation has two modes.
 The first one is compilation Mono runtime with all using assemblies.
@@ -284,7 +281,7 @@ These features cause that C\# is a good language for a huge project which needs 
 
 Blazor is a part of the open-source ASP.NET Core framework.
 Blazor allows creating client-side web applications written in C\# language.
-Blazor framework offers two hosting models \squarecite{13} which have different approaches to creating web applications. 
+Blazor framework offers two hosting models \cite{online:hostingModels} which have different approaches to creating web applications. 
 The first one is referred to as Blazor Server App and represents a server-side web application using specific communication between a client for better functionality.
 The thesis uses the second model, which Microsoft refers to as Blazor WebAssembly App, enabling to move business logic to a client-side without using Javascript.
 \par
@@ -393,7 +390,7 @@ The parameter is assigned by a dispatcher, during the component initialization.
 \texttt{code} keyword is a part of class content.
 Another markup is transformed into calling a specialized method in the \texttt{BuildRenderTree} function, which describes the page content for rendering.
 \par
-A component has several stages, which can be used for initialization or action.
+A component has several stages \cite{online:lifecycle}, which can be used for initialization or action.
 Virtual methods of \texttt{ComponentBase} represent these stages.
 We can see the \texttt{OnInitializedAsync} method, which is invoked after setting the component parameters by the \texttt{SetParameters} method.
 We can start the rendering by calling the \texttt{StateHasChanged} method.
@@ -443,7 +440,7 @@ We can see the process in figure \ref{img08:wasm}.
 \par
 \begin{figure}\centering
 \includegraphics[width=140mm, height=100mm]{./img/BlazorExecution}
-\caption{Running a Blazor WebAssembly App on a client side \squarecite{19}.}
+\caption{Running a Blazor WebAssembly App on a client side \cite{online:composition}.}
 \label{img08:wasm}
 \end{figure}
 \par
@@ -457,8 +454,8 @@ Afterward, the application provides the dispatcher, cares about rendering, and c
 It is the root component in default.
 It contains a specialized component, \texttt{Router}, enabling to navigate the pages.
 \par
-In the end, we will describe page navigation \squarecite{21} and rendering and handling events.
-The navigation \squarecite{14} can be triggered by an anchor, form, or filling up the URL bar.
+In the end, we will describe page navigation \cite{online:routing}, rendering, and handling events.
+The navigation can be triggered by an anchor, form, or filling up the URL bar.
 The URL bar is handled separatly by a browser.
 JavaScript can influence the remainings elements by adding a listener to their events.
 Blazor App handles only an anchor by default.
@@ -477,8 +474,8 @@ Renderer keeps a copy of DOM in memory, creates page updates, and calls Javascri
 Blazor provides API for invoking Javascript functions and vice-versa.
 Renderer provides \texttt{RenderTreeBuilder} for describing page contents.
 The builder provides an API for adding various types of content to \texttt{Batch}, which is a specialized structure for describing previous and present DOM.
-Although DOM changes is performance-expensive, a diff algorithm \squarecite{20} recognizes and tries to reduce the updates in \texttt{Batch}.
-The usage of \texttt{RenderTreeBuilder} is complecated, because it has to be adapted to the algorithm \squarecite{22}.
+Although DOM changes is performance-expensive, a diff algorithm \cite{online:diffAlgorithm} recognizes and tries to reduce the updates in \texttt{Batch}.
+The usage of \texttt{RenderTreeBuilder} is complecated, because it has to be adapted to the algorithm \cite{online:renderTree}.
 The purpose of Razor is to make the usage more effortless when the compilation implements the \texttt{RenderTreeBuilder} for us.
 When the Renderer prepares \texttt{Batch}, it calls specialized Javascript API for changing the page through Mono runtime.
 \par
@@ -490,14 +487,14 @@ A benefit of this information is detecting loops and conditional statements to g
 Event handling is just clever usage of the Renderer with dedicated Javascript API for updating, where the API registers the listener.
 When the event is fired, the listener invokes C\# method representing the handler through the WASM runtime.
 \par
-Blazor brings a new type of library called \ac{RCL}, which differs from normal libraries by the \textit{wwwroot} folder handling.
+Blazor brings a new type of library called \ac{RCL}, which differs from normal libraries by the \textit{wwwroot} folder handling \cite{online:rcl}.
 During the compilation, Blazor \ac{SDK} generates a configuration file comprising paths to \textit{wwwroot} folders.
 The server provides static web assets of these folders to a client by default.
 The SDK only involves the folders contained in RCL libraries and WebAssembly projects into the configuration file.
 
 \section{Peachpie}
 
-Peachpie \squarecite{16} is a modern compiler based on Roslyn and Phalanger project.
+Peachpie \cite{online:peachpie} is a modern compiler based on Roslyn and Phalanger project.
 It allows compiling PHP scripts into a .NET assembly, which can be executed alongside standard .NET libraries.
 All information about the scripts are saved in the assembly.
 We will describe the basics.
