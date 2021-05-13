@@ -38,7 +38,7 @@ A browser sends the message to the server via \texttt{post} method when the form
 The request is handled by \textit{index.php} defined in \texttt{action}.
 In the end, the script includes a proper ending of the document by \textit{footer.php}.
 \par
-\begin{figure}
+\begin{figure}[b!]
 \begin{lstlisting}
 <?php
     include("header.php");
@@ -130,26 +130,7 @@ The order of processing is important for manipulation with an HTML structure.
 This limitation can be solved by web events mentioned later, but
 it is a convention to add scripts to the end of the body part after all HTML tags are parsed.
 \par
-Events are the most common method of how to react to changing a web page state.
-Every event can have some handlers(listeners).
-Whenever an event occurs, it calls all its listeners.
-There are many event types, but we will mention the ones that are important for us.
-HTML tags are the most common entities which can have some events.
-For example, a button has an \texttt{onclick} event which triggers when a client clicks on the button as we can see in figure \ref{img02:javascript}. 
-Other events can represent a state of a page like \texttt{onload} which fires when the whole HTML document is parsed.
-\par
-A browser provides more APIs valuable for the application, like fetching extra data from a server or local storage.
-These APIs are mentioned as Web API \cite{online:webApi}.
-\par
-\ac{ES} is a Javascript standard recommending across browsers.
-We can see later an abbreviation ES2015 which determines the ECMAScript version.
-Javascript is a high-level language usually executed by a browser's dedicated Javascript engine.
-Browsers run scripts in a sandbox to prevent potential threats of harmful code.
-However, it can also be run on a desktop by Node.js, a Javascript runtime running outside a browser.
-Figure \ref{img02:javascript} will be used to show the language in the simple scenario.
-The page contains a button that invokes an alert with a second delay when a client clicks on it.
-\par
-\begin{figure}
+\begin{figure}[b!]
 \begin{lstlisting}
 <!DOCTYPE html>
 <html>
@@ -175,6 +156,25 @@ The page contains a button that invokes an alert with a second delay when a clie
 \caption{An example of a Javascript code.}
 \label{img02:javascript}
 \end{figure}
+\par
+Events are the most common method of how to react to changing a web page state.
+Every event can have some handlers(listeners).
+Whenever an event occurs, it calls all its listeners.
+There are many event types, but we will mention the ones that are important for us.
+HTML tags are the most common entities which can have some events.
+For example, a button has an \texttt{onclick} event which triggers when a client clicks on the button as we can see in figure \ref{img02:javascript}. 
+Other events can represent a state of a page like \texttt{onload} which fires when the whole HTML document is parsed.
+\par
+A browser provides more APIs valuable for the application, like fetching extra data from a server or local storage.
+These APIs are mentioned as Web API \cite{online:webApi}.
+\par
+\ac{ES} is a Javascript standard recommending across browsers.
+We can see later an abbreviation ES2015 which determines the ECMAScript version.
+Javascript is a high-level language usually executed by a browser's dedicated Javascript engine.
+Browsers run scripts in a sandbox to prevent potential threats of harmful code.
+However, it can also be run on a desktop by Node.js, a Javascript runtime running outside a browser.
+Figure \ref{img02:javascript} will be used to show the language in the simple scenario.
+The page contains a button that invokes an alert with a second delay when a client clicks on it.
 \par
 At first glance, we can see the type system is dynamic, which is similar to PHP.
 \texttt{window} is an essential global variable, which is an object representing the browser window of the running script.
@@ -229,7 +229,7 @@ A PHP code is evaluated by using JavaScript API or writing a specialized script 
 PHP can afterward interact with JavaScript using a specialized API.
 In the figure, the code calls Javascript \texttt{alert} function with the parameter.
 \par
-\begin{figure}
+\begin{figure}[b!]
 \begin{lstlisting}
 <script type = "text/php">
 	<?php vrzno_run('alert', ['Hello, world!']);
@@ -292,7 +292,7 @@ The division enables a choice of a place for the implementation of business logi
 Thus, we can move the majority of business logic to the client and use the server for connection to a database or, we can use the client only for rendering the page.
 When we chose the template, there are two main projects to describe.
 \par
-\begin{figure}[!b]\centering
+\begin{figure}\centering
 \includegraphics{./img/ProjectStructure}
 \caption{Server and WebAssembly App projects.}
 \label{img04:projects}
@@ -350,7 +350,7 @@ The class inherits from \texttt{ComponentBase} or implements \texttt{IComponent}
 Components can be arbitrarily put together in order to form the desired page.
 We can see the generated component from figure \ref{img05:razor} in figure \ref{img06:component}.
 \par
-\begin{figure}[t]
+\begin{figure}
 \begin{lstlisting}
 [Route("/example")]
 public class Index : ComponentBase {
@@ -413,7 +413,7 @@ We have the server, the Blazor App, and other optional user's defined projects.
 When we start the server and tries to navigate the web application, the following process is done.
 The server maps the navigation to \textit{index.html} and sends it back.
 \par
-\begin{figure}
+\begin{figure}[b!]
 \begin{lstlisting}
 <body>
     <div id="app">Loading...</div>
@@ -429,16 +429,17 @@ The server maps the navigation to \textit{index.html} and sends it back.
 \label{img07:index}
 \end{figure}
 \par 
-The \texttt{index.html} contains a script initializing Blazor as we can see in figure \ref{img07:index}.
+The \texttt{index.html} contains a script initializing Blazor as we can see in Figure \ref{img07:index}.
 The first step is to load all resources, which are defined in a separate file.
 Blazor cuts all unnecessary \texttt{.dll} files to reduce the size.
 For this reason, all \texttt{.dll} files have to be used in the Blazor App code in order to be contained in the file. 
 These resources comprise Mono runtime compiled into WASM, additional supporting scripts, and all \texttt{.dll} files containing the whole application (Blazor App with referenced libraries).
 The supporting scripts initiate the runtime and execute it.
 The runtime includes the \texttt{.dll} into the application and calls the \texttt{Main} method in \texttt{Program.cs} defined in Blazor App project.
-We can see the process in figure \ref{img08:wasm}.
+We can see the process in Figure \ref{img08:wasm}.
 \par
-\begin{figure}\centering
+\begin{figure}[b!]
+\centering
 \includegraphics[width=140mm, height=100mm]{./img/BlazorExecution}
 \caption{Running a Blazor WebAssembly App on a client side \cite{online:composition}.}
 \label{img08:wasm}

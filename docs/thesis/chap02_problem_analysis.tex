@@ -60,7 +60,8 @@ PHP programmers have not been used to saving variables or defined functions acro
 However, Chuck utilizes state persistent to saves a state of all game entities in variables.
 Because he has previous experience with Blazor infrastructure, he will appreciate utilizing all Blazor aspects to run this game.
 \par
-\begin{figure}[t]\centering
+\begin{figure}
+\centering
 \includegraphics[scale=0.8]{./img/UseCaseAllTogether}
 \caption{The \texttt{AllTogether} use case describing the combination of the all previous use cases. }
 \label{img09:usecase}
@@ -97,7 +98,8 @@ Blazor should navigate components defined in \textit{script.php} due to the \tex
 \textbf{Reusability} of script is an important feature to make the \textit{OneScript} use case more useful.
 Thus, Bob can insert the widget in different parts of the website, meaning that he can create a new web page containing some content and insert the widget into it, as we can see in Figure \ref{img10:scripts} where the Blazor component is generated from a PHP script and a Razor file.
 \par
-\begin{figure}[t]\centering
+\begin{figure}
+\centering
 \includegraphics{./img/Requirement}
 \caption{The requirement describing navigation between different types of entities. 
 The proposed solution with Blazor connects these types into a single website, where they can live together.
@@ -184,7 +186,8 @@ The first one wants to bring Blazor to PHP in order to utilize the whole environ
 The second one aims at presenting a transparent execution of standard PHP script without knowing about the connection between Blazor and PHP.
 We can illustrate out intention in Figure \ref{img12:component}.
 \par
-\begin{figure}[!b]\centering
+\begin{figure}
+\centering
 \includegraphics[scale=0.9]{./img/Components}
 \caption{Components representing PHP scripts. Arrows represent navigation. 
 Dot lines connect a runtime object with the implementation.
