@@ -339,6 +339,9 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
+# Final work
+Final/
+
 # TeX
 Documents/BT/BT/*.aux
 Documents/BT/BT/*.log
