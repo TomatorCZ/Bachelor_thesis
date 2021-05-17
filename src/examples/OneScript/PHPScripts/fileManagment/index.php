@@ -33,7 +33,7 @@ function printGraphView()
 	global $graph;
 	if ($_GET["action"] == "download") {
 		$file = CreateFile(CsvToString($graph),"text/csv", "graph.csv");
-		DownLoadFile($file->id);
+		DownloadFile($file->id);
 	}
 	else {
 		require("/fileManagment/showGraph.php");
