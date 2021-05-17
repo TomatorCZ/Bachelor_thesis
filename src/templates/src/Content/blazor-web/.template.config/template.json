@@ -7,7 +7,7 @@
   "groupIdentity": "Peachpie.Blazor.Web",
   "identity": "Peachpie.Blazor.Templates.Web",
   "shortName": "blazor-web",
-  "sourceName": "Web",
+  "sourceName": "Web.1",
   "preferNameDirectory" : "true",
   "tags": {
     "language": "PHP",

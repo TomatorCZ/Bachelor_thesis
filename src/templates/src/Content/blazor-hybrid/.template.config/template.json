@@ -7,7 +7,7 @@
   "groupIdentity": "Peachpie.Blazor.Hybrid",
   "identity": "Peachpie.Blazor.Templates.Hybrid",
   "shortName": "blazor-hybrid",
-  "sourceName": "OneScript",
+  "sourceName": "Hybrid.1",
   "preferNameDirectory" : "true",
   "tags": {
     "language": "PHP",
