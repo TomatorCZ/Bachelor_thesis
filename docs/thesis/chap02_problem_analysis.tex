@@ -1,9 +1,9 @@
 \chapter{Problem analysis}
-We divide the analysis into three steps.
+The chapter divides the analysis into three steps.
 In the first section, we think of potential users of the integration in order to define realistic use cases for them.
 Four use cases describe the user's intentions.
-Then, we specify requirements, which are demanded by the use cases.
-In the last section, we propose a high-level architecture of our solution, where we aim at utilizing Blazor and Peachpie to cover the requirements.
+Then, requirements are specified based on the use cases.
+In the last section, we propose a high-level architecture of our solution aiming at utilizing Blazor and Peachpie to cover the requirements.
 
 \section{Use Cases}
 We remind technologies of interest to introduce a context of our use cases.
@@ -71,15 +71,15 @@ We can see an illustration of the fourth use case, which we call \textbf{AllToge
 A double-headed arrow represents the person's used language. 
 A dashed arrow represents a possible usage, where the head aims at an implementation of a website part written in the language connected with that part.
 The goal of the use case is to allow collaboration between PHP and Blazor programmers, where a difference of languages is not a barrier.  
-We can image two teams creating a web application. 
+Image two teams creating a web application. 
 They agreed on developing a client-side web application, where both teams aim at different parts of the website.
-For example, one team wants to create a fun zone where a user can play some web game, we can imagine something like Asteroids, and the second team wants to create some online documentation about the game and the widget for the graph representation displaying a user's score.
+For example, one team wants to create a fun zone where a user can play a web game, like Asteroids, and the second team wants to create some online documentation about the game and the widget for the graph representation displaying a user's score.
 Because Blazor targets client-side web applications, they want to utilize Blazor.
 Unfortunately, these teams use a different favorite language, where the first team uses PHP and the second team uses C\#.
 Even more, these teams want to contribute to any part of the Blazor website, meaning that doing the fun zone can be handled by either the C\# or PHP team.
 They need some environment where the PHP team can code alongside the Blazor team, and they can focus on an arbitrary part of the web application.
 We can see the intention in Figure \ref{img09:usecase} where each team can create a part aiming at the web game, the online documentation, and widget.
-We can see the PHP team consists of Alice, Bob, and Chuck, having different skills with Blazor, so the environment should reflect it.
+The PHP team consists of Alice, Bob, and Chuck, having different skills with Blazor, so the environment should reflect it.
 Even more, Blake should be able to manipulate their part of the application to customize it using C\#. For example, he should change the layout of the website without complex refactoring. 
 
 \section{Requirements}
@@ -88,7 +88,7 @@ The goal of this section is to describe requirements based on mentioned use case
 If the proposed solution covers the requirements, then PHP scripts will become a valuable part of a Blazor website.
 \par
 \textbf{Navigation} is the first requirement that our solution should provide.
-We demonstrate navigation posibilities in Figure \ref{img10:scripts}.
+Figure \ref{img10:scripts} shows navigation posibilities.
 Basic functionality should provide script routing, which finds a script by its name, executes it, and displays the output in a browser.
 This intention is illustrated by the first rectangle containing a collection of scripts in the figure.
 The solution should offer a straightforward router making a PHP website accessible, as we can see in the figure.
@@ -124,28 +124,28 @@ For an example, the \textit{WebGame} use case uses variables to save the game st
 However, we have to distinguish these situations where the feature is necessary.
 \par
 \textbf{Server simulation} should be the main advantage of the solution.
-We could see superglobals are commonly used methods how to obtain information about navigation or submitted data.
+Superglobals are commonly used methods how to obtain information about navigation or submitted data.
 The solution should support superglobals for examples like the \textit{Web} use case, where the website uses information about URL query part, via \texttt{\$\_GET} variable, to make decisions.
 \par
 \textbf{Forms} should be maintained by the solution. 
 The forms are usually sent to a server, but the solution should handle them on a client side, where they should be provided to PHP scripts.
 After navigation to a script defined in the \texttt{action} attribute, the script should access the form data.
-We can upload files by form.
+A client can upload files by form.
 Thus, the solution should provide file management accessing and downloading them.
 \par
 \textbf{Interoperability} between PHP, Blazor, and Javascript should be supported for situations when forms, the server abstraction, or Blazor are not sufficient.
 We need some representation of Blazor in PHP, which the \textit{WebGame} use case will use for interacting with a Blazor.
-Javascript is essential for client side applications, and we should be able to use its features.
+Javascript is essential for client side applications, and PHP should be able to use its features.
 
 \section{Architecture}
 
 The basic principle of our solution consists of PHP scripts compilation into .NET assembly by Peachpie.
 After that, a Blazor App references \texttt{Peachpie.Blazor}, which is a support library providing a mechanism for navigating and executing the scripts.
 Then, a server provides the application to a browser, where Mono runtime executes it.
-We will describe the architecture from the view point of compilation time and runtime.
+We describe the architecture from the view point of compilation time and runtime.
 \par
 When we think about PHP script compilation, there are two possibilities.
-We can compile the scripts ahead of time and reference them from a Blazor App. 
+The scripts can be compiled ahead of time and reference them from a Blazor App. 
 The second way is to regard the scripts as Static Web Assets and load them into a browser as separated files.
 Afterward, the Peachpie compiles and executes them.
 Both approaches have different advantages. 
@@ -163,19 +163,19 @@ The abstraction should offer a representation of PHP scripts in Blazor.
 It should allow an option for accessing the Blazor interface for advanced features.
 It should be compatible with the Blazor environment in other to allowing a smooth collaboration between the abstraction and the Blazor pages.
 A Blazor page consists of components, which can collaborate with each other.
-Thus, we can utilize them to represent PHP scripts.
+Thus, they can be utilized to represent PHP scripts.
 Components can be arbitrarily put together, which offers to place our PHP code in the desired place in the Razor code.
-Even more, we can replace a root component, \texttt{Router} by default, with the component representing PHP scripts.
+Even more, a root component, \texttt{Router} by default, can be replaced by the component representing PHP scripts.
 Afterward, scripts will compose the whole Blazor website content.
 The component provides a sufficient Blazor interface for rendering control and interaction with a browser. 
 \par
 We can think about how to represent PHP scripts as components.
-We can consider one type of component, which will provide the abstraction for all the PHP code in scenarios.
+One type of component can be considered, which will provide the abstraction for all the PHP code in scenarios.
 A problem with this approach is that the use cases need different levels of abstraction.
 The \textit{WebGame} use case wants to use the component for offering the Blazor interface accessible from PHP code.
 The offer should contain identical or similar options, which are given in a C\# code.
-The \textit{OneScript} use case wants to free a programmer from Blazor.
-Thus, we want to use the component as an adjustable provider finding and executing PHP scripts.
+The \textit{OneScript} use case requires to free a programmer from Blazor.
+Thus, the component should be an adjustable provider finding and executing PHP scripts.
 Its purpose is to keep the user away from knowing about the detailed structure of Blazor and the integration.
 Another important thing is a provider role in a Blazor App.
 The provider can behave either as default Blazor \texttt{Router} or as a routable component, which enables the navigation of PHP scripts.
@@ -195,18 +195,18 @@ Dot lines connect a runtime object with the implementation.
 \label{img12:component}
 \end{figure} 
 \par
-We will focus on the first component, which we will call \texttt{PhpComponent} due to the effort of moving the component concept to PHP.
+We focus on the first component, which we call \texttt{PhpComponent} due to the effort of moving the component concept to PHP.
 \texttt{PhpComponent} aims at the third use case.
 Despite language differences, we can utilize the common concept of classes and inheritance because Peachpie allows inheriting C\# class in a PHP code.
 This feature results in full support of component interface without creating new structures for managing component behavior from PHP.
-We can inherit \texttt{ComponentBase} class in PHP and use its methods in the same way as C\# class.
+PHP class can inherit the \texttt{ComponentBase} class and use its methods in the same way as C\# class.
 The inheritance offers the required interface in the \textit{WebGame} use case.
 At the time of writing, there are also subproblems with the differences of languages.
 The current Peachpie version does not support some C\# specifics fully.
 The reason can be a hard or impossible representation of C\# entities in PHP.
-We should develop some PHP support to enable using the parts of the Blazor interface, which can not be used in PHP directly.
+The solution should provide PHP support to allow using the parts of the Blazor interface, which can not be used in PHP directly.
 \par
-We will call the second type of component \texttt{PhpScriptProvider} expressing an environment for executing standard PHP scripts.
+We call the second type of component \texttt{PhpScriptProvider} expressing an environment for executing standard PHP scripts.
 \texttt{PhpScriptProvider} solves the requirements of the remaining use cases \textit{Web}, \textit{OneScript}, and \textit{AllTogether}.
 The provider should be able to navigate and execute PHP scripts.
 Because the remaining use cases try to hide the integration between PHP and Blazor, the provider should support the following features.
@@ -216,7 +216,7 @@ Thus, an ability to fill \texttt{\$\_GET} variable with the URL query part is im
 It should change a standard form functionality, which is sending the form to a server, to save the form information into superglobals, and executing the script again.
 We target to load and save files submitted by form transparently in order to provide similar comfort to execute the script on a server side.
 A possibility of saving the script context to the next execution is a new opportunity how to keep an application state in PHP script.
-We will describe the provider modes.
+The following paragraphs describe the provider modes.
 These modes are intended to solve \textit{Web}, \textit{OneScript}, and \textit{AllTogether} use cases. 
 \par
 We call the first mode \textbf{Router}, which aims at the \textit{Web} use case, where the implementation is inspired by a GitHub project \cite{online:customRouter}.
