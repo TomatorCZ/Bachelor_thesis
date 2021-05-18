@@ -141,4 +141,9 @@
 \newblock \url{https://chrissainty.com/working-with-query-strings-in-blazor/}.
 \newblock [Online; accessed 2021-03-30].
 
+\bibitem{online:templates}
+{P}eachpie templates.
+\newblock \url{https://github.com/peachpiecompiler/peachpie-templates}.
+\newblock [Online; accessed 2021-05-17].
+
 \end{thebibliography}
