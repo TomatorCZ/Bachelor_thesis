@@ -476,12 +476,12 @@ Blazor provides API for invoking Javascript functions and vice-versa.
 Renderer provides \texttt{RenderTreeBuilder} for describing page contents.
 The builder provides an API for adding various types of content to \texttt{Batch}, which is a specialized structure for describing previous and present DOM.
 Although DOM changes is performance-expensive, a diff algorithm \cite{online:diffAlgorithm} recognizes and tries to reduce the updates in \texttt{Batch}.
-The usage of \texttt{RenderTreeBuilder} is complecated, because it has to be adapted to the algorithm \cite{online:renderTree}.
+The usage of \texttt{RenderTreeBuilder} is complicated, because it has to be adapted to the algorithm \cite{online:renderTree}.
 The purpose of Razor is to make the usage more effortless when the compilation implements the \texttt{RenderTreeBuilder} for us.
 When the Renderer prepares \texttt{Batch}, it calls specialized Javascript API for changing the page through Mono runtime.
 \par
 The diff algorithm is used to minimize the browser DOM  update after all components used \texttt{RenderTreeBuilder} to render their content.
-This algorithm used sequence numbers for parts of HTML to identify modified sections.
+This algorithm uses sequence numbers for parts of HTML to identify modified sections.
 Sequence numbers are generated in \texttt{RenderTreeBuilder} instructions during a compilation.
 A benefit of this information is detecting loops and conditional statements to generating smaller updates of DOM.  
 \par
