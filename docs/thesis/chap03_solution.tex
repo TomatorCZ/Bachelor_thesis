@@ -154,8 +154,8 @@ Then a programmer avoids to use the workaround defined above.
 \subsection{Interoperability}
 
 The last feature to discuss in this section is interoperability between Javascript and PHP.
-As we mentioned, Blazor allows calling Javascript functions from C\# \cite{online:interop1} and vice-versa \cite{online:interop2}.
-We can utilize a Blazor service,\texttt{IJSRuntime}, injected by the dispatcher, to call Javascript functions.
+Blazor allows calling Javascript functions from C\# \cite{online:interop1} and vice-versa \cite{online:interop2}.
+Thus, a Blazor service,\texttt{IJSRuntime} injected by the dispatcher, can be utilized to call Javascript functions.
 The service offers a specialized API for that.
 Calling PHP from Javascript is more complex.
 Peachpie enables calling PHP function by \texttt{Call} method of \texttt{Context}. 
@@ -167,37 +167,37 @@ These conditions lead us to create a new Peachpie context,\texttt{BlazorContext}
 The context requests the mentioned services provided by the dispatcher and sets the reference by calling predefined code in \texttt{Peachpie.Blazor.js}.
 The context will be the Peachpie context of the component.
 Thus, it enables to call PHP methods defined in this context from Javascript by using the reference.
-The advantage of this approach is that we can have two components inheriting \texttt{PhpComponent} with the same context when we set their context to the same instance.
-Thus, we can call their functions by only one reference.
+The advantage of this approach is that there can be two components inheriting \texttt{PhpComponent} with the same context when their context is set to the same instance.
+Thus, we can call their functions only by one reference.
 
 \subsection{Summary}
 
-\begin{figure}[b!]
+\begin{figure}[t!]
 \centering
 \includegraphics[scale=0.8]{./img/PhpComponentSolution}
 \caption{Class diagram of the use case solution.}
 \label{img17:solution}
 \end{figure}
 \par
-We summarize the architecture of \texttt{PhpComponent} and solution of \textit{WebGame} use case.
+This section summarizes the architecture of \texttt{PhpComponent} and solution of \textit{WebGame} use case.
 The component hides the original function for rendering and replaces it with our version of the builder, as shown in Figure \ref{img17:solution}.
 It results in transparent usage of the builder in the inherited class.
 The builder is just a wrapper, so the programmer can use the original builder by accessing its property, \texttt{Builder}.
 Additionally, there is a collection of classes for creating tags, making builder usage easier.
 For assigning PHP handlers to C\# events, there is a universal helper class, \texttt{EventHelper}.
 Furthermore, the last feature is a timer wrapper, which uses the C\# timer, offering a convenient API.
-We can use our predefined API using \texttt{BlazorContext} for interoperability with Javascript.
+Interoperability with Javascript is provided by our predefined API using \texttt{BlazorContext}.
 These features are sufficient for implementing a game described in \textit{WebGame} use case.
-Using PHP functions as handlers, we use the timer to update the game screen by \texttt{StateHasChanged}.
+Using PHP functions as handlers, the timer is used to update the game screen by \texttt{StateHasChanged}.
 The update consists of evaluating the position of game entities, which use the helper classes representing HTML entities.
-Lastly, we use context preservation to keep the game state.
+Lastly, context preservation is used to keep the game state.
 \par
 The last necessary thing is to pass assembly references containing the components into \texttt{Router}, which is a standard duty in Blazor.
 
 \section{PhpScriptProvider}
 
-At the beginning of this section, we introduce the main component parts, which gives us an overview of the component composition.
-We divide component duties like navigation or script execution into subsections because the component consists of many processes, which are complex to describe at once in the structure.
+The beginning of this section introduces the main component parts, which gives us an overview of the component composition.
+Component duties like navigation or script execution are divided into subsections because the component consists of many processes, which are complex to describe at once in the structure.
 The component functionality will be explained in these sections.
 \par
 \begin{figure}[b!]
@@ -207,7 +207,7 @@ The component functionality will be explained in these sections.
 \label{img18:provider}
 \end{figure}
 \par
-We start with Figure \ref{img18:provider} describing the connections between the main parts.
+Figure \ref{img18:provider} describes the connections between the main parts.
 \texttt{PhpScriptProvider} is a class, representing a Blazor component.
 The component manages the following features.
 \par
@@ -226,7 +226,7 @@ The context constructor accepts several Blazor services like \texttt{IJSRuntime}
 The context initializes superglobals based on URL and submitted forms, manages files uploaded by a form, and controls  \texttt{BlazorWriter} which redirects the script output to the render tree.
 Lastly, \texttt{FileManager} reads submitted files, downloads them, or deletes them from Browser memory.
 \par
-We zoom in on \texttt{PhpScriptProvider} structure in order to better understand processes maintaining the features.
+The following paragraph zooms in \texttt{PhpScriptProvider} structure in order to better understand processes maintaining the features.
 The provider contains of many properties.
 Some of them are injected by the dispatcher like \texttt{NavigationManager} or \texttt{IJSRuntime}, which is a service providing interoperability with Javascript.
 Others can be parametrized, like \texttt{Type} determining the mode of provider, \texttt{ContextLifetime} determining the persistency of the script context, or \texttt{ScriptName} determining the executing script when the mode \textit{Script} is set.
@@ -239,7 +239,7 @@ Some of these methods are called by Blazor framework providing the component lif
 
 \subsection{Navigation}
 
-Now, we explain navigation in \texttt{PhpScriptProvider} for each of its modes.
+The section explains navigation in \texttt{PhpScriptProvider} for each of provider modes.
 We have to clarify how the component is instantiated and maintained by Blazor.
 There are two ways how to use the component.
 The first of them is to set it in \texttt{WebAssemblyBuilder} as a root component,
@@ -253,34 +253,35 @@ Then, when the parameters are changed, Blazor automatically calls the inner comp
 This fact is because the Blazor framework can not decide if the parameters, which are complex types, were changed.
 \par
 The \textit{Router} mode is designed to be used when the component is a root component.
-Then we are sure, that \texttt{Attach} and \texttt{SetParameters} methods are called only once.
-Thus, we register navigation handler in the \texttt{Attach} method, which should handle further navigation.
-When the navigation occurs, we create a new context if the context should not be persistent and call \texttt{Refresh}.
-We create a new context and call \texttt{Refresh} method in \texttt{SetParameters} as well, but the method is called only once at the beginning of the application.
+Then, it is certain that \texttt{Attach} and \texttt{SetParameters} methods are called only once.
+Thus, navigation handler is registered in the \texttt{Attach} method, which should handle further navigation.
+When the navigation occurs, a new context is created if the context should not be persistent, then the \texttt{Refresh} method is called.
+\texttt{SetParameters} creates a new context and calls the \texttt{Refresh} method as well, but the method is called only once at the beginning of the application.
 Then the \texttt{Refresh} method parses the query part of URL \cite{online:querryStrings}, obtained from \texttt{NavigationManager} and gets the script name from the URL.
-When we determine the script name, we call the \texttt{Render} method, where we decide if it is a script or a component defined in a script based on \texttt{.php} extension.
-If the extension is missing, we try to find a component defined in scripts, which has correct \texttt{RouteAttribute} by \texttt{PhpComponentRouteManager}.
-Otherwise, we ask the Peachpie context for obtaining the script representation as \texttt{ScriptInfo}.
+When the script name is determined, the method calls the \texttt{Render} method, where it decides if it is a script or a component defined in a script based on \texttt{.php} extension.
+If the extension is missing, it tries to find a component defined in scripts, which has correct \texttt{RouteAttribute} by \texttt{PhpComponentRouteManager}.
+Otherwise, it asks the Peachpie context for obtaining the script representation as \texttt{ScriptInfo}.
 Additional manager duty is to assign assembly references containing scripts, to the context, at the beginning of the application.
 The context does not have to know the script name, or the component does not have to exist. 
-Then we render predefined \textit{not found} page, which can be set by \texttt{PhpScriptProvider} parameters.
-Otherwise, we render the script or the component.
-Additionally, when we navigate the component, we set its context by our context.
-It results in using the interoperability by either provider or the component because we can use the same context reference in Javascript code.
+Then, the \texttt{Render} method renders predefined \textit{not found} page, which can be set by \texttt{PhpScriptProvider} parameters.
+Otherwise, it renders the script or the component.
+Additionally, when the component is navigated, the method sets its context by the current provider context.
+It results in using the interoperability by either provider or the component because there is the same context reference in Javascript code.
 \par
 Next modes, \textit{ScriptProvider} and \textit{Script}, are similar.
 They are defined in a Razor page and initialized when the page is navigated.  
 The difference is finding the script by name, where the \textit{Script} always uses the name defined in the component parameter and \textit{ScriptProvider} finds script based on URL.
-As we said, the \texttt{SetParameters} can be called multiple times, so we call \texttt{Refresh} only by the first time in the method.
+As we said, the \texttt{SetParameters} can be called multiple times, so the method calls \texttt{Refresh} only by the first time.
 Additional rendering is initiated by the navigation handler.
-Thus, when the navigation occurs, we find and update the page, or the component is disposed if \texttt{Router} matches another Razor page.
-We create the new context based on the \texttt{ContextLifetime} mode.
+Thus, when the navigation occurs, it finds and update the page, or the component is disposed if \texttt{Router} matches another Razor page.
+A new context is created based on the \texttt{ContextLifetime} mode.
 It differs from common PHP behavior, where the context is disposed after scritps handles the request.
-This unusual approach allows calling functions defined in the context after the component is rendered, which is a part of Javascript interoperability when we can call PHP functions by Javascript.
+This unusual approach allows calling functions defined in the context after the component is rendered, which is a part of Javascript interoperability when PHP functions can by called by Javascript.
 We should check if the component has not already been disposed by \texttt{Router} before calling the \texttt{Refresh}.
 Obtaining the script is similar to \textit{Router} mode.
 
 \subsection{Script Execution}
+
 We start with \texttt{BlazorWriter}, which inherits \texttt{TextWriter}.
 The inheritance allows using the writer as \texttt{BlazorContext} output writer, which manipulates with script output.
 The writer consists of a buffer and \texttt{RenderTreeBuilder}.
@@ -303,17 +304,17 @@ handling, which is described in the following section.
 \subsection{Forms}
 
 Typically, web forms are not handled by Blazor, and the are sent to the server.
-We use Javascript interoperability to evaluate them on the client side.
-It starts in \texttt{AfterRender} method, where we call our Javascript function, which finds all already rendered forms and assigns them an event handler for submitting.
+Javascript interoperability is used to evaluate them on the client side.
+It starts in \texttt{AfterRender} method, where it calls our Javascript function, which finds all already rendered forms and assigns them an event handler for submitting.
 When submit occurs, the handler collects all data from the form, does ordinary navigation to the page defined in \texttt{action} attribute, and prevents default behavior, which is sending the form to the server.
 When the navigation is handled by \texttt{PhpScriptProvider}, it gets all collected data and assigns the context superglobals by them.
 Afterward, the script is executed, and it can access the superglobals.
 \par
-In the previous paragraph, we did not explain the file management due to its complexity.
+The previous paragraph did not explain the file management due to its complexity.
 We describe it now.
 When a user loads files by form, Javascript obtains only the list of files. 
-When we want to read the content, we have to use a reading operation, which is done asynchronously by \texttt{Promise} mentioned in the Javascript section.
-Thus, when we get the data during navigation, we have to wait until the content is read.
+When a programmer wants to read the content, he or she has to use a reading operation, which is done asynchronously by \texttt{Promise} mentioned in the Javascript section.
+Thus, when we get the data during navigation, the page rendering has to wait until the content is read.
 This operation could take a long time, so the page shows old content.
 For this reason, we provide an additional parameter for defining the content, which is shown during navigation.
 An alternative is initializing reading by a PHP script when it is executed.
