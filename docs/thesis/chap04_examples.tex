@@ -1,6 +1,6 @@
 \chapter{Examples}
 
-This chapter demonstrates the usage of our solution by four examples, which are inspired by the use cases mentioned earlier.
+This chapter demonstrates the usage of \texttt{Peachpie.Blazor} by four examples, which are inspired by the use cases mentioned earlier.
 We describe example structures, show important blocks of code, which have to be added to projects.
 Source code and binaries can be found in the attachments with build and run instructions.
 The library offers debugging logs, which can be helpful to get a better insight into the architecture mechanisms.
@@ -114,7 +114,7 @@ We can see the \textit{force.php} script containing empty \texttt{force} class, 
 \begin{figure}
 \centering
 \includegraphics[scale=0.9]{./img/WebStructure}
-\caption{The Web solution structure.}
+\caption{The file structure of the \texttt{PHPScripts} project.}
 \label{img22:web}
 \end{figure} 
 \par
@@ -161,7 +161,7 @@ if (isset($_GET["developer"])) {
 
 This example aims at the second use case.
 The website contains several pages which demonstrates an insertion of page fragments, written in PHP, to the Blazor website.
-When we navigate the page, there is a button, which utilizes interoperability between PHP and Javascript provided by our solution.
+When we navigate the page, there is a button, which utilizes interoperability between PHP and Javascript provided by \texttt{Peachpie.Blazor}.
 When we click on it, the javascript code calls PHP code, which writes a message to a browser console.
 Next examples referred as \textit{Example 1}, \textit{Example 2}, \textit{Example 3} show working with forms.
 The first example uses a simple form with the \texttt{GET} method.
@@ -223,7 +223,7 @@ These examples can be navigated based on their names due to the unspecified URL 
 After navigation to this page, the provider gets the script name from the URL.
 \par
 A usual way how to interact with a user is an HTML form, but we want to show an advantage of the persistent context in the graph visualization.
-The forms are handled on a server side, but we can use them on a client side now due to our solution.
+The forms are handled on a server side, but we can use them on a client side now due to \texttt{Peachpie.Blazor}.
 There is a simple application enabling us to visualize a graph, as we can see in the folder \texttt{fileManagement}.
 The application allows user to upload a CSV file containing a graph or generate a new one based on the given parameters.
 We use a PHP library for parsing the file, which demonstrates a possibility to utilize the already created library on the client side.

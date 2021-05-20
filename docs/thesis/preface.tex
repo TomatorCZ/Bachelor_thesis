@@ -37,9 +37,9 @@ Peachpie is usually used to connect a frontend written in PHP with a backend wri
 Peachpie allows applying PHP to Blazor. 
 Although Blazor can straightforwardly reference compiled PHP by Peachpie, the collaboration between the code and Blazor seems complicated.
 Methods of how to utilize PHP scripts as a part of a Blazor website are not clear. 
-This thesis targets to identify use-cases that will make use of the integration between Peachpie and Blazor and suggests a solution, which creates a library to execute and render compiled PHP scripts in a browser.
+This thesis targets to identify use-cases that will make use of the integration between Peachpie and Blazor and suggests a solution, which creates a library \texttt{Peachpie.Blazor} to execute and render compiled PHP scripts in a browser.
 Blazor is used as an execution environment for these scripts.
-The solution tries to achieve two goals.
+\texttt{Peachpie.Blazor} tries to achieve two goals.
 The first goal is to implement the support for using compiled PHP scripts with Blazor because no existing library supports the integration.
 The second goal is to enable web development on a client-side with PHP.
 \par
@@ -52,7 +52,7 @@ Another interesting functionality of this idea is a full C\#, PHP, and JavaScrip
 \par
 The first chapter addresses the analysis of related work, alongside descriptions of the technologies used in the integration.
 The second chapter analyses running PHP on the client-side and other problems related to used technologies.
-The third gives a detailed problem's solution.
-There are examples that demonstrate how to use all aspects of the created solution in chapter 4.
+The third gives a detailed description of the library's functionality.
+There are examples that demonstrate how to use all aspects of \texttt{Peachpie.Blazor} in chapter 4.
 In chapter 5, we can see benchmarks that explore the limits of the implementation and compare them with the already existing project.
-And the last chapter relates to a conclusion of this solution.
+And the last chapter relates to a conclusion of this approach executing PHP scripts in a browser.

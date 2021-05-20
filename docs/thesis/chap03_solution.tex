@@ -1,17 +1,17 @@
 \chapter{Solution}
 
-This chapter describes the complete solution, covering the use cases.
-It starts with an overview of the solution parts.
+This chapter describes the complete process of \texttt{Peachpie.Blaozor} functionality, covering the use cases.
+It starts with an overview of the library parts.
 Then, it gives a detailed description of each part.
 \par
 \begin{figure}[b!]
 \centering
 \includegraphics[scale=0.9]{./img/SolutionInfrastructure}
-\caption{The solution infrastructure. Green rectangles represent projects. The orange rectangle represents a NuGet package. Arrows represent references.}
+\caption{The .NET solution infrastructure. Green rectangles represent projects. The orange rectangle represents a NuGet package. Arrows represent references.}
 \label{img13:infrastructure}
 \end{figure} 
 \par
-The proposed solution is implemented in \textit{Peachpie.Blazor}, which is a RCL library containing components mentioned in the previous section with an additional support code.
+\textit{Peachpie.Blazor} is a RCL library containing components mentioned in the previous section with an additional support code.
 It is provided as a NuGet package containing an API for including PHP scripts to the website.
 It defines a collection of support classes representing HTML entities, which makes the rendering easier.
 A part of the support code is a Javascript script, which is linked to the beginning of the HTML document, providing helper functions for form handling and interoperability with PHP.
@@ -26,7 +26,7 @@ The project references the Peachpie project containing the programmer's PHP scri
 \par
 The first section aims at the server settings providing a Blazor application using PHP scripts and the \textit{Peachpie.Blazor} library.
 The second section talks about \texttt{PhpComponent}.
-It describes the resulting implementation and solutions of problems, which occurred during the implementation.
+It describes the resulting implementation and solves problems, which occurred during the implementation.
 The last section aims at \texttt{PhpScriptProvider}.
 It suggests a convenient way how to include the scripts into a browser, and it presents the component design.
 
@@ -62,7 +62,7 @@ Javascript helpers of our library can be found in the \textit{wwwroot} folder, w
 \section{PhpComponent}
 
 This section introduces several issues caused by many factors, like the difference between the PHP and C\# language.
-We analyze these issues and suggest solutions, which form the resulting \texttt{PhpComponent} class.
+We analyze these issues and suggest helping concepts, which form the resulting \texttt{PhpComponent} class.
 The main objective is to utilize the Peachpie feature allowing to inherit C\# classes, like \texttt{ComponentBase} representing a Blazor component, to provide the full Blazor API in PHP.
 
 \subsection{PhpTreeBuilder}
@@ -175,11 +175,11 @@ Thus, we can call their functions only by one reference.
 \begin{figure}[t!]
 \centering
 \includegraphics[scale=0.8]{./img/PhpComponentSolution}
-\caption{Class diagram of the use case solution.}
+\caption{Class diagram of the use case implementation.}
 \label{img17:solution}
 \end{figure}
 \par
-This section summarizes the architecture of \texttt{PhpComponent} and solution of \textit{WebGame} use case.
+This section summarizes the architecture of \texttt{PhpComponent} and main implementation idea of \textit{WebGame} use case.
 The component hides the original function for rendering and replaces it with our version of the builder, as shown in Figure \ref{img17:solution}.
 It results in transparent usage of the builder in the inherited class.
 The builder is just a wrapper, so the programmer can use the original builder by accessing its property, \texttt{Builder}.
@@ -320,7 +320,7 @@ For this reason, we provide an additional parameter for defining the content, wh
 An alternative is initializing reading by a PHP script when it is executed.
 It uses interoperability between PHP, C\#, and Javascript in order to call desired reading methods.
 Unfortunately, Blazor does not allow us to wait until the reading operation is done, and we have to provide callbacks, which handle the end of the reading.
-We suppose that it is confusing for potential PHP programmers, who will use our solution to define PHP callbacks.
+We suppose that it is confusing for potential PHP programmers, who will use \texttt{Peachpie.Blazor} to define PHP callbacks.
 We decide to prefetch the file content before the execution to provide the data synchronously in PHP code.
 \par
 Interoperability in the provider can be achieved in a similar manner as in \texttt{PhpComponent}.

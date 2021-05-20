@@ -239,8 +239,8 @@ In the figure, the code calls Javascript \texttt{alert} function with the parame
 \label{img03:vrzno}
 \end{figure}
 \par
-At first glance, that might be a good enough solution, but several parts can be problematic due to PHP semantics.
-The solution does not offer additional support for using PHP scripts on the client side.
+At first glance, that might be a good enough approach, but several parts can be problematic due to PHP semantics.
+The project does not offer additional support for using PHP scripts on the client side.
 For example, superglobals are unused due to a missing server.
 This issue is reasonable because this is the server task, but we cannot get information about a query part or handling forms without writing a JavaScript code.
 The next problem relates to how a script can navigate to another script without an additional support code, JavaScript.
