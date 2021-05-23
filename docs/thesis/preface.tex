@@ -12,12 +12,12 @@ A server task is to process, collect and serve data requested by a client.
 The most popular language for server-side scripting is currently PHP. 
 \par
 The combination of CSS and HTML is sometimes sufficient for a web page.
-However, a modern web application needs to manipulate a web page structure depending on user behavior more sophisticatedly than the languages offer.
+However, a modern web application needs to manipulate a web page structure depending on the user's behavior more sophisticatedly than the languages offer.
 This type of application utilizes a browser as an execution environment to change the web page structure, react to the events, save an application state, and control browser behavior. 
 The scripting language Javascript became a browser standard for writing a client code inside most browsers like Google Chrome, Safari, Opera, and Mozzila.
 \par
 Although Javascript is a powerful language, it is not appropriate for all scenarios and users.
-The reason can be dynamic typing or just a user practice with other languages.
+The reason can be dynamic typing or just the user's practice with other languages.
 Despite the urge to write a client-side code in a different language, many technologies like Silverlight, which runs C\# code in a browser, or Adobe Flash Player with Actionscript were deprecated due to insufficient support across the browsers.
 \ac{WASM} \cite{online:wasmWiki} was developed to offer a portable binary-code format for executing programs inside a browser in 2015.
 WASM targets to enable secure and high-performance web applications.
@@ -26,33 +26,33 @@ Browsers support interoperability between WASM and Javascript to utilize both la
 Since December 2019, when \ac{W3C} has begun recommending WebAssembly, it is easy to migrate other languages to the browsers supporting this recommendation.
 \par
 Many projects use the WASM as a target of compilation.
-For example, the project PHP in browser \cite{online:pib} enables running a PHP script inside our browser using predefined Javascript API or standard HTML tag.
+For example, the project PHP in browser \cite{online:pib} enables running a PHP script inside a browser using predefined Javascript API or standard HTML tag.
 Another project is an open-source framework Blazor \cite{online:blazor} developed by Microsoft.
 It provides runtime, libraries, and interoperability with Javascript for creating dynamic web pages using C\#.
 \par
-The .NET and PHP popularity led to the creation of the Peachpie compiler.
-Peachpie \cite{online:peachpie} compiles PHP to .NET and enables interoperability between the languages.
+The .NET and PHP popularity led to the creation of the Peachpie compiler \cite{online:peachpie}.
+Peachpie compiles PHP to .NET and enables interoperability between the languages.
 Peachpie is usually used to connect a frontend written in PHP with a backend written in C\# to utilize both aspects of languages on a server side.
 \par
 Peachpie allows applying PHP to Blazor. 
 Although Blazor can straightforwardly reference compiled PHP by Peachpie, the collaboration between the code and Blazor seems complicated.
 Methods of how to utilize PHP scripts as a part of a Blazor website are not clear. 
-This thesis targets to identify use-cases that will make use of the integration between Peachpie and Blazor and suggests a solution, which creates a library \texttt{Peachpie.Blazor} to execute and render compiled PHP scripts in a browser.
+This thesis targets to identify use cases that will make use of the integration between Peachpie and Blazor and suggests a solution, which creates the \texttt{Peachpie.Blazor} library  to execute and render compiled PHP scripts in a browser.
 Blazor is used as an execution environment for these scripts.
 \texttt{Peachpie.Blazor} tries to achieve two goals.
 The first goal is to implement the support for using compiled PHP scripts with Blazor because no existing library supports the integration.
-The second goal is to enable web development on a client-side with PHP.
+The second goal is to enable web development on a client side with PHP.
 \par
-The integration between Peachie and Blazor can yield to following benefits.
+The integration between Peachie and Blazor can yield the following benefits.
 A community of PHP developers is significant.
-Thus, many PHP libraries apply to work with client's data, pdf, graphics and offer handy tools.
-The possibility to migrate the language PHP together with its conventions to a browser will impact developing dynamic web applications due to the PHP community and the libraries.
+Thus, many PHP libraries apply to work with user's data, pdf, graphics and offer handy tools.
+The possibility of migrating the language PHP together with its conventions to a browser will impact developing dynamic web applications due to the PHP community and the libraries.
 It can join PHP and C\# developers to collaborate with their programming languages using a minimum knowledge of the integration.
-Another interesting functionality of this idea is a full C\#, PHP, and JavaScript interop which offers more options for developers and future extensions.
+Another interesting functionality of this idea is a full C\#, PHP, and JavaScript interoperability which offers more options for developers and future extensions.
 \par
 The first chapter addresses the analysis of related work, alongside descriptions of the technologies used in the integration.
-The second chapter analyses running PHP on the client-side and other problems related to used technologies.
-The third gives a detailed description of the library's functionality.
+The second chapter analyses running PHP on a client side and other problems related to used technologies.
+The third chapter gives a detailed description of the library functionality.
 There are examples that demonstrate how to use all aspects of \texttt{Peachpie.Blazor} in chapter 4.
-In chapter 5, we can see benchmarks that explore the limits of the implementation and compare them with the already existing project.
-And the last chapter relates to a conclusion of this approach executing PHP scripts in a browser.
+In chapter 5, we can see benchmarks that explore the limits of the implementation.
+The last chapter relates to a conclusion of this approach of executing PHP scripts in a browser.
