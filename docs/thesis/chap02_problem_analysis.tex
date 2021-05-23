@@ -30,7 +30,7 @@ One day Blake tells him about \texttt{Peachpie.Blazor}, and Bob's wish is to use
 Occasional work with the Blazor framework does not bother him, but it should have appropriate difficulty to his skills.
 \par
 The fourth persona is an enthusiastic PHP programmer, Chuck, who has advanced experience with Blazor and knows Peachpie basics.
-He does not avoid exploring new technology to utilize all their aspects.
+He does not avoid exploring a new technology to utilize all their aspects.
 Blake tells him about \texttt{Peachpie.Blazor}, and Chuck wishes that the library offers him to collaborate with Blazor by PHP.
 \par
 These descriptions should help us determine the following use cases, which are realistic to them.
@@ -38,7 +38,7 @@ We call the first use case \textbf{Web} aiming at Alice.
 We suppose she has a simple PHP website, which contains some information about her company.
 The website does not work with a database and consists of pages containing images and references interconnecting them.
 Some pages are adjustable by specifying the query part of the URL, and they include other scripts to add some basic layout.
-One day the website notices many accesses, and Alice wants to migrate the website in order to a client side to save server resources.
+One day the website notices many accesses, and Alice wants to migrate the website to a client side in order to save server resources.
 The migration should download most of the website to a browser.
 Afterward, navigation between scripts and script execution should be maintained on the client side.
 Even more, Alice does not want to adjust the website for a client side too much, and she wishes for simple instructions that are understandable by a novice.
@@ -48,17 +48,17 @@ He wants to contribute to an existing Blazor website.
 He has a great idea of adding a new widget, displaying the user's graph using HTML and CSS.
 Because he is used to PHP, he wants to implement it with a few PHP scripts, which use some supporting libraries.
 The idea consists of letting the user choose to load graph data from a file or generate a predefined graph as a demo.
-After that, the widget renders HTML markup representing the graph.
+After that, the widget renders an HTML markup representing the graph.
 Bob uses forms to interact with a user, and he is not willing to learn Javascript or interoperability between PHP and Blazor.
 Thus, he needs a mechanism, which offers interaction with a user and uses standard PHP conventions mentioned earlier.
 \par
 We call the third use case \textbf{WebGame} aiming at Chuck.
 He wants to create a real-time web game similar to Asteroids written in PHP.
-He decides to target on a client side and utilizes Blazor, Peachpie, and the \texttt{Peachpie.Blazor}library.
+He decides to target on a client side and utilizes Blazor, Peachpie, and the \texttt{Peachpie.Blazor} library.
 A client side execution should prevent network latency by loading the game in the beginning.
 After that, the game will be independent of the network connection due to running the game and saving the game state by a browser.
 PHP programmers have not been used to saving variables or defined functions across scripts because of the HTTP policy mentioned in the PHP section.
-However, Chuck utilizes state persistent to saves a state of all game entities in variables.
+However, Chuck utilizes state persistency to save a state of all game entities in variables.
 Because he has previous experience with Blazor infrastructure, he will appreciate utilizing all Blazor aspects to run this game.
 \par
 \begin{figure}
@@ -74,12 +74,12 @@ A dashed arrow represents a possible usage, where the head aims at an implementa
 The goal of the use case is to allow collaboration between PHP and Blazor programmers, where a difference of languages is not a barrier.  
 Image two teams creating a web application. 
 They agreed on developing a client-side web application, where both teams aim at different parts of the website.
-For example, one team wants to create a fun zone where a user can play a web game, like Asteroids, and the second team wants to create some online documentation about the game and the widget for the graph representation displaying a user's score.
+For example, one team wants to create a fun zone where a user can play a web game, like Asteroids, and the second team wants to create online documentation about the game, and the widget for the graph representation displaying a user's score.
 Because Blazor targets client-side web applications, they want to utilize Blazor.
 Unfortunately, these teams use a different favorite language, where the first team uses PHP and the second team uses C\#.
 Even more, these teams want to contribute to any part of the Blazor website, meaning that doing the fun zone can be handled by either the C\# or PHP team.
-They need some environment where the PHP team can code alongside the Blazor team, and they can focus on an arbitrary part of the web application.
-We can see the intention in Figure \ref{img09:usecase} where each team can create a part aiming at the web game, the online documentation, and widget.
+They need an environment where the PHP team can code alongside the Blazor team, and they can focus on an arbitrary part of the web application.
+We can see the intention in Figure \ref{img09:usecase} where each team can create a part aiming at the web game, the online documentation, and the widget.
 The PHP team consists of Alice, Bob, and Chuck, having different skills with Blazor, so the environment should reflect it.
 Even more, Blake should be able to manipulate their part of the application to customize it using C\#. For example, he should change the layout of the website without complex refactoring. 
 
@@ -89,7 +89,7 @@ The goal of this section is to describe requirements based on mentioned use case
 If the proposed library covers the requirements, then PHP scripts will become a valuable part of a Blazor website.
 \par
 \textbf{Navigation} is the first requirement that our library should provide.
-Figure \ref{img10:scripts} shows navigation posibilities.
+Figure \ref{img10:scripts} shows navigation possibilities.
 Basic functionality should provide script routing, which finds a script by its name, executes it, and displays the output in a browser.
 This intention is illustrated by the first rectangle containing a collection of scripts in the figure.
 The library should offer a straightforward router making a PHP website accessible, as we can see in the figure.
@@ -118,42 +118,42 @@ The second way aims at the \textit{WebGame} use case when \texttt{Peachpie.Blazo
 It is also necessary when we want to use already defined components in a PHP code.
 The rendering should be effective due to the high frame rate of the game.
 \par
-\textbf{State preservation} should be available for creating a web application by a collection of scripts saving their variables after the execution.
+\textbf{State preservation} should be available for creating a web application by a collection of scripts, where it saves their variables after the execution.
 This feature is not typical for PHP because of PHP policy and conventions, where programmers are used to deletion of variables and function definitions after the request termination.
 The state described by the variables needs to be preserved in order to interact with a user in a client-side application. 
-For an example, the \textit{WebGame} use case uses variables to save the game state. 
+For example, the \textit{WebGame} use case uses variables to save the game state. 
 However, we have to distinguish these situations where the feature is necessary.
 \par
 \textbf{Server simulation} should be the main advantage of the library.
 Superglobals are commonly used methods how to obtain information about navigation or submitted data.
-The library should support superglobals for examples like the \textit{Web} use case, where the website uses information about URL query part, via \texttt{\$\_GET} variable, to make decisions.
+The library should support superglobals for example like the \textit{Web} use case, where the website uses information about URL query part, via \texttt{\$\_GET} variable, to make decisions.
 \par
 \textbf{Forms} should be maintained by the library. 
 The forms are usually sent to a server, but the library should handle them on a client side, where they should be provided to PHP scripts.
 After navigation to a script defined in the \texttt{action} attribute, the script should access the form data.
-A client can upload files by form.
+A client can upload files by a form.
 Thus, the library should provide file management accessing and downloading them.
 \par
 \textbf{Interoperability} between PHP, Blazor, and Javascript should be supported for situations when forms, the server abstraction, or Blazor are not sufficient.
-We need some representation of Blazor in PHP, which the \textit{WebGame} use case will use for interacting with a Blazor.
+We need a representation of Blazor in PHP, which the \textit{WebGame} use case will use for interacting with a Blazor.
 Javascript is essential for client side applications, and PHP should be able to use its features.
 
 \section{Architecture}
 
-The basic principle of our approach consists of PHP scripts compilation into .NET assembly by Peachpie.
-After that, a Blazor App references \texttt{Peachpie.Blazor}, which is a support library providing a mechanism for navigating and executing the scripts.
+The basic principle of our approach consists of PHP scripts compilation into a .NET assembly by Peachpie.
+After that, Blazor App references \texttt{Peachpie.Bla\-zor}, which is a support library providing a mechanism for navigating and executing the scripts.
 Then, a server provides the application to a browser, where Mono runtime executes it.
-We describe the architecture from the view point of compilation time and runtime.
+We describe the architecture from the viewpoint of compilation time and runtime.
 \par
 When we think about PHP script compilation, there are two possibilities.
-The scripts can be compiled ahead of time and reference them from a Blazor App. 
+The scripts can be compiled ahead of time and can be referenced from a Blazor App. 
 The second way is to regard the scripts as Static Web Assets and load them into a browser as separated files.
 Afterward, the Peachpie compiles and executes them.
 Both approaches have different advantages. 
 Thus, there is no silver bullet.
 The first approach saves time by ahead compilation and compilation check.
-However, the second approach can save browser memory when the web application is larger, and a client uses only a part of it.
-We are inclined to the first approach because the static compilation is a standard way in Peachie.
+However, the second approach can save browser memory when the web application is larger and a client uses only a part of it.
+We are inclined to the first approach because the static compilation is a standard way in Peachpie.
 We think that the first approach is valuable for the use cases mentioned earlier.
 The \textit{Web} use case wants to save additional requests. 
 The rest of the use cases intends to utilize small amounts of PHP scripts as a part of the website, so we suppose that the smaller size of resulting scripts is insignificant in contrast with the compiled Peachpie assembly, containing all of them. 
@@ -171,7 +171,7 @@ Afterward, scripts will compose the whole Blazor website content.
 The component provides a sufficient Blazor interface for rendering control and interaction with a browser. 
 \par
 We can think about how to represent PHP scripts as components.
-One type of component can be considered, which will provide the abstraction for all the PHP code in scenarios.
+One type of component can be considered, which will provide the abstraction for the all PHP code in use cases.
 A problem with this approach is that the use cases need different levels of abstraction.
 The \textit{WebGame} use case wants to use the component for offering the Blazor interface accessible from PHP code.
 The offer should contain identical or similar options, which are given in a C\# code.
@@ -215,7 +215,7 @@ It should pretend a server behavior, which copies everything in the output of PH
 Superglobals are often used for obtaining additional information given by the user.
 Thus, an ability to fill \texttt{\$\_GET} variable with the URL query part is important.
 It should change a standard form functionality, which is sending the form to a server, to save the form information into superglobals, and executing the script again.
-We target to load and save files submitted by form transparently in order to provide similar comfort to execute the script on a server side.
+We target to load and save files submitted by a form transparently in order to provide similar comfort to execute the script on a server side.
 A possibility of saving the script context to the next execution is a new opportunity how to keep an application state in PHP script.
 The following paragraphs describe the provider modes.
 These modes are intended to solve \textit{Web}, \textit{OneScript}, and \textit{AllTogether} use cases. 
