@@ -31,7 +31,7 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
 
 The library provides a collection of helper classes representing HTML entities because \texttt{RenderTreeBuilder}, used in Blazor, is complicated for writing an HTML page. You can see an example of usage in the figure below.
 \par
-\begin{figure}
+\begin{figure}[H]
 \begin{lstlisting}
 $button= new \Peachpie\Blazor\Tag("button");
 $button->attributes["style"]["position"] = "absolute";
@@ -39,7 +39,10 @@ $button->attributes["style"]["top"] = "700px";
 $button->attributes["style"]["left"] = "100px";
 $button->attributes["class"]->add("mybutton");        
         
-$button->attributes->addEvent("onclick", function($seq, $builder) {$builder->AddEventMouseCallback($seq, "onclick", function($e) {$this->HandleFire();});});
+$button->attributes->addEvent("onclick", function($seq, $builder) 
+{ $builder->AddEventMouseCallback($seq, "onclick", function($e) 
+{ $this->HandleFire();})
+;});
         
 $button->content[] = new \Peachpie\Blazor\Text("Fire");
 \end{lstlisting}
@@ -81,7 +84,9 @@ You can see an example of usage in the figure below. It is a Razor page containi
 @page "/php/{*sth}"
 @using Peachpie.Blazor
 
-<PhpScriptProvider ContextLifetime="@SessionLifetime.OnNavigationChanged" Type="@PhpScriptProviderType.ScriptProvider">
+<PhpScriptProvider 
+ContextLifetime="@SessionLifetime.OnNavigationChanged"
+Type="@PhpScriptProviderType.ScriptProvider">
     <Navigating>
         <p>Navigating to script</p>
     </Navigating>
@@ -102,7 +107,7 @@ You can see an example of usage in the figure below. It is a Razor page containi
 
 \subsection{BlazorContext}
 
-he context inherits the original PHP context and adds functionality for managing Blazor. The  functionality includes handling \texttt{\$\_GET}, \texttt{\$\_POST}, and \texttt{\$\_FILES} superglobals. It includes evaluating HTML forms on a client side, where forms are not sent to a server but it is parsed and handled by PHP scripts inside a browser. It also provides file management like reading uploaded files by forms or creating a new one, which can be downloaded back to a client.  For this purpose, there are the following functions and structure:
+The context inherits the original PHP context and adds functionality for managing Blazor. The  functionality includes handling \texttt{\$\_GET}, \texttt{\$\_POST}, and \texttt{\$\_FILES} superglobals. It includes evaluating HTML forms on a client side, where forms are not sent to a server but it is parsed and handled by PHP scripts inside a browser. It also provides file management like reading uploaded files by forms or creating a new one, which can be downloaded back to a client.  For this purpose, there are the following functions and structure:
 \par
 \begin{itemize}
 \item \textbf{BrowserFile} - Represents a file, which can be downloaded to a client.
