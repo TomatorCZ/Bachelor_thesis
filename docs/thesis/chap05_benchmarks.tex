@@ -23,15 +23,15 @@ Then, there are result evaluations.
 \label{img33:benchmark}
 \end{figure} 
 \par
-The .NET solution comprises three projects: \texttt{BlazorApp.Client}, \texttt{BlazorApp.Server}, \texttt{PHPScripts}.
+The .NET solution comprises three projects: \texttt{BlazorApp.Client}, \texttt{Blazor\-App.Server}, \texttt{PHPScripts}.
 The setting of BlazorApp is similar to the previous examples.
 \texttt{PHPScripts} contains the modified game together with additional scripts providing the interactive setting for the benchmark in a browser.
 When we start the server and navigate the website, we can set various properties of measurement like an upper bound of FPS, a frequency of asteroids, or dimensions of background.
 We explain only the \textit{Rendering} property because the rest of the properties are self-explanatory.
 There are two options for the property.
-We call the first one \texttt{String} rendering because it uses \texttt{AddMarkup} method for updating the page content.
+We call the first one \texttt{String} rendering because it uses \texttt{AddMarkupContent} method for updating the page content.
 This method accumulates the generated HTML entities into a single string and adds it into \texttt{PhpTreeBuilder}.
-We call the second one \texttt{Diff} rendering because it utilizes specialized builder interface for adding HTML entities, which includes \texttt{AddAttribute} for example.
+We call the second one \texttt{Diff} rendering because it utilizes a specialized builder interface for adding HTML entities, which includes \texttt{AddAttribute}, for example.
 \par
 We suppose that the first method is less effective than the second because the diff algorithm makes lesser update optimizations in the first case.
 It is caused by not providing the sequence numbers for each of the HTML entities, but it is regarded as the one part.
@@ -46,11 +46,11 @@ The resulting speed will be significantly lower, but we want to measure the maxi
 We generate five asteroids per second.
 The dimensions of the background are 800 x 800.
 The FPS and number of objects are measured for 60 seconds.
-We can see a graph displaying the current FPS and number of objects.
+We can see a graph displaying the current FPS and the number of objects.
 The lines represent measured values for each type of rendering.
 In spite of mean, the lines are not smooth.
 It is caused by a difference of a sampling rate, where the measurements do not log FPS in the common numbers of objects.
-But we think that the graphs sufficiently prove our hypothesis.
+However we think that the graphs sufficiently prove our hypothesis.
 The second measurement aims at the deeper structure of updating elements in Figure \ref{img32:benchmark2}.
 The setting is the same as the previous one.
 \par
@@ -76,15 +76,15 @@ When the updated objects had inner elements, the FPS was lower in the first way 
 This is caused by optimized updates made by the diff algorithm, which generates only DOM updates for the element style and leaves the inner tree unchanged.
 As we can see, the FPS was about 30 in a second way when the number of asteroids was stable, which is fine because the untrained eye is able to distinguish up to 23 images per second.
 The first way had about 24 FPS, which looked glitchy in the browser.
-This benchmark demonstrates when it is a good choice to use the builder properly and the need to use \texttt{PhpComponent} for render demanding applications.
+This benchmark demonstrates when it is a good choice to use the builder properly and the need to use \texttt{PhpComponent} for render-demanding applications.
 \par
 Another problem caused by the first way of rendering is handling click events when the window is being quickly refreshed.
 Because the click events consist of two inner events (mouse up, mouse down), the event is not fired due to removing the element before the second event appears.
 
 \section{Performance of libraries}
 
-This benchmark wants to highlight performance of PHP libraries in the Blazor environment.
-We prepared a simple script, which measures execution time of the following three functions: \texttt{imagecreatetruecolor}, \texttt{str\_getcsv}, \texttt{md5}.
+This benchmark wants to highlight the performance of PHP libraries in the Blazor environment.
+We prepared a simple script, which measures the execution time of the following three functions: \texttt{imagecreatetruecolor}, \texttt{str\_getcsv}, \texttt{md5}.
 The first function creates a 1920x1080 blank image.
 The second function converts a short string representing CSV data to an array.
 The last function computes a hash of the CSV string.
@@ -93,7 +93,7 @@ This approach should make the time spend with the JIT compilation less important
 We compare the results of executing the script in a desktop environment, where we use Peachpie, the Blazor environment using Peachpie as well, and the native PHP interpreter.
 \par
 The benchmark is created as a .NET solution consisting of four projects: \texttt{BlazorApp.Client}, \texttt{BlazorApp.Server}, \texttt{Desktop}, \texttt{PHPScripts}.
-The \texttt{PHPScripts} project contains \textit{index.php}, which does the benchmark.
+The \texttt{PHPSc\-ripts} project contains \textit{index.php}, which does the benchmark.
 The \texttt{Desktop} project runs the script in a console application.
 \texttt{BlazorApp} projects run the script in a browser.
 \par
@@ -112,7 +112,7 @@ Desktop - Native   & \mc{\num{5e2}} & \mc{7.2} & \mc{\num{0.4}} \\
 \label{tab01:time}
 \end{table}
 \par
-We can see the result of measurement in Table \ref{tab01:time}.
+We can see the result of the measurement in Table \ref{tab01:time}.
 The first observation is the call of the \texttt{md5} function caused an error: \textit{This function is unsupported in this platform}.
 The second observation is an extremely slow execution of the \texttt{imagecreatetruecolor} function in the Blazor environment.
 We suppose that it is caused by the \texttt{ImageSharp} library, which has not to be optimized in the browser environment.
@@ -122,5 +122,5 @@ The PHP interpreter uses different libraries written in C.
 We can not say that Peachpie or the PHP interpreter is faster due to the results.
 \par
 This benchmark reveals the need to test a library before it is being used in the Blazor environment.
-We suppose that these issues with speed and the error will be solved because Peachpie uses a standard library for the encryption and \texttt{ImageSharp} for the graphics, which has a big community.
+We suppose that these issues with speed and the error will be solved because Peachpie uses a standard library for encryption and \texttt{ImageSharp} for the graphics, which has a big community.
 On the other hand, if the execution time will be slower than the execution with the PHP interpreter, it would consume a client resource, which is a server benefit.
