@@ -6,18 +6,20 @@ We observed the basics and limitations of Peachpie and Blazor.
 \par
 Then, we considered possible ways, how to combine the PHP script compilation with the Blazor environment to provide executing these scripts on a client side.
 We proposed four use cases aiming at different end-users to cover the goals of this thesis.
-The first use case aims at a pure PHP web application written in PHP, which is moved to client side by using the library components to navigate PHP scripts.
+The first use case aims at a pure PHP web application written in PHP, which is moved to a client side by using the library components to navigate PHP scripts.
 The second use case regards PHP scripts as a part of a Blazor website, which can be inserted into Razor pages.
 The third use case implements a web game, which utilizes the Blazor logic to improve rendering performance.
 The last use case joins the previous use cases and interconnects them by sharing PHP context between them to preserve an application state.  
 The proposed solution was designed and implemented to solve these use cases.
 \par
-It results in \texttt{Peachpie.Blazor} library, which offers API for inserting PHP scripts to Razor pages of the Blazor website, navigation to PHP scripts, helper classes representing HTML entities to make the rendering with Blazor easier, a form handling, and sharing PHP context between the navigation.
+It results in the \texttt{Peachpie.Blazor} library, which offers API for inserting PHP scripts to Razor pages of the Blazor website, navigation to PHP scripts, helper classes representing HTML entities to make the rendering with Blazor easier, a form handling, and sharing PHP context between the navigation.
 Approaches how to insert PHP scripts into Blazor utilize different levels of abstraction to cover all possible users with different knowledge of Blazor and Peachpie.
 We are able to work with Blazor structures directly or render the content of PHP scripts transparently due to our \texttt{Peachpie.Blazor} library.
 These features help PHP programers to use Blazor and move the script executions to a client side and helps PHP and C\# programers to co-work on a joint website.
 \par
 We demonstrated the use cases by implementing four examples, which presents different levels of difficulty utilizing the integration.
+A part of the library is another project comprising two templates targeting Visual Studio.
+These templates help a programmer to get started with development.
 \par
 In the end, we used two benchmarks to reveals issues caused by the used technologies and approaches of using structures for rendering.
 We learned that the proper usage of \texttt{RenderTreeBuilder} has the purpose, and C\# libraries have to be tested before we will use them in Blazor because they can not be optimized or even supported in the Blazor environment.

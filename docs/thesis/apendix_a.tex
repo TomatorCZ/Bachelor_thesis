@@ -18,12 +18,14 @@ Folder & Description \\
 \end{tabular}
 \end{table}
 
+The instructions for getting started and a short description of the library API can be seen in the last appendices.
+
 \section{Build and run}
 
 The library, examples, and benchmarks are .NET solutions, which can be opened by \ac{VS} 2019.
 The \texttt{bin} folder consists of compiled examples with supports for various OS and architectures like Windows (x86, x64), Unix, OSX, or Linux (x86, x64, arm).
 The .NET 5.0 runtime, which is available from \url{https://dotnet.microsoft.com/download/dotnet/5.0}, is required to run binaries.
-After the installation, the particular example can be run by moving to the \texttt{bin/NameOfExample} directory and run the command line below:
+After the installation, the particular example can be run by moving to the \texttt{bin/NameOfExa\-mple/} directory and run the command line below:
 \par
 \begin{code}[frame=none]
 dotnet BlazorApp.Server.dll
@@ -33,7 +35,7 @@ Then, the website can be accesed by navigation to \url{https://localhost:5001}, 
 \par
 The .NET 5.0 SDK, which is available from the same website as the runtime, is required to build .NET solutions.
 After the installation, the \texttt{Peachpie.Blazor} library has to be compiled and packed. 
-This is done by moving to the \texttt{src/Peachpie.Blazor/Peachpie.Blazor} directory and run the commands below:
+This is done by moving to the \texttt{src/Peach\-pie.Blazor/Peachpie.Blazor} directory and run the commands below:
 \par
 \begin{code}[frame=none]
 dotnet build --configuration Release
@@ -50,4 +52,4 @@ After the compilation, the server can be launched by the instructions mentioned 
 \par
 The template compilation can be done by running a PowerShell command \texttt{./build/build.ps1} in the template folder.
 It results in a NuGet package, which can be added to VS template collection.
-The user manual gives instructions on adding the templates to VS.
+The user manual gives instructions for adding the templates to VS.
