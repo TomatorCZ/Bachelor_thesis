@@ -2,7 +2,7 @@
 
 This section picks useful classes and methods up, which are used to provide PHP scripts defined in the Peachpie project.
 See also generated library documentation for more detailed information about function parameters and return types.
-The library provides two approaches, how to use PHP in Blazor. 
+The library provides two approaches how to use PHP in Blazor. 
 The first one creates a Blazor component by inheriting the \texttt{PhpComponent} class. 
 The second approach inserts the \texttt{PhpScriptProvider} component into a Razor page or sets it up as a root component. 
 This component navigates the PHP scripts, evaluates them, and generates page content based on their output. 
@@ -11,6 +11,7 @@ There are also helper classes representing HTML entities, which are useful in th
 \section{PhpComponent}
 
 This class can be inherited in a script to provide Blazor component API in PHP. Every output initiated by echo or similar functions is copied into a browser console. The virtual method of the Blazor component can be freely overridden. The inherited class has to implement the \texttt{BuildRenderTree} method. It generates the page content using \texttt{PhpTreeBuilder}, which is a wrapper of the original \texttt{RenderTreeBuilder} and provides adjusted API for PHP use.
+We can see an example in Figure \ref{img35:inheritance}
 \par
 \begin{figure}
 \begin{lstlisting}
@@ -29,7 +30,7 @@ class AsteroidsComponent extends \Peachpie\Blazor\PhpComponent
 
 \subsection{Helper classes representing HTML}
 
-The library provides a collection of helper classes representing HTML entities because \texttt{RenderTreeBuilder}, used in Blazor, is complicated for writing an HTML page. You can see an example of usage in the figure below.
+The library provides a collection of helper classes representing HTML entities because \texttt{RenderTreeBuilder}, used in Blazor, is complicated for writing an HTML page. We can see an example of usage in Figure \ref{img36:helpers}.
 \par
 \begin{figure}[H]
 \begin{lstlisting}
@@ -56,7 +57,7 @@ $button->content[] = new \Peachpie\Blazor\Text("Fire");
 \item \textbf{AttributeCollection} - Helper class manages tag attributes in array style. It is used by the \texttt{Tag} class.
 \item \textbf{ClassBuilder} - Helper class adds and removes class names from the \textit{class} attribute. It is used by the \texttt{AttributeCollection} class.  
 \item \textbf{CssBuilder} - Helper class builds css style format used in the \textit{style} attribute. It is used by the \texttt{AttributeCollection} class.  
-\item \textbf{Text} - Class represents an HTML text element. It implements \texttt{BlazorWritable}.  
+\item \textbf{Text} - Class represents an HTML text element. It implements \\ \texttt{BlazorWritable}.  
 \end{itemize}
 \par
 
@@ -70,16 +71,16 @@ The component navigates PHP scripts in Peachpie project. It has three modes:
 \item \textbf{Script} - Always navigates one script defined by its parameter. 
 \end{itemize}
 \par
-The component can preserve Peachpie context to next evaluation. This behaviour is determined by the \texttt{ContextLifetime} parameter having two modes.
+The component can preserve the Peachpie context to next evaluation. This behaviour is determined by the \texttt{ContextLifetime} parameter having two modes.
 \par
 \begin{itemize}
 \item \textbf{OnNavigationChanged} - Every navigation causes a new context, which is a standard behaviour of PHP.
 \item \textbf{Preserved} - The context is preserved until the component is not disposed.  
 \end{itemize}
 \par
-You can see an example of usage in the figure below. It is a Razor page containing the provider.
+We can see an example of usage in Figure \ref{img37:phpcomponent}. It is a Razor page containing the provider.
 \par
-\begin{figure}
+\begin{figure}[b!]
 \begin{lstlisting}
 @page "/php/{*sth}"
 @using Peachpie.Blazor
@@ -128,7 +129,7 @@ The context inherits the original PHP context and adds functionality for managin
 \section{Interoperability}
 
 \begin{itemize}
-\item \textbf{window.php.callPhp} - Calls a PHP function by given name and parameters passed as JSON. The context has to be presented in Javascript , meaning that the page has to contain one of the components mentioned earlier, and the context has to already know the function (requires at least one script execution).
+\item \textbf{window.php.callPhp} - Calls a PHP function by given name and parameters passed as JSON. The context has to be presented in Javascript, meaning that the page has to contain one of the components mentioned earlier, and the context has to already know the function (requires at least one script execution).
 \item \textbf{CallJSVoid} - Calls a Javascript void function.
 \item \textbf{CallJS} - Calls a Javascript function.
 \item \textbf{CallJSVoidAsync} - Calls a Javascript void function asynchronously.
