@@ -103,7 +103,7 @@ In the beginning, header rendering is delegated to \textit{header.php} script.
 Then, the script renders the body and includes \textit{footer.php}, which cares about the proper ending of the HTML page.
 \par
 A PHP code can be split by several ways.
-Despite the fact that that object-oriented programming is very wide-spread, the most notable characteristics of PHP are global functions.
+Despite the fact that object-oriented programming is very wide-spread, the most notable characteristics of PHP are global functions.
 They are defined in the global scope and accessible from anywhere.
 The next option is an object inspired by object-oriented programming.
 A PHP script can include a PHP code from other scripts.
@@ -285,7 +285,7 @@ Blazor framework offers two hosting models \cite{online:hostingModels} that have
 The first one is referred to as Blazor Server App and represents a server-side web application using specific communication between a client and a server for better functionality.
 This thesis uses the second model, which Microsoft refers to as Blazor WebAssembly App, enabling to move business logic to a client side without using JavaScript.
 \par
-From now on, the Blazor App is going to be refered as the Blazor WebAssembly App.
+From now on, the Blazor WebAssembly App is going to be refered as the Blazor App.
 The application can be hosted as a standalone project representing a standard ASP.NET Core web server.
 The hosting consists of serving application .dlls and static files like HTML, CSS.
 The division enables choice of a place for the implementation of business logic.
@@ -342,7 +342,7 @@ else
 Although the format can be considered as self-explaining, the keywords are going to be described.
 The first line begins with the \texttt{page} keyword determining a part of the URL page.
 The next keyword is the \texttt{inject}, representing a \texttt{HttpClient} service injection. 
-The \texttt{if} keyword is an control structure iterleaved by an HTML code.
+The \texttt{if} keyword is an control structure interleaved by an HTML code.
 The \texttt{code} keyword contains a regular C\# code, which can be used in the whole \texttt{.razor} file.
 \par
 A Razor file is compiled into a C\# dedicated class.
@@ -405,7 +405,7 @@ Folders \textit{Pages} and \textit{Shared} contain parts of Blazor pages written
 The \textit{\_Imposts.razor} contains namespaces, which are automatically included in other \texttt{.razor} files.
 The next folder is the \textit{wwwroot}, containing static data of the application.
 The \textit{index.html}, cares about loading parts of the Blazor application to the browser.
-We call all of the static files in the \textit{wwwroot} additional JavaScript scripts and WASM runtime environment Static Web Assets.
+We call all of the static files in the \textit{wwwroot}, additional JavaScript scripts, and WASM runtime environment Static Web Assets.
 \par
 The following paragraphs describe the loading of Blazor into the browser to fully understand the interaction between Blazor and the browser.
 There is the server, the Blazor App, and other optional user defined projects. 
@@ -470,7 +470,7 @@ Previously created intences of the components are disposed.
 The navigation can be redirected to the server if there is no match.
 \par
 The rendering process begins with the \texttt{Renderer} initialized in the application builder.
-\texttt{Renderer} keeps a copy of DOM in memory, creates page updates, and calls JavaScript API for changing the web page DOM in a browser, using the runtime interop support.
+\texttt{Renderer} keeps a copy of DOM in memory, creates page updates, and calls JavaScript API for changing the web page DOM in a browser, using the runtime interoperability support.
 Blazor provides API for invoking JavaScript functions and vice-versa.
 \texttt{Renderer} provides the \texttt{RenderTreeBuilder} for describing page contents.
 The builder provides an API for adding various types of content to the \texttt{Batch}, which is a specialized structure for describing previous and present DOM.
@@ -507,7 +507,7 @@ We can imagine the \texttt{Context} class as a state of the script while it runs
 The \texttt{Context} class consists of superglobals, global variables, declared functions, declared and included scripts.
 It also manages input and output, where the resource can be chosen.
 The \texttt{Context} class can also be considered as a configuration of the incoming script execution.
-All of the information about a request can be arranged to mock every situation on the server-side.
+All of the information about a request can be arranged to mock every situation on the server side.
 The possibility of saving the \texttt{Context} class and using it later is a significant advantage.
 The class provides information about compiled scripts.
 \par

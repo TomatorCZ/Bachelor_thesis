@@ -38,7 +38,7 @@ The first use case called \textbf{Web} is aiming at Alice.
 We suppose she has a simple PHP website, which contains some information about her company.
 The website does not work with a database and consists of pages containing images and references interconnecting them.
 Some of the pages are adjustable by specifying the query part of the URL, and they include other scripts to add some basic layout.
-In a specific case the website notices many accesses, and Alice wants to migrate the website in order to a client side to save server resources.
+In a specific case the website notices many accesses, and Alice wants to migrate the website to a client side in order to save server resources.
 The migration should download most of the website to a browser.
 Afterward, navigation between scripts and script execution should be maintained on the client side.
 Even more, Alice does not want to adjust the website´s client side too much, and she wishes for simple instructions that are understandable by a novice.
@@ -55,7 +55,7 @@ Thus, he needs a mechanism, which offers interaction with a user and uses standa
 The third use case is called \textbf{WebGame} and is aiming at Chuck.
 He wants to create a real-time web game similar to Asteroids written in PHP.
 He decides to target on a client side and utilizes Blazor, Peachpie, and the \texttt{Peachpie.Blazor} library.
-A client side execution should prevent network latency by loading the game in the beginning.
+A client-side execution should prevent network latency by loading the game in the beginning.
 After that, the game will be independent of the network connection because of running and saving the game state by a browser.
 PHP programmers have not been used to saving variables or defined functions across scripts because of the HTTP policy mentioned in the PHP section.
 However, Chuck utilizes state persistency to save states of all game entities in variables.
@@ -131,12 +131,12 @@ The library should support superglobals, for example as is the \textit{Web} use 
 \textbf{Forms} should be maintained by the library. 
 The forms are usually sent to a server, but the library should handle them on a client side, where they should be provided to PHP scripts.
 After navigating to a script defined in the \texttt{action} attribute, the script should access the form data.
-A client can upload files by form.
+A client can upload files by a form.
 Thus, the library should provide file management accessing and downloading them.
 \par
 \textbf{Interoperability} between PHP, Blazor, and JavaScript should be supported in those situations where forms, the server abstraction, or Blazor are not sufficient.
 We need some representation of Blazor in PHP, which the \textit{WebGame} use case will use for interacting with a Blazor.
-JavaScript is essential for client side applications, and PHP should be able to use its features.
+JavaScript is essential for client-side applications, and PHP should be able to use its features.
 
 \section{Architecture}
 
@@ -146,7 +146,7 @@ Then, a server provides the application to a browser, where Mono runtime execute
 We describe the architecture from the viewpoint of compilation time and runtime environment.
 \par
 When we think about PHP script compilation, there are two possibilities.
-The scripts can be compiled ahead of time or can be referenced to from a Blazor App. 
+The scripts can be compiled ahead of time or can be referenced from a Blazor App. 
 The second way is to regard the scripts as Static Web Assets and load them into a browser as separated files.
 Afterward, the Peachpie compiles and executes them.
 Both approaches have different advantages. 
@@ -173,8 +173,8 @@ The component provides a sufficient Blazor interface for rendering control and i
 We can think about how to represent PHP scripts as components.
 We can consider a certain type of the component, that will provide the abstraction for all of the PHP code in use cases.
 A problem with this approach is that the use cases need different levels of abstraction.
-The \textit{WebGame} use case wants to use the component for offering to the Blazor an interface accessible from PHP code.
-The offer should contain identical or similar options, as are given in a C\# code.
+The \textit{WebGame} use case wants to use the component for accesing the Blazor interface from PHP code.
+The access should contain identical or similar options, as are given in a C\# code.
 The \textit{OneScript} use case requires to free a programmer from Blazor.
 Thus, the component should be an adjustable provider finding and executing PHP scripts.
 Its purpose is to keep the user away from knowing about the detailed structure of Blazor and the integration.

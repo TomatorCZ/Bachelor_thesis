@@ -234,7 +234,7 @@ Others can be parametrized, like the \texttt{Type} determining the mode of provi
 These properties influence the component methods.
 The first method is \texttt{Attach}, which assigns a render handle providing \texttt{RenderTreeBuilder}, and registers a navigation handler creating the context and calling \texttt{Refresh}.
 The second method, \texttt{SetParameters}, handles calling \texttt{Refresh}, and creates the context as well.
-\texttt{Refresh} finds a script or a component based on properties, assigns the superglobals, and calls the \texttt{Render}, which renders the component or executes the script.
+\texttt{Refresh} finds a script or a component based on properties, assigns the superglobals, and calls the \texttt{Render}, which renders the component or executes the script and its output is rendered.
 \texttt{OnAfterRender} cares about enabling the forms to send data back to Blazor.
 Some of these methods are called by Blazor framework itself. The way of calling them provides the component a certain lifecycle.
 
@@ -300,7 +300,7 @@ It is important to dispose the writer after the rendering because the same build
 \texttt{BlazorContext} maintains the writer and the interoperability with JavaScript.
 It provides methods for initializing and ending the rendering.
 The script represented by \texttt{ScriptInfo} is executed by its method \texttt{Evaluate}. This method accepts the context, which maintains the script output by redirecting it to the render tree.
-It also allows setting superglobals like \texttt{\$\_GET} to provide the query part of URL and turns forms to client-side 
+The context also allows setting superglobals like \texttt{\$\_GET} to provide the query part of URL and turns forms to client-side 
 handling, which is described in the following section.
 
 \subsection{Forms}
