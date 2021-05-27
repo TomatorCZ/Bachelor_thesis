@@ -48,7 +48,13 @@ Then, an example can be compiled by moving to its directory containing the \text
 dotnet build --configuration Release --source PathToTheLibraryNuGet
 \end{code}
 \par
-After the compilation, the server can be launched by the instructions mentioned at the beginning of this section.
+After the compilation, the server can be launched by the command below:
+\par
+\begin{code}[frame=none]
+dotnet run --no-build --configuration Release
+\end{code}
+\par
+\texttt{dotnet publish} can be used for packing all application parts. But static resources of Peachpie projects have to be copied in the publish folder and the \textit{appsettings.json} has to be change in order to the server finds the static resources. 
 \par
 The template compilation can be done by running a PowerShell command \texttt{./build/build.ps1} in the template folder.
 It results in a NuGet package, which can be added to VS template collection.
