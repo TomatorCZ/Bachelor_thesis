@@ -21,7 +21,7 @@ namespace Peachpie.Blazor
             {
                 string path = item["Path"];
                 if (!Path.IsPathRooted(item["Path"]))
-                    path = Path.Combine(Directory.GetCurrentDirectory() + "\\", item["Path"]);
+                    path = Path.Combine(Directory.GetCurrentDirectory(), item["Path"]);
 
                 app.UseStaticFiles(new StaticFileOptions
                 {
